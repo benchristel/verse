@@ -1,0 +1,25 @@
+.CenteredContainer {
+  border-top: 5px solid #aaa;
+  border-left: 5px solid #888;
+  border-bottom: 5px solid #444;
+  border-right: 5px solid #666;
+}
+
+.EditorHeaderBar {
+  position: absolute;
+  height: 5%;
+  width: 100%;
+  background-color: #2a6;
+}
+
+.EditorHeaderBar .filename {
+  font-family: Courier, monospace;
+  color: #ddd;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
+  line-height: 32px;
+  padding-left: 12px;
+}
+
+.Hamburger {
+  cursor: pointer;
+}
