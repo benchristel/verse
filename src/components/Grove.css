@@ -13,11 +13,11 @@
 }
 
 .EditorHeaderBar .filename {
-  font-family: Courier, monospace;
   color: #ddd;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
+  text-shadow: 0 -1px 0 #444;
   line-height: 32px;
   padding-left: 12px;
+  font-size: 20px;
 }
 
 .Hamburger {

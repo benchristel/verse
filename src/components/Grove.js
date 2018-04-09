@@ -7,6 +7,7 @@ import Button from './Button'
 import AceEditor from 'react-ace'
 import Hide from './Hide'
 import Pane from './Pane'
+import './Terminal.css'
 
 export default connectProps(props => (
   <div className="Grove">
@@ -47,13 +48,8 @@ let LeftPane = connectProps(props => {
 const RightPane = connectProps(props => {
   return (
     <Pane style={{width: '50%', left: '50%', backgroundColor: '#020'}}>
-      <Pane style={{height: '512px', width: '100%', backgroundColor: '#020', color: '#ff0', zIndex: 10}}>
-        {
-          props.appUi.logs.map((message, i) =>
-            <div key={i}>{message}</div>)
-        }
-      </Pane>
-      <Pane style={{height: '128px', bottom: 0, width: '100%', backgroundColor: '#888', zIndex: 10, padding: '12px'}}>
+      <Terminal/>
+      <Pane style={{height: '40px', bottom: 0, width: '100%', backgroundColor: '#888', zIndex: 10, padding: '6px'}}>
         <Button onClick={() => props.runApp(props)}>Run</Button>
       </Pane>
     </Pane>
@@ -89,4 +85,16 @@ const Hamburger = connectProps(props => {
       <div style={{...barStyle, top: '71.429%'}}/>
     </div>
   )
+})
+
+const Terminal = connectProps(props => {
+  return (
+    <Pane style={{height: '600px', width: '100%', zIndex: 10}}>
+      <div className="Terminal">
+      {
+        props.appUi.logs.map((message, i) =>
+          <div className="log" key={i}>{message}</div>)
+      }
+    </div>
+  </Pane>)
 })

@@ -1,0 +1,14 @@
+.Terminal {
+  overflow: auto;
+  height: 100%;
+  background: #004;
+}
+
+.Terminal .log {
+  line-height: 20px;
+  font-size: 20px;
+  font-family: precision, monospace;
+  -webkit-font-smoothing: antialiased;
+  white-space: pre-wrap;
+  color: gold;
+}
