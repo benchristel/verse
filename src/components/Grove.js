@@ -9,6 +9,9 @@ import Hide from './Hide'
 import Pane from './Pane'
 import './Terminal.css'
 
+import 'brace/mode/javascript'
+import 'brace/theme/xcode'
+
 export default connectProps(props => (
   <div className="Grove">
     <Backdrop>
@@ -25,7 +28,7 @@ let LeftPane = connectProps(props => {
     <Pane style={{width: '50%'}}>
       <AceEditor
         mode="javascript"
-        theme="github"
+        theme="xcode"
         value={props.editorText}
         onChange={props.changeEditorText}
         name="AceEditor"
@@ -33,9 +36,6 @@ let LeftPane = connectProps(props => {
         style={{width: '100%', height: '95%', top: '5%', position: 'absolute'}}
       />
       <EditorHeaderBar />
-      <Hide If={props.menuOpen}>
-
-      </Hide>
       <Hide If={!props.menuOpen}>
         <Pane style={{right: 0, width: '240px', backgroundColor: '#2a6', zIndex: 10}}>
           <Button onClick={props.closeMenu}>CLOSE</Button>
