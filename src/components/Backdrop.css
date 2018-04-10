@@ -1,7 +1,6 @@
 .Backdrop {
-  background-color: #000;
   height: 100vh;
   width: 100vw;
   position: absolute;
-  background: url('http://i.imgur.com/TwJLHk0.png');
+  background: url('../images/background.png') #000;
 }
