@@ -34,7 +34,7 @@ define({
   *init() {
     let r = Math.random()
     yield wait(r)
-    yield log('hello, world! ' + r)
+    yield log(greeting() + r)
     yield retry()
   },
 
@@ -44,6 +44,10 @@ define({
 
   reducer(state) {
     return state
+  },
+
+  greeting() {
+    return 'hello, world!'
   }
 })
     </script>

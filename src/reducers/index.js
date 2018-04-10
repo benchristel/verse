@@ -2,7 +2,8 @@ const initialState = {
   menuOpen: false,
   appUi: {
     logs: []
-  }
+  },
+  editorText: ''
 }
 
 export default function(state=initialState, action) {
@@ -21,6 +22,9 @@ export default function(state=initialState, action) {
         logs: [...state.appUi.logs, action.message]
       }
     }
+
+    case 'changeEditorText':
+    return {...state, editorText: action.text}
 
     default:
     return state

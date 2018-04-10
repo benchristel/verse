@@ -26,7 +26,8 @@ let LeftPane = connectProps(props => {
       <AceEditor
         mode="javascript"
         theme="github"
-        onChange={() => {}/*todo*/}
+        value={props.editorText}
+        onChange={props.changeEditorText}
         name="AceEditor"
         editorProps={{$blockScrolling: true}}
         style={{width: '100%', height: '95%', top: '5%', position: 'absolute'}}

@@ -10,6 +10,12 @@ export default {
       view:         View(actions)
     }
     app = window.App(appHooks)
+  },
+
+  evaluateScript(script) {
+    try {
+      new Function(script)()
+    } catch(e) {}
   }
 }
 
