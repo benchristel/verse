@@ -4,13 +4,11 @@ import connectProps from './connectProps'
 import Backdrop from './Backdrop'
 import CenteredContainer from './CenteredContainer'
 import Button from './Button'
-import AceEditor from 'react-ace'
+import Editor from './Editor'
 import Hide from './Hide'
 import Pane from './Pane'
-import './Terminal.css'
-
-import 'brace/mode/javascript'
-import 'brace/theme/xcode'
+import Terminal from './Terminal'
+import Hamburger from './Hamburger'
 
 export default connectProps(props => (
   <div className="Grove">
@@ -26,16 +24,8 @@ export default connectProps(props => (
 let LeftPane = connectProps(props => {
   return (
     <Pane style={{width: '50%'}}>
-      <AceEditor
-        mode="javascript"
-        theme="xcode"
-        value={props.editorText}
-        onChange={props.changeEditorText}
-        name="AceEditor"
-        editorProps={{$blockScrolling: true}}
-        style={{width: '100%', height: '95%', top: '5%', position: 'absolute'}}
-      />
-      <EditorHeaderBar />
+      <EditorHeaderBar/>
+      <Editor/>
       <Hide If={!props.menuOpen}>
         <Pane style={{right: 0, width: '240px', backgroundColor: '#2a6', zIndex: 10}}>
           <Button onClick={props.closeMenu}>CLOSE</Button>
@@ -69,33 +59,4 @@ const EditorHeaderBar = connectProps(props => {
       />
     </div>
   )
-})
-
-const Hamburger = connectProps(props => {
-  let barStyle = {
-    position: 'absolute',
-    backgroundColor: '#ddd',
-    height: '14.286%',
-    width: '90%',
-    top: '14.286%',
-  }
-  return (
-    <div className="Hamburger" style={props.style} onClick={props.onClick}>
-      <div style={{...barStyle, top: '14.286%'}}/>
-      <div style={{...barStyle, top: '42.857%'}}/>
-      <div style={{...barStyle, top: '71.429%'}}/>
-    </div>
-  )
-})
-
-const Terminal = connectProps(props => {
-  return (
-    <Pane style={{height: '600px', width: '100%', zIndex: 10}}>
-      <div className="Terminal">
-      {
-        props.appUi.logs.map((message, i) =>
-          <div className="log" key={i}>{message}</div>)
-      }
-    </div>
-  </Pane>)
 })
