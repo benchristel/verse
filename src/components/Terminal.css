@@ -2,10 +2,11 @@
   overflow: auto;
   height: 100%;
   background: #004;
+  overflow-x: hidden;
 }
 
 .Terminal .log {
-  line-height: 20px;
+  line-height: 24px;
   font-size: 20px;
   font-family: precision, monospace;
   -webkit-font-smoothing: antialiased;
