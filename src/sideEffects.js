@@ -48,3 +48,8 @@ function View(actions) {
     actions.showScreen()
   }
 }
+
+document.body.addEventListener('keypress', event => {
+  if (event.target !== document.body) return
+  app.receiveKeydown(event.key)
+})

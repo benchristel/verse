@@ -1,7 +1,8 @@
 const initialState = {
   menuOpen: false,
   appUi: {
-    logs: []
+    logs: [],
+    screenLines: []
   },
   editorText: ''
 }
@@ -20,6 +21,15 @@ export default function(state=initialState, action) {
       appUi: {
         ...state.appUi,
         logs: [...state.appUi.logs, action.message]
+      }
+    }
+
+    case 'displayOnScreen':
+    return {
+      ...state,
+      appUi: {
+        ...state.appUi,
+        screenLines: action.lines
       }
     }
 

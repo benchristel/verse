@@ -1,15 +1,33 @@
 .Terminal {
-  overflow: auto;
   height: 100%;
+
+  overflow: hidden;
+  white-space: pre-wrap;
+
+  color: gold;
   background: #004;
-  overflow-x: hidden;
+
+  font-family: precision, monospace;
+  font-size: 20px;
+  line-height: 24px;
+  -webkit-font-smoothing: antialiased;
 }
 
-.Terminal .log {
-  line-height: 24px;
-  font-size: 20px;
-  font-family: precision, monospace;
-  -webkit-font-smoothing: antialiased;
-  white-space: pre-wrap;
-  color: gold;
+.Terminal .logs {
+  overflow-y: auto;
+  height: 528px;
+  background-color: #004;
+}
+
+.Terminal .screen {
+  height: 0;
+  background-color: #000;
+}
+
+.Terminal.showScreen .logs {
+  height: 72px;
+}
+
+.Terminal.showScreen .screen {
+  height: 456px;
 }
