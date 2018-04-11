@@ -42,5 +42,4 @@ export default connectProps(class extends React.Component {
       </div>
     </Pane>)
   }
-
 })
