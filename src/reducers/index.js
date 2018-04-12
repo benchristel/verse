@@ -4,7 +4,8 @@ const initialState = {
     logs: [],
     screenLines: []
   },
-  editorText: ''
+  files: {},
+  currentlyEditingFile: 'main.js'
 }
 
 export default function(state=initialState, action) {
@@ -34,7 +35,16 @@ export default function(state=initialState, action) {
     }
 
     case 'changeEditorText':
-    return {...state, editorText: action.text}
+    return {
+      ...state,
+      files: {
+        ...state.files,
+        [state.currentlyEditingFile]: action.text
+      }
+    }
+
+    case 'loadFiles':
+    return {...state, files: {...action.files}}
 
     default:
     return state

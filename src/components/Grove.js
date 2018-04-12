@@ -9,17 +9,27 @@ import Hide from './Hide'
 import Pane from './Pane'
 import Terminal from './Terminal'
 import Hamburger from './Hamburger'
+import sideEffects from '../sideEffects'
 
-export default connectProps(props => (
-  <div className="Grove">
-    <Backdrop>
-      <CenteredContainer height="640px" width="1024px">
-        <LeftPane/>
-        <RightPane/>
-      </CenteredContainer>
-    </Backdrop>
-  </div>
-))
+export default connectProps(class extends React.Component {
+  componentWillMount() {
+    let files = sideEffects.readFilesFromLocalStorage()
+    this.props.loadFiles(files)
+  }
+
+  render() {
+    return (
+      <div className="Grove">
+        <Backdrop>
+          <CenteredContainer height="640px" width="1024px">
+            <LeftPane/>
+            <RightPane/>
+          </CenteredContainer>
+        </Backdrop>
+      </div>
+    )
+  }
+})
 
 let LeftPane = connectProps(props => {
   return (
