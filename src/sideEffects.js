@@ -64,5 +64,5 @@ function View(actions) {
 
 document.body.addEventListener('keypress', event => {
   if (event.target !== document.body) return
-  app.receiveKeydown(event.key)
+  app.receiveKeydown(event)
 })
