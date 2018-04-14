@@ -1,0 +1,14 @@
+- make backspace work on chrome
+- button and API to clear log
+- some way to implement waitForCharOrTimeout - maybe an effect
+  that simulates a keypress? Maybe a startSkippableAnimation effect?
+- when a stack frame pops, call its renderer before destroying it,
+  or some stuff might not get rendered
+
+let animation = skippableAnimation(function*() => {
+
+})
+
+yield start(animation)
+yield waitForChar()
+yield skipToEnd(animation)
