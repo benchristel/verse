@@ -2,7 +2,7 @@ import React from 'react'
 import connectProps from './connectProps'
 import AceEditor from 'react-ace'
 import { editorText } from '../selectors/editorText'
-import sideEffects from '../sideEffects'
+import storage from '../storage'
 
 import 'brace/mode/javascript'
 import 'brace/theme/xcode'
@@ -22,7 +22,7 @@ export default connectProps(props => {
   )
 
   function save() {
-    sideEffects.storeFileInLocalStorage(
+    storage.storeFile(
       props.currentlyEditingFile,
       editorText(props))
   }

@@ -9,11 +9,11 @@ import Hide from './Hide'
 import Pane from './Pane'
 import Terminal from './Terminal'
 import Hamburger from './Hamburger'
-import sideEffects from '../sideEffects'
+import storage from '../storage'
 
 export default connectProps(class extends React.Component {
   componentWillMount() {
-    let files = sideEffects.readFilesFromLocalStorage()
+    let files = storage.files()
     this.props.loadFiles(files)
   }
 

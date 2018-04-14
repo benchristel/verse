@@ -16,19 +16,6 @@ export default {
     try {
       new Function(script)()
     } catch(e) {}
-  },
-
-  readFilesFromLocalStorage() {
-    let files = {}
-    Object.keys(localStorage)
-      .filter(key => key.indexOf('file:') === 0)
-      .map(key => [key.slice('file:'.length), localStorage[key]])
-      .forEach(([filename, content]) => files[filename] = content)
-    return files
-  },
-
-  storeFileInLocalStorage(name, content) {
-    localStorage['file:' + name] = content
   }
 }
 
