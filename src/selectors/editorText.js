@@ -1,3 +1,3 @@
 export function editorText(state) {
-  return state.files[state.currentlyEditingFile]
+  return state.files[state.currentlyEditingFile] || ''
 }
