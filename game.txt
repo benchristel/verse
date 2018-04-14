@@ -1,0 +1,192 @@
+define({
+    *init() {
+        yield stopInputDisplay()
+        yield typewriterMessages([
+            ['STARSHIP UA-2342 "PEREGRINE"', 1],
+            ['ENGINEERING MAIN TERMINAL', 1],
+            ['\nAUTHORIZATION REQUIRED', 0],
+        ])
+        let playerName = yield waitForInput('Enter your name')
+        yield typewriterMessages([
+            ['Good morning, Lt. ' + playerName + '.', 1],
+            ['', 1],
+            ['You have 1 incoming transmission.', 0]
+        ])
+
+        yield function *() {
+            yield startInputDisplay(() => [
+                '1. Read it',
+                '2. Just play the game'
+            ])
+            let c = yield waitForChar()
+            yield stopInputDisplay()
+            if (c === '1') return
+            if (c === '2') yield jump(MenuScreen)
+            yield retry()
+        }
+        yield typewriterMessages([
+            ['FROM: Capt. Fawkes\n', 2],
+            ['  Lt. ' + playerName + ', we have a code-red ' +
+             'situation. The main data drives failed at ' +
+             '2100 hours yesterday and the stored mission ' +
+             'coordinates were corrupted during recovery. ',
+             2],
+            ['  Without those coordinates, we will be lost ' +
+             'in space. It goes without saying that ' +
+             'recovering them is our top priority.',
+             -1]
+        ])
+        yield typewriterMessages([
+            ['  We believe the coordinates are still ' +
+             'encrypted within backup memory, but the ' +
+             'encryption key was lost when the main drives ' +
+             'failed.', 2],
+            ['  A recovery module has been attached ' +
+             'to backup memory. You can use it to probe ' +
+             'the encrypted coordinates. ', 2],
+            ['  Be advised that the recovery module does ' +
+             'intensive computations and will draw heavily ' +
+             'on the ship\'s energy reserves each time you ' +
+             'use it. The fewer queries you can make, the ' +
+             'better. But in any case, it is imperative that ' +
+             'you recover the coordinates.', 2],
+            ['  On behalf of all the crew, I wish you good ' +
+             'luck. The fate of the mission is in your hands.',
+             6],
+            ['\nEND TRANSMISSION', -1]
+        ])
+        yield jump(MenuScreen)
+    },
+
+    *MenuScreen() {
+        yield startDisplay(() => [
+            ' ',
+            ' ',
+            ' ',
+            ' ',
+            ' ',
+            ' ',
+            ' ',
+            ' ',
+            '      P I C O . F E R M I . B A G E L',
+            ' ',
+            '         (actual game coming soon!)'
+        ])
+    },
+
+    waitForInput(prompt) {
+        return function*() {
+            let entered = ''
+            yield startInputDisplay(() => {
+                return [
+                    prompt,
+                    '> ' + entered + '_'
+                ]
+            })
+            yield function*() {
+                let c = yield waitForChar()
+                if (c === 'Enter') {
+                    return
+                }
+                if (c === 'Backspace' || !c) {
+                    entered = entered.slice(0, entered.length - 1)
+                } else {
+                    entered += c
+                }
+                yield retry()
+            }
+            yield stopInputDisplay()
+            return entered
+        }
+    },
+
+    stopInputDisplay() {
+        return startInputDisplay(() => [''])
+    },
+
+    typewriterMessage(message, pause = -1) {
+        return function*() {
+            let frames = 0
+            let cursor = '_'
+            yield startDisplay(() => {
+                return [
+                    message.slice(0, frames) + cursor
+                ]
+            })
+            yield function*() {
+                yield wait(0.05)
+                frames = frames + 1
+                if (frames < message.length) {
+                    yield retry()
+                }
+            }
+            if (pause > 0) {
+                yield function*() {
+                    if (pause === 0) return
+                    cursor = cursor ? '' : '_'
+                    yield wait(0.4)
+                    pause--;
+                    yield retry()
+                }
+            } else {
+                yield startTimer(0.4, () => [
+                    cursor = cursor ? '' : '_'
+                ])
+                yield waitForAnyKey()
+            }
+        }
+    },
+
+    typewriterMessages(messages) {
+        return function*() {
+            let cursor = '_'
+            let progress = 0
+
+            // render messages
+            yield startDisplay(() => {
+                return [
+                    messages
+                        .map(m => m[0])
+                        .join('\n')
+                        .slice(0, progress) + cursor
+                ]
+            })
+
+            for (let [message, pause] of messages) {
+                let thisMessageProgress = 0
+                yield function*() {
+                    progress = progress + 1
+                    thisMessageProgress = thisMessageProgress + 1
+                    yield wait(0.05)
+                    if (thisMessageProgress < message.length) {
+                        yield retry()
+                    }
+                }
+                if (pause < 0) {
+                    yield waitForAnyKey()
+                    continue;
+                }
+                yield function*() {
+                    if (pause > 0) {
+                        yield wait(0.4)
+                        cursor = cursor ? '' : '_'
+                        pause = pause - 1
+                        yield retry()
+                    }
+                    cursor = '_'
+                    progress = progress + 1
+                }
+            }
+        }
+    },
+
+    waitForAnyKey() {
+        return function*() {
+            yield startInputDisplay(() => [
+                'Press any key to continue'
+            ])
+            yield waitForChar()
+            yield stopInputDisplay()
+        }
+    }
+})
