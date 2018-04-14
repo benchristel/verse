@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'precision';
-  src: local('precision') url('./fonts/precision.ttf') format('ttf');
+  src: url('./fonts/precision.ttf');
 }
 
 body {
