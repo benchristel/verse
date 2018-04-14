@@ -33,22 +33,11 @@ function define(definitions) {
 
 define({
   *init() {
-    let r = Math.random()
-    yield wait(r)
-    yield log(greeting() + r)
-    yield retry()
+    yield log('No program is currently loaded')
   },
 
   getStateType() {
     return {}
-  },
-
-  reducer(state) {
-    return state
-  },
-
-  greeting() {
-    return 'hello, world!'
   }
 })
     </script>
