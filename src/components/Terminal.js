@@ -29,17 +29,24 @@ export default connectProps(class extends React.Component {
           <div className="logs">
             {
               this.props.appUi.logs.map((message, i) =>
-                <div className="log" key={i}>{message}</div>)
+                <div className="line" key={i}>{message}</div>)
             }
             <div ref={e => this.bottomOfLogs = e}/>
           </div>
           <div className="screen">
             {
               this.props.appUi.screenLines.map((line, i) =>
-                <div className="screenLine" key={i}>{line}</div>)
+                <div className="line" key={i}>{line}</div>)
             }
+          </div>
+          <div className="input">
+            {
+              this.props.appUi.inputLines.map((line, i) =>
+                <div className="line" key={i}>{line}</div>)
+            }
+          </div>
         </div>
-      </div>
-    </Pane>)
+      </Pane>
+    )
   }
 })

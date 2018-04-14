@@ -31,3 +31,13 @@
 .Terminal.showScreen .screen {
   height: 456px;
 }
+
+.Terminal .input {
+  height: 72px;
+  background-color: #303038;
+  overflow-y: hidden;
+}
+
+.Terminal .line {
+  padding-left: 2px;
+}

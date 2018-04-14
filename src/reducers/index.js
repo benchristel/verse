@@ -2,7 +2,8 @@ const initialState = {
   menuOpen: false,
   appUi: {
     logs: [],
-    screenLines: []
+    screenLines: [],
+    inputLines: []
   },
   files: {},
   currentlyEditingFile: 'main.js'
@@ -31,6 +32,15 @@ export default function(state=initialState, action) {
       appUi: {
         ...state.appUi,
         screenLines: action.lines
+      }
+    }
+
+    case 'displayInputPrompt':
+    return {
+      ...state,
+      appUi: {
+        ...state.appUi,
+        inputLines: action.lines
       }
     }
 
