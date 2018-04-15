@@ -13,8 +13,7 @@ import storage from '../storage'
 
 export default connectProps(class extends React.Component {
   componentWillMount() {
-    let files = storage.files()
-    this.props.loadFiles(files)
+    storage.onLoad(this.props.loadFiles)
   }
 
   render() {
