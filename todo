@@ -4,6 +4,29 @@
   that simulates a keypress? Maybe a startSkippableAnimation effect?
 - when a stack frame pops, call its renderer before destroying it,
   or some stuff might not get rendered
+- When a file changes and is eval'd successfully, functions
+  that it no longer defines should be removed from the
+  window.
+
+- Minimize the security risk of evaling code from localStorage
+  when the page loads.
+
+- prevent the eval'd script from accessing `window` or any
+  properties on `window`. Always bind `this` when calling
+  app functions.
+
+- errors thrown from the program should be logged.
+
+- change "Run" to "Restart" while the program is running.
+
+- add a "Cancel" button that cancels the current I/O wait,
+  and causes it to return a special sentinel value.
+
+- save/load
+
+- make a version that can be embedded in an iframe, gets source
+  code via postMessage from parent page, and does not affect
+  localStorage.
 
 let animation = skippableAnimation(function*() => {
 
