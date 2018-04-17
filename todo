@@ -1,4 +1,3 @@
-- make backspace work on chrome
 - button and API to clear log
 - some way to implement waitForCharOrTimeout - maybe an effect
   that simulates a keypress? Maybe a startSkippableAnimation effect?
@@ -13,7 +12,9 @@
 
 - prevent the eval'd script from accessing `window` or any
   properties on `window`. Always bind `this` when calling
-  app functions.
+  app functions (strict mode defaults `this` to undefined).
+  Eval'd code can access `window` anyway, by doing this:
+  (x => x('this'))(eval)
 
 - errors thrown from the program should be logged.
 
@@ -23,10 +24,6 @@
   and causes it to return a special sentinel value.
 
 - save/load
-
-- make a version that can be embedded in an iframe, gets source
-  code via postMessage from parent page, and does not affect
-  localStorage.
 
 let animation = skippableAnimation(function*() => {
 
