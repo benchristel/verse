@@ -1,3 +1,5 @@
+- make service worker cache files currently in public
+
 - button and API to clear log
 - some way to implement waitForCharOrTimeout - maybe an effect
   that simulates a keypress? Maybe a startSkippableAnimation effect?
