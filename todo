@@ -22,6 +22,12 @@
 
 - change "Run" to "Restart" while the program is running.
 
+- clear the display and log when a program exits. Currently,
+  it's hard to tell whether the program is still running.
+
+- refresh the display when the code changes in the editor so
+  live updating will work
+
 - add a "Cancel" button that cancels the current I/O wait,
   and causes it to return a special sentinel value.
 
