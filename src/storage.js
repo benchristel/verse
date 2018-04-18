@@ -17,8 +17,7 @@ if (token.length <= 1) {
 export default storage
 
 function LocalStorage() {
-  let urlHash = hash(window.location.toString())
-  let prefix = 'file:' + urlHash + ':'
+  let prefix = 'file:'
 
   return {
     load() {
@@ -39,13 +38,6 @@ function LocalStorage() {
     storeFile(name, content) {
       localStorage[prefix + name] = content
     }
-  }
-
-  function hash(string) {
-    let sjcl = window.sjcl
-    let sha256 = new sjcl.hash.sha256()
-    sha256.update(string)
-    return sjcl.codec.base64.fromBits(sha256.finalize())
   }
 }
 
