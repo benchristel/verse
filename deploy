@@ -13,6 +13,5 @@ if ! git diff-index --quiet HEAD --; then
 fi
 
 yarn run build &&
-rm -f "$DEPLOY_LOCATION"/static/js/main.* &&
 cp -r build/ "$DEPLOY_LOCATION/" &&
 echo deployed $(git rev-parse HEAD)
