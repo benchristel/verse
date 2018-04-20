@@ -16,6 +16,9 @@ define({
 
 # UX CONCERNS
 
+- `log()` should actually print to the log. You shouldn't have to
+  yield it, because people want to log from everywhere, not
+  just generator functions.
 - display a warning when the user edits code with MemoryStorage
   active, telling them their changes won't be saved
 - change "Run" to "Restart" while the program is running.
