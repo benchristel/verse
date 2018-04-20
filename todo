@@ -1,7 +1,5 @@
 # BUGS
 
-- when a stack frame pops, call its renderer before destroying it,
-  or some stuff might not get rendered
 - When a file changes and is eval'd successfully, functions
   that it no longer defines should be removed from the
   window.
