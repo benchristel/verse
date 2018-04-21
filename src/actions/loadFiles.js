@@ -4,7 +4,7 @@ export function loadFiles(objectThatMapsFileNamesToContents) {
   for (let name in objectThatMapsFileNamesToContents) {
     if (window.has(name, objectThatMapsFileNamesToContents)) {
       let contents = objectThatMapsFileNamesToContents[name]
-      sideEffects.evaluateScript(contents)
+      sideEffects.evaluateScript(contents, name)
     }
   }
 

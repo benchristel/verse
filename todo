@@ -1,9 +1,3 @@
-# BUGS
-
-- When a file changes and is eval'd successfully, functions
-  that it no longer defines should be removed from the
-  window.
-
 # HIGH-RISK FEATURES
 
 - make buttons created by `yield options()` clickable

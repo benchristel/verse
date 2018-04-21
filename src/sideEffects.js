@@ -1,4 +1,7 @@
+import Definer from './Definer'
+
 let app = window.NullBard()
+let definer = Definer(window)
 
 export default {
   runApp(actions) {
@@ -12,9 +15,10 @@ export default {
     app = window.App(appHooks)
   },
 
-  evaluateScript(script) {
+  evaluateScript(script, moduleName) {
     try {
-      new Function(script)()
+      let define = definer.defineModule(moduleName)
+      new Function('define', script)(define)
     } catch(e) {}
   }
 }

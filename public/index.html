@@ -444,26 +444,6 @@
       return a => a === null || satisfies(type, a)
     }
     </script>
-    <script>
-
-function define(definitions) {
-  for (let name in definitions) {
-    if (has(name, definitions)) {
-      window[name] = definitions[name]
-    }
-  }
-}
-
-define({
-  *init() {
-    yield log('No program is currently loaded')
-  },
-
-  getStateType() {
-    return {}
-  }
-})
-    </script>
   </head>
   <body>
     <noscript>
