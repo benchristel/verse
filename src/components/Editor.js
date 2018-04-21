@@ -31,7 +31,6 @@ export default connectProps(props => {
 
 function setLinterOptions(editor) {
   let session = editor.getSession()
-  console.log(session.getMode())
   if (session.$worker) {
     session.$worker.send("setOptions", [{
       curly: true,
