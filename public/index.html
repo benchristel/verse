@@ -22,7 +22,7 @@
     -->
     <script>
     function App(global) {
-      const {
+      let {
         viewTestResults,
         getStateType,
         reducer,
@@ -31,6 +31,8 @@
       } = global
 
       if (!view) throw 'You must define a view() function at the top level'
+      if (!getStateType) getStateType = () => ({})
+      if (!init) init = function*() {}
 
       let results = runTests(getTestFunctions(global))
       if (results.failures.length) {
@@ -211,15 +213,6 @@
     function waitForChar() {
       return {
         effectType: 'waitForChar'
-      }
-    }
-
-    function waitForInput() {
-      return function*(tell) {
-        let result = '', a
-        while((a = yield waitForChar()) !== 'Enter')
-          result += a
-        return result
       }
     }
 
