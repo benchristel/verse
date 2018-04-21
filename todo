@@ -1,3 +1,8 @@
+# BUGS
+
+- disable Cmd+L "go to line number" hotkey - it's very
+  surprising if you're expecting Cmd+L to focus the URL bar.
+
 # HIGH-RISK FEATURES
 
 - make buttons created by `yield options()` clickable
