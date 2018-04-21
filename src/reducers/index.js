@@ -1,69 +1,89 @@
-const initialState = {
-  menuOpen: false,
-  appUi: {
-    logs: [],
-    screenLines: [],
-    inputLines: []
-  },
-  files: {},
-  currentlyEditingFile: 'main.js',
-  evalError: ''
-}
+import { combineReducers } from 'redux'
 
-export default function(state=initialState, action) {
+export default combineReducers({
+  menuOpen,
+  appUi: combineReducers({
+    logs,
+    screenLines,
+    inputLines
+  }),
+  files,
+  currentlyEditingFile,
+  evalError
+})
+
+function menuOpen(curr=false, action) {
   switch (action.type) {
     case 'openMenu':
-    return {...state, menuOpen: true}
+    return true
 
     case 'closeMenu':
-    return {...state, menuOpen: false}
+    return false
 
+    default:
+    return curr
+  }
+}
+
+function logs(curr=[], action) {
+  switch (action.type) {
     case 'logFromApp':
-    return {
-      ...state,
-      appUi: {
-        ...state.appUi,
-        logs: [...state.appUi.logs, action.message]
-      }
-    }
+    return [...curr, action.message]
 
+    default:
+    return curr
+  }
+}
+
+function screenLines(curr=[], action) {
+  switch (action.type) {
     case 'displayOnScreen':
-    return {
-      ...state,
-      appUi: {
-        ...state.appUi,
-        screenLines: action.lines
-      }
-    }
+    return action.lines
 
+    default:
+    return curr
+  }
+}
+
+function inputLines(curr=[], action) {
+  switch (action.type) {
     case 'displayInputPrompt':
-    return {
-      ...state,
-      appUi: {
-        ...state.appUi,
-        inputLines: action.lines
-      }
-    }
+    return action.lines
+
+    default:
+    return curr
+  }
+}
+
+function files(curr={}, action) {
+  switch (action.type) {
+    case 'loadFiles':
+    return action.files
 
     case 'changeEditorText':
     return {
-      ...state,
-      files: {
-        ...state.files,
-        [state.currentlyEditingFile]: action.text
-      }
+      ...curr,
+      [action.file]: action.text
     }
 
-    case 'loadFiles':
-    return {...state, files: {...action.files}}
+    default:
+    return curr
+  }
+}
 
+function currentlyEditingFile(curr='main.js', action) {
+  return curr
+}
+
+function evalError(curr='', action) {
+  switch (action.type) {
     case 'handleEvalError':
-    return {...state, evalError: action.error}
+    return action.error
 
     case 'clearEvalError':
-    return {...state, evalError: ''}
+    return ''
 
     default:
-    return state
+    return curr
   }
 }

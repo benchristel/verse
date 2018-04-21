@@ -13,7 +13,7 @@ export default connectProps(props => {
       mode="javascript"
       theme="xcode"
       value={editorText(props)}
-      onChange={text => {props.changeEditorText(text, props)}}
+      onChange={text => {props.changeEditorText(text, props.currentlyEditingFile, props)}}
       onLoad={setLinterOptions}
       onBlur={save}
       name="AceEditor"
