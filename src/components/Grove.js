@@ -53,6 +53,11 @@ const RightPane = connectProps(props => {
       <Pane style={{height: '40px', bottom: 0, width: '100%', backgroundColor: '#888', zIndex: 10, padding: '6px'}}>
         <Button onClick={() => props.runApp(props)}>Run</Button>
       </Pane>
+      <Hide If={!props.evalError}>
+        <Pane style={{height: '100%', width: '100%', backgroundColor: '#db6', zIndex: 20, padding: '12px'}}>
+          <ErrorPanel />
+        </Pane>
+      </Hide>
     </Pane>
   )
 })
@@ -87,3 +92,7 @@ const StatusBadge = connectProps(props => {
     </div>
   )
 })
+
+const ErrorPanel = connectProps(props => (
+  <div className="ErrorPanel">{props.evalError.toString()}</div>
+))
