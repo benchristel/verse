@@ -23,3 +23,19 @@
 .Hamburger {
   cursor: pointer;
 }
+
+.StatusBadge {
+  box-sizing: border-box;
+  height: 24px;
+  line-height: 26px;
+  width: 120px;
+  background-color: #afa;
+  border-radius: 6px;
+  padding: 0 6px;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.StatusBadge.error {
+  background-color: #da0;
+}

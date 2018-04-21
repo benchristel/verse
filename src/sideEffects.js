@@ -1,4 +1,5 @@
 import Definer from './Definer'
+import thunk from './thunk'
 
 let app = window.NullBard()
 let definer = Definer(window)
@@ -15,11 +16,15 @@ export default {
     app = window.App(appHooks)
   },
 
-  evaluateScript(script, moduleName) {
+  evaluateScript(script, moduleName, actions) {
     try {
       let define = definer.defineModule(moduleName)
+      // eslint-disable-next-line
       new Function('define', script)(define)
-    } catch(e) {}
+      thunk(actions.clearEvalError)
+    } catch(e) {
+      thunk(actions.handleEvalError, e)
+    }
   }
 }
 

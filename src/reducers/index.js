@@ -6,7 +6,8 @@ const initialState = {
     inputLines: []
   },
   files: {},
-  currentlyEditingFile: 'main.js'
+  currentlyEditingFile: 'main.js',
+  evalError: ''
 }
 
 export default function(state=initialState, action) {
@@ -55,6 +56,12 @@ export default function(state=initialState, action) {
 
     case 'loadFiles':
     return {...state, files: {...action.files}}
+
+    case 'handleEvalError':
+    return {...state, evalError: action.error}
+
+    case 'clearEvalError':
+    return {...state, evalError: ''}
 
     default:
     return state

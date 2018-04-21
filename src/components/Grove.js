@@ -13,7 +13,8 @@ import storage from '../storage'
 
 export default connectProps(class extends React.Component {
   componentWillMount() {
-    storage.onLoad(this.props.loadFiles)
+    storage.onLoad(files =>
+      this.props.loadFiles(files, this.props))
   }
 
   render() {
@@ -62,10 +63,27 @@ const EditorHeaderBar = connectProps(props => {
       <div className="filename">
         main.js
       </div>
+      <StatusBadge style={{position: 'absolute', top: '4px', right: '40px'}}/>
       <Hamburger
         onClick={props.openMenu}
         style={{width: '32px', height: '32px', right: 0, top: 0, position: 'absolute'}}
       />
+    </div>
+  )
+})
+
+const StatusBadge = connectProps(props => {
+  let message = 'OK'
+  let className = 'StatusBadge'
+  if (props.evalError) {
+    message = "Can't run"
+    className += ' error'
+  }
+  return (
+    <div
+      className={className}
+      style={props.style}>
+      {message}
     </div>
   )
 })
