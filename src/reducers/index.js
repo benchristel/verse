@@ -78,7 +78,7 @@ function currentlyEditingFile(curr='main.js', action) {
 function evalError(curr='', action) {
   switch (action.type) {
     case 'handleEvalError':
-    return action.error
+    return action.error || ''
 
     case 'clearEvalError':
     return ''
