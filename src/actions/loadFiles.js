@@ -1,11 +1,9 @@
 import sideEffects from '../sideEffects'
 
 export function loadFiles(objectThatMapsFileNamesToContents, actions) {
-  for (let name in objectThatMapsFileNamesToContents) {
-    if (window.has(name, objectThatMapsFileNamesToContents)) {
-      let contents = objectThatMapsFileNamesToContents[name]
-      sideEffects.evaluateScript(contents, name, actions)
-    }
+  if (window.has('main.js', objectThatMapsFileNamesToContents)) {
+    let contents = objectThatMapsFileNamesToContents['main.js']
+    sideEffects.evaluateScript(contents, 'main.js', actions)
   }
 
   return {
