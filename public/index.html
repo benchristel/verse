@@ -444,6 +444,11 @@
       return a => a === null || satisfies(type, a)
     }
     </script>
+    <script>
+window.stackStyle = (() =>
+  new Error().stack.split('\n')[0].includes('@') ? 'moz' : 'webkit'
+)()
+    </script>
   </head>
   <body>
     <noscript>

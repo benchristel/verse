@@ -10,6 +10,7 @@ import Pane from './Pane'
 import Terminal from './Terminal'
 import Hamburger from './Hamburger'
 import storage from '../storage'
+import stackParser from '../stackParser'
 
 export default connectProps(class extends React.Component {
   componentWillMount() {
@@ -94,5 +95,16 @@ const StatusBadge = connectProps(props => {
 })
 
 const ErrorPanel = connectProps(props => (
-  <div className="ErrorPanel">{props.evalError.toString()}</div>
+  <div className="ErrorPanel">{
+    props.evalError.toString()
+    + '\n\n' + renderLineNumber(props.evalError.stack)
+  }</div>
 ))
+
+function renderLineNumber(stack) {
+  let line = stackParser(stack).line
+  if (line !== null) {
+    return 'at line ' + line
+  }
+  return ''
+}
