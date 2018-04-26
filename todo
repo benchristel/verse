@@ -6,15 +6,11 @@
 # HIGH-RISK FEATURES
 
 - make buttons created by `yield options()` clickable
-- test framework
-define({
-  "test something blah blah": () => {
-    check(1 + 1, isNumber)
-  },
-})
 
 # UX CONCERNS
 
+- Errors thrown from app code shouldn't crash the editor. Wrap
+  all calls to user-defined functions in try/catch
 - `log()` should actually print to the log. You shouldn't have to
   yield it, because people want to log from everywhere, not
   just generator functions.
@@ -29,6 +25,12 @@ define({
 
 # LOW-RISK FEATURES
 
+- test framework
+  define({
+    "test something blah blah": () => {
+      check(1 + 1, isNumber)
+    },
+  })
 - button and API to clear log
 - refresh the display when the code changes in the editor so
   live updating will work
