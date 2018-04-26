@@ -1,5 +1,5 @@
 .Terminal {
-  height: 100%;
+  height: 608px;
 
   overflow: hidden;
   white-space: pre-wrap;
@@ -15,7 +15,7 @@
 
 .Terminal .logs {
   overflow-y: auto;
-  height: 528px;
+  height: 536px;
   background-color: #004;
 }
 
@@ -29,7 +29,7 @@
 }
 
 .Terminal.showScreen .screen {
-  height: 456px;
+  height: 464px;
 }
 
 .Terminal .input {

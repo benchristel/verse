@@ -50,8 +50,10 @@ let LeftPane = connectProps(props => {
 const RightPane = connectProps(props => {
   return (
     <Pane style={{width: '50%', left: '50%', backgroundColor: '#020'}}>
-      <Terminal/>
-      <Pane style={{height: '40px', bottom: 0, width: '100%', backgroundColor: '#888', zIndex: 10, padding: '6px'}}>
+      <Pane style={{top: '32px', width: '100%'}}>
+        <Terminal/>
+      </Pane>
+      <Pane style={{height: '32px', top: 0, width: '100%', backgroundColor: '#888', zIndex: 10, padding: '4px 6px'}}>
         <Button onClick={() => props.runApp(props)}>Run</Button>
       </Pane>
       <Hide If={!props.evalError}>
