@@ -19,7 +19,7 @@ export default function Definer(global) {
       })
       deleteModule(moduleName)
       setDefinitionsForModule(moduleName, Object.keys(defns))
-      Object.assign(global, defns)
+      Object.assign(global, mapValues(wrapInErrorHandling, defns))
     }
   }
 
@@ -45,8 +45,48 @@ export default function Definer(global) {
   function setDefinitionsForModule(moduleName, names) {
     definitions[moduleName] = names
   }
+}
 
-  function hasOwnProperty(obj, prop) {
-    return Object.prototype.hasOwnProperty.call(obj, prop)
+function wrapInErrorHandling(fn) {
+  if (typeof fn !== 'function') return fn
+  if (isGeneratorFunction(fn)) {
+    return function*() {
+      try {
+        return yield *fn.apply(null, arguments)
+      } catch (e) {
+        e.verseStack = e.verseStack || []
+        e.verseStack.push(fn.name)
+        throw e
+      }
+    }
   }
+
+  return function() {
+    try {
+      return fn.apply(null, arguments)
+    } catch (e) {
+      e.verseStack = e.verseStack || []
+      e.verseStack.push(fn.name)
+      throw e
+    }
+  }
+}
+
+function hasOwnProperty(obj, prop) {
+  return Object.prototype.hasOwnProperty.call(obj, prop)
+}
+
+// todo this function is defined in verse.js too
+function isGeneratorFunction(a) {
+  return Object.prototype.toString.call(a) === '[object GeneratorFunction]'
+}
+
+function mapValues(fn, obj) {
+  let result = {}
+  for (let k in obj) {
+    if (hasOwnProperty(obj, k)) {
+      result[k] = fn(obj[k])
+    }
+  }
+  return result
 }

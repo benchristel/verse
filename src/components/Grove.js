@@ -102,9 +102,19 @@ const StatusBadge = connectProps(props => {
 const ErrorPanel = connectProps(props => (
   <div className="ErrorPanel">{
     props.evalError.toString()
-    + '\n\n' + renderLineNumber(props.evalError.stack)
+    + '\n\n' + renderStackInfo(props.evalError)
   }</div>
 ))
+
+function renderStackInfo(error) {
+  console.log(error)
+  if (error.verseStack) {
+    return 'at function ' +
+      error.verseStack.join('()\n  called from ')
+      + '()'
+  }
+  return renderLineNumber(error.stack)
+}
 
 function renderLineNumber(stack) {
   let line = stackParser(stack).line

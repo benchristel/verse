@@ -84,3 +84,99 @@ describe('Definer', () => {
     expect(() => definer.renameModule('mod1', 'mod2')).toThrow()
   })
 })
+
+describe('a function created by Definer', () => {
+  let global, definer
+  beforeEach(() => {
+    global = {}
+    definer = Definer(global)
+  })
+
+  it('adds its name to a custom stack array on any exceptions that pass through it', () => {
+    definer.defineModule('mod')({
+      kaboom() {
+        throw new Error('oh no')
+      }
+    })
+
+    let caught
+    try {
+      global.kaboom()
+    } catch (e) {
+      caught = e
+    }
+
+    expect(caught).toBeDefined()
+    expect(caught.verseStack).toEqual(['kaboom'])
+  })
+
+  it('traces the stack for multiple function calls', () => {
+    definer.defineModule('mod')({
+      useTheForce() {
+        global.doOrDoNot()
+      },
+      doOrDoNot() { // no try
+        global.kaboom()
+      },
+      kaboom() {
+        throw new Error('oh no')
+      }
+    })
+
+    let caught
+    try {
+      global.useTheForce()
+    } catch (e) {
+      caught = e
+    }
+    expect(caught).toBeDefined()
+    expect(caught.verseStack).toEqual([
+      'kaboom',
+      'doOrDoNot',
+      'useTheForce'
+    ])
+  })
+
+  it('traces the stack through generators', () => {
+    definer.defineModule('mod')({
+      *foo() {
+        yield *global.bar('yikes')
+      },
+      *bar(message) {
+        throw new Error(message)
+      }
+    })
+
+    let caught
+    try {
+      global.foo().next()
+    } catch (e) {
+      caught = e
+    }
+    expect(caught).toBeDefined()
+    expect(caught.verseStack).toEqual([
+      'bar',
+      'foo'
+    ])
+    expect(caught.message).toEqual('yikes')
+  })
+
+  it('lets return values pass through generators', () => {
+    definer.defineModule('mod')({
+      *foo() {
+        return yield *global.bar(1, 2)
+      },
+      *bar(a, b) {
+        yield a
+        yield b
+        return a + b
+      }
+    })
+
+    let fooIterator = global.foo()
+    expect(fooIterator.next().value).toBe(1)
+    expect(fooIterator.next().value).toBe(2)
+    expect(fooIterator.next().value).toBe(3)
+    expect(fooIterator.next().value).not.toBeDefined()
+  })
+})

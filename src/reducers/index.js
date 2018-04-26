@@ -99,6 +99,8 @@ function isErrorPanelShown(curr=false, action) {
 
     case 'clearEvalError':
     return false
+
+    default:
+    return curr
   }
-  return curr
 }

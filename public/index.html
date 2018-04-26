@@ -87,6 +87,14 @@
       }
 
       function run(returnFromYield) {
+        try {
+          return tryRun(returnFromYield)
+        } catch (e) {
+          view.error(translateError(e))
+        }
+      }
+
+      function tryRun(returnFromYield) {
         waitingForChar = false
         waitTimeout = null
         let saga
@@ -155,7 +163,8 @@
           return
 
           default:
-          throw 'You `yield`ed something weird: ' + JSON.stringify(effect)
+          view.error(new Error('You `yield`ed something weird: ' + JSON.stringify(effect)))
+          return
         }
       }
 
@@ -380,6 +389,16 @@
         .filter(isTruthy)
         .filter(has('name'))
         .filter(({name}) => startsWith('test_', name))
+    }
+    function translateError(error) {
+      if (
+        // webkit
+        (error instanceof RangeError && error.message === 'Maximum call stack size exceeded')
+        // moz
+        || (error.message === 'too much recursion')) {
+        error.message = 'Too many retry() calls. Is there an infinite loop?'
+      }
+      return error
     }
     function defaultingTo(defaultValue, predicate) {
       if (defaultValue === undefined) throw 'Type must have a default value'

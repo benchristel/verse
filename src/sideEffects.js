@@ -33,6 +33,7 @@ function View(actions) {
     log,
     screen,
     input,
+    error,
     hideScreen,
     showScreen
   }
@@ -47,6 +48,11 @@ function View(actions) {
 
   function input(lines) {
     actions.displayInputPrompt(lines)
+  }
+
+  function error(e) {
+    console.log(e.stack)
+    actions.handleEvalError(e)
   }
 
   function hideScreen() {
