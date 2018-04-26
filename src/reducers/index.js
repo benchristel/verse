@@ -9,7 +9,8 @@ export default combineReducers({
   }),
   files,
   currentlyEditingFile,
-  evalError
+  evalError,
+  isErrorPanelShown
 })
 
 function menuOpen(curr=false, action) {
@@ -86,4 +87,18 @@ function evalError(curr='', action) {
     default:
     return curr
   }
+}
+
+function isErrorPanelShown(curr=false, action) {
+  switch (action.type) {
+    case 'showErrorPanel':
+    return true
+
+    case 'hideErrorPanel':
+    return false
+
+    case 'clearEvalError':
+    return false
+  }
+  return curr
 }

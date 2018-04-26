@@ -56,7 +56,7 @@ const RightPane = connectProps(props => {
       <Pane style={{height: '32px', top: 0, width: '100%', backgroundColor: '#888', zIndex: 10, padding: '4px 6px'}}>
         <Button onClick={() => props.runApp(props)}>Run</Button>
       </Pane>
-      <Hide If={!props.evalError}>
+      <Hide If={!props.evalError || !props.isErrorPanelShown}>
         <Pane style={{height: '100%', width: '100%', backgroundColor: '#db6', zIndex: 20, padding: '12px'}}>
           <ErrorPanel />
         </Pane>
@@ -71,7 +71,9 @@ const EditorHeaderBar = connectProps(props => {
       <div className="filename">
         main.js
       </div>
-      <StatusBadge style={{position: 'absolute', top: '4px', right: '40px'}}/>
+      <StatusBadge
+        onClick={() => props.evalError && props.showErrorPanel()}
+        style={{position: 'absolute', top: '4px', right: '40px'}}/>
       <Hamburger
         onClick={props.openMenu}
         style={{width: '32px', height: '32px', right: 0, top: 0, position: 'absolute'}}
@@ -89,6 +91,7 @@ const StatusBadge = connectProps(props => {
   }
   return (
     <div
+      onClick={props.onClick}
       className={className}
       style={props.style}>
       {message}
