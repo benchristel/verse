@@ -1,7 +1,9 @@
 # BUGS
 
+- render display as soon as startdisplay and startInputDisplay are called
 - disable Cmd+L "go to line number" hotkey - it's very
   surprising if you're expecting Cmd+L to focus the URL bar.
+- disable "run" button when "can't run" is shown
 
 # HIGH-RISK FEATURES
 
@@ -9,6 +11,8 @@
 
 # UX CONCERNS
 
+- refresh the display when the code changes in the editor so
+  live updating will work
 - Errors thrown from app code shouldn't crash the editor. Wrap
   all calls to user-defined functions in try/catch
 - `log()` should actually print to the log. You shouldn't have to
@@ -32,9 +36,14 @@
     },
   })
 - button and API to clear log
-- refresh the display when the code changes in the editor so
-  live updating will work
 - save/load
+
+# BREAKING CHANGES
+
+- rename reducer to updater
+- remove typechecking from state and add it (as an option/suggestion)
+  to action creators. Tests can cover updaters, as long as the
+  actions being sent to the updater are sane.
 
 # ICEBOX
 
