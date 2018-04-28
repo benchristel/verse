@@ -31,9 +31,11 @@ define({
   so you only have to learn one language: JavaScript.
 - **Immediate Feedback.** Many programming tools make you
   wait a lot—for programs to start, tests to run, webpages
-  to load. We believe the best amount of time to spend
-  waiting is zero. Verse gets as close as humanly possible
-  to that goal.
+  to load. This makes it harder to know whether the code you
+  just wrote is going to work, and harder to debug when you
+  have a problem. We believe the best amount of time to
+  spend waiting is zero, and Verse gets as close as humanly
+  possible to that goal.
 - **Room to Grow.** It's easy to write toy programs in
   Verse, but it's just as easy to grow them into real,
   useful software. Verse is designed to scale seamlessly
