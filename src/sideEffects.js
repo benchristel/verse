@@ -1,7 +1,8 @@
 import Definer from './Definer'
 import thunk from './thunk'
+import {App, NullBard} from './verse'
 
-let app = window.NullBard()
+let app = NullBard()
 let definer = Definer(window)
 
 export default {
@@ -13,7 +14,7 @@ export default {
       reducer:      window.reducer,
       view:         View(actions)
     }
-    app = window.App(appHooks)
+    app = App(appHooks)
   },
 
   evaluateScript(script, moduleName, actions) {

@@ -1,7 +1,8 @@
 import sideEffects from '../sideEffects'
+import { has } from '../verse'
 
 export function loadFiles(objectThatMapsFileNamesToContents, actions) {
-  if (window.has('main.js', objectThatMapsFileNamesToContents)) {
+  if (has('main.js', objectThatMapsFileNamesToContents)) {
     let contents = objectThatMapsFileNamesToContents['main.js']
     sideEffects.evaluateScript(contents, 'main.js', actions)
   }
