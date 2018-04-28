@@ -10,8 +10,20 @@ will find it useful for quickly sketching ideas or bringing
 their side projects to life.
 
 [Try it out!](https://druidic.github.io) No need to create
-an account or log in. Just click the link and start writing
-code.
+an account or log in. Just click the link and start coding.
+Here's a simple program you can copy-paste to get started.
+
+```javascript
+define({
+    *init() {
+        let intro = "Hello! What's your name?"
+        let name = yield waitForInput(intro)
+        yield log('Nice to meet you, ' + name + '!')
+        yield wait(1)
+        yield retry()
+    }
+})
+```
 
 ## Guiding Principles
 
@@ -54,3 +66,16 @@ And, perhaps most importantly...
 - **Fun.** Writing code and making stuff work should be fun.
   Verse aims to maximize the joy of programming while
   minimizing its frustrations.
+
+## Contributing
+
+To work on the code for **Verse itself**, do the following:
+
+1. Fork and clone this repo.
+1. Install [Yarn](https://yarnpkg.com/en/) if you don't have it yet.
+1. Run `yarn` to install dependencies.
+1. `yarn run start` to open a development version of the
+  app in your browser (it will live-update as you change the code!)
+1. In another terminal window, `yarn run test` to start the
+  tests (they'll re-run automatically when you change code).
+1. Commit your changes and submit a pull request.

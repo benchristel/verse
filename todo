@@ -11,6 +11,8 @@
 
 # UX CONCERNS
 
+- enable cloudflare for dns.js.org so HTTPS will work with
+  the verse.js.org domain.
 - refresh the display when the code changes in the editor so
   live updating will work
 - Errors thrown from app code shouldn't crash the editor. Wrap
