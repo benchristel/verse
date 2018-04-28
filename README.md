@@ -54,11 +54,13 @@ define({
   it's stored on your device so you can use it even without
   an Internet connection.
 - [**Non Nova, sed Nove.**](https://www.thebooksmugglers.com/2015/07/decoding-the-newbery-the-twenty-one-balloons-by-william-pene-du-bois.html)
-  That's Latin for "not new things,
-  but new ways." Verse doesn't try to make up new programming
-  languages or syntax. The patterns you'll learn from using
-  Verse are inspired by state-of-the-art programming tools
-  like React and Redux. Verse simply [**turns up the good**](http://developeronfire.com/podcast/episode-054-woody-zuill-turn-up-the-good)
+  That's Latin for "not new things, but new ways." Verse
+  doesn't try to make up new programming languages or
+  syntax. The patterns you'll learn from using Verse are
+  inspired by state-of-the-art programming tools like
+  [React](https://reactjs.org/) and
+  [Redux](https://redux.js.org/). Verse simply [**turns up
+  the good**](http://developeronfire.com/podcast/episode-054-woody-zuill-turn-up-the-good)
   in these existing technologies. As a result, the things
   you learn from Verse will be useful for the rest of your
   programming career.
