@@ -11,15 +11,20 @@
 
 # UX CONCERNS
 
-- enable cloudflare for dns.js.org so HTTPS will work with
-  the verse.js.org domain.
+
 - refresh the display when the code changes in the editor so
   live updating will work
 - Errors thrown from app code shouldn't crash the editor. Wrap
   all calls to user-defined functions in try/catch
+- enable cloudflare for dns.js.org so HTTPS will work with
+  the verse.js.org domain.
 - `log()` should actually print to the log. You shouldn't have to
   yield it, because people want to log from everywhere, not
   just generator functions.
+- `update()` should be a yieldable effect for consistency.
+- display an error when the user creates one effect object
+  but yields a different one (the most likely scenario is
+  that they forgot to yield the first effect).
 - display a warning when the user edits code with MemoryStorage
   active, telling them their changes won't be saved
 - change "Run" to "Restart" while the program is running.
