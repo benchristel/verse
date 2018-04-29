@@ -34,5 +34,53 @@ make it work.
 # Tutorial: Hello, World!
 
 Okay, you've installed an awesome web browser and you're
-ready to code! Let's start with a classic used in
-programming courses everywhere: the "Hello, World" program.
+ready to code! The classic introduction to coding is the
+"Hello, World" program, which just makes the text "Hello,
+World" appear on the screen.
+
+Type the code below into the Verse editor window—the white
+area on the left half of the screen. You can copy-paste the
+code if you'd rather, but I encourage you to type it out by
+hand. This will start building your muscle memory for code.
+
+```javascript
+define({
+  *init() {
+    yield log('Hello, World!')
+  }
+})
+```
+
+Done already? All right! Click the "run" button to see your
+code in action.
+
+Okay, okay, it's not very exciting. But from this simple
+program, we can start to learn how JavaScript (the
+programming language Verse uses) structures code.
+
+At the top we have `define({`, which tells the computer
+that we're about to give it a list of **functions**. A
+*function* is a list of instructions for the computer that
+tell it how to perform some task.
+If you think of the computer as a cook, a function is like a
+recipe.
+
+In our hello world program, `init` is the only function.
+It's a recipe with one step that tells the computer to
+put the text `Hello, World!` on the screen. Don't worry
+about what the `*` and `()` do; we'll cover those later.
+For now, just note that all steps of the function must
+go between the curly braces (`{}`) after the name
+of the function.
+
+For example, here's a program that puts two lines of text
+on the screen:
+
+```javascript
+define({
+  *init() {
+    yield log('Hello, World!')
+    yield log('Whoa!')
+  }
+})
+```
