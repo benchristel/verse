@@ -143,9 +143,9 @@ you want.
 # Tutorial: Variables
 
 **Variables** are one of the most useful concepts in
-*programming. A variable is like a container where you can
-*store information (like text and numbers) that you aren't
-*going to use right away but want to save for later.
+programming. A variable is like a container where you can
+store information (like text and numbers) that you aren't
+going to use right away but want to save for later.
 
 We can create a new variable using the `let` keyword. When
 we create a variable we have to give it a name so we can
