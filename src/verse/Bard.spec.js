@@ -422,4 +422,14 @@ describe('Bard', () => {
     expect(view.error).toBeCalled()
     expect(view.log).not.toBeCalled()
   })
+
+  it('forces a redraw', () => {
+    b.begin(function*(tell) {
+      yield startDisplay(function() {})
+      yield wait(1)
+    })
+    let pastCalls = view.screen.mock.calls.length
+    b.redraw()
+    expect(view.screen.mock.calls.length).toBe(pastCalls + 1)
+  })
 })

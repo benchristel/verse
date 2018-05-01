@@ -29,7 +29,8 @@ export function NullBard() {
     begin() {},
     receiveKeydown() {},
     interrupt() {},
-    stop() {}
+    stop() {},
+    redraw() {},
   }
 }
 
@@ -42,7 +43,8 @@ export function Bard(store, view) {
     begin,
     receiveKeydown,
     interrupt,
-    stop
+    stop,
+    redraw,
   }
 
   function begin(generator) {
@@ -62,6 +64,10 @@ export function Bard(store, view) {
 
   function stop() {
     while (stack.length) pop()
+  }
+
+  function redraw() {
+    updateScreen()
   }
 
   function run(returnFromYield) {

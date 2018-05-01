@@ -1,6 +1,7 @@
 import Definer from './Definer'
 import thunk from './thunk'
 import {App, NullBard} from './verse'
+import tryThings from './tryThings'
 
 let app = NullBard()
 let definer = Definer(window)
@@ -23,6 +24,7 @@ export default {
       // eslint-disable-next-line
       new Function('define', script)(define)
       thunk(actions.clearEvalError)
+      app.redraw()
     } catch(e) {
       thunk(actions.handleEvalError, e)
     }
@@ -44,7 +46,12 @@ function View(actions) {
   }
 
   function screen(lines) {
-    actions.displayOnScreen(lines)
+    let tried = tryThings(window, error)
+    if (tried.length) {
+      actions.displayOnScreen(tried)
+    } else {
+      actions.displayOnScreen(lines)
+    }
   }
 
   function input(lines) {
