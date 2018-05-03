@@ -31,7 +31,7 @@ OS or browser you think I should support, just email me.
 If enough people ask for it, I'll figure out a way to
 make it work.
 
-# Tutorial: Hello, World!
+# Hello, World!
 
 Okay, you've installed an awesome web browser and you're
 ready to code! The classic introduction to coding is the
@@ -45,8 +45,8 @@ hand. This will start building your muscle memory for code.
 
 ```javascript
 define({
-  *init() {
-    yield log('Hello, World!')
+  'try me'() {
+    return 'Hello, World!'
   }
 })
 ```
@@ -57,88 +57,70 @@ code in action.
 Okay, okay, it's not very exciting. But from this simple
 program, we can start to learn how Verse structures code.
 
-At the top we have `define({`, which tells the computer
-that we're about to give it a list of **functions**. A
-*function* is a list of instructions for the computer that
-tell it how to perform some task.
-If you think of the computer as a cook, a function is like a
-recipe.
+At the top and bottom of our program we have
+`define({ ... })`, which tells the computer
+that the stuff in between the `({ ... })` is a list of
+**functions** we want it to use. A *function* is a list of
+instructions for the computer that tell it how to perform
+some task and give us back the result. If you think of the
+computer as a cook, a function is like a recipe.
 
-In our hello world program, `init` is the only function.
-It's a recipe with one step that tells the computer to
-put the text `Hello, World!` on the screen. Don't worry
-about what the `*` and `()` do; we'll cover those later.
-For now, just note that all steps of the function must
-go between a pair of curly braces (`{}`) after the name
-of the function.
+Right below the `define` is the program's first (and so far
+only) function. To create a function, we first must give it
+a name that describes what it does, which in this case is
+`try me`. Following the name, we have a pair
+of parentheses `()` and then a pair of curly braces `{}`.
+In between the curly braces we put the **statements** of the
+function—that is, the steps the computer should perform.
+Our function has just one statement, which tells the
+computer to take the text `'Hello, World!'` and `return` it
+—that is, give it back to us.
 
-In the example code the `*init()` function is indented
-a couple spaces, and the code within the function is
-indented another level beyond that. This indentation is
+In Verse, functions that start with the word `try` are
+special. Whatever is `return`ed from them is automatically
+displayed on the screen, along with the name of the
+function. Most functions don't have this special ability.
+
+> ## Experiments
+>
+> 1. Delete the `try` from the function name. What
+>    happens?
+> 2. Change the function name to `try it`. What
+>    happens?
+> 3. Change the function name to just `try`. Does that
+>    work?
+> 4. Change the function name back to `try it` and delete
+>    the `return`. What result do you see? Put the `return`
+>    back.
+> 5. The quotes around 'Hello, World!' tell the
+>    computer exactly where the text starts and ends. Try
+>    changing 'Hello, World!' to 'Doesn't work'. What do
+>    you think is causing the problem?
+> 6. Change the text 'Hello, World!' to whatever message you
+>    want.
+
+# A Note on Formatting
+
+In the "Hello, World" example the code within `define({ ... })`
+is indented a couple spaces, and the code within the function
+is indented another level beyond that. This indentation is
 optional; for example, we could have written
 
 ```javascript
 define({
-*init() {
-yield log('Hello, World!')
+'try me'() {
+return 'Hello, World!'
 }
 })
 ```
 
-but using indentation makes it easier to see the structure of
-the code. As you type, the editor will helpfully indent
+but using indentation makes it easier to see which things
+are nested inside which other things.
+As you type, the editor will helpfully indent
 things for you, so for now you don't have to worry too much
 about this.
 
-## Exercises
-
-- Try changing the text `Hello, World!` to a message of your
-  choice and run the program again.
-- The text `Hello, World!` is surrounded by single quotes to
-  tell the computer that it's just data, not part of the code
-  *per se*. The text is also colored red in the editor to
-  show that that's how the computer is interpreting it.
-  What happens if you remove the quotes?
-- Put the quotes back. Run the program once to make sure
-  it's working again. Now try changing `Hello, World!` to
-  `Doesn't work`. What do you think is going wrong? Don't
-  worry, we'll learn how to fix this later.
-
-# Tutorial: The Empty Function
-
-This one has the flavor of a Zen koan: what's produced by
-a recipe with no steps?
-
-```javascript
-define({
-  *init() {
-  }
-})
-```
-
-Here, we've removed the code that outputs "Hello, World"
-from the `init` function. If you run this program, it
-doesn't output anything, but it also doesn't crash.
-
-This may seem bizarre, but functions that do nothing have
-their uses. We'll learn more about them later.
-
-# Tutorial: Adding More Code
-
-For example, here's a program that puts two lines of text
-on the screen:
-
-```javascript
-define({
-  *init() {
-    yield log('Hello, World!')
-    yield log('Whoa!')
-  }
-})
-```
-
-You can continue this pattern to output as many lines as
-you want.
+<!--
 
 # Tutorial: Variables
 
@@ -195,3 +177,5 @@ define({
   }
 })
 ```
+
+-->
