@@ -30,24 +30,5 @@ export default connectProps(props => {
 })
 
 function setLinterOptions(editor) {
-  let session = editor.getSession()
-  if (session.$worker) {
-    session.$worker.send("setOptions", [{
-      curly: true,
-      eqeqeq: true,
-      esversion: 6,
-      funcscope: false,
-      futurehostile: true,
-      latedef: 'nofunc',
-      nocomma: true,
-      notypeof: true,
-      varstmt: true,
-      // warning codes from https://github.com/jshint/jshint/blob/2.1.4/src/shared/messages.js
-      '-W014': true, // allow operator-first style
-      '-W033': true, // suppress 'Missing semicolon'
-
-      // relaxing options
-      noyield: true,
-    }])
-  }
+  editor.getSession().setUseWorker(false)
 }

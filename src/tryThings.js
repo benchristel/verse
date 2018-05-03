@@ -6,8 +6,7 @@ export default function tryThings(context, handleError) {
       try {
         return [fname, '' + context[fname]()]
       } catch (e) {
-        handleError(e)
-        return []
+        return [fname, 'ERROR: ' + e.message]
       }
     })
     .reduce((a,b) => a.concat(b), [])

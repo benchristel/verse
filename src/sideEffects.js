@@ -2,6 +2,7 @@ import Definer from './Definer'
 import thunk from './thunk'
 import {App, NullBard} from './verse'
 import tryThings from './tryThings'
+import debounce from 'debounce'
 
 let app = NullBard()
 let definer = Definer(window)
@@ -18,17 +19,22 @@ export default {
     app = App(appHooks)
   },
 
-  evaluateScript(script, moduleName, actions) {
+  evaluateScript: debounce(function (script, moduleName, actions) {
     try {
       let define = definer.defineModule(moduleName)
       // eslint-disable-next-line
       new Function('define', script)(define)
       thunk(actions.clearEvalError)
-      app.redraw()
+      let tried = tryThings(window, actions.handleEvalError)
+      if (tried.length) {
+        actions.displayOnScreen(tried)
+      } else {
+        app.redraw()
+      }
     } catch(e) {
       thunk(actions.handleEvalError, e)
     }
-  }
+  }, 15)
 }
 
 function View(actions) {
@@ -46,12 +52,7 @@ function View(actions) {
   }
 
   function screen(lines) {
-    let tried = tryThings(window, error)
-    if (tried.length) {
-      actions.displayOnScreen(tried)
-    } else {
-      actions.displayOnScreen(lines)
-    }
+    actions.displayOnScreen(lines)
   }
 
   function input(lines) {
