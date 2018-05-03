@@ -12,6 +12,7 @@ if ! git diff-index --quiet HEAD --; then
   exit 1
 fi
 
+(cd "$DEPLOY_LOCATION" && git pull -r) &&
 yarn run build &&
 cp -r build/ "$DEPLOY_LOCATION/" &&
 echo deployed $(git rev-parse HEAD)
