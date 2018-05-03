@@ -1,4 +1,4 @@
-# Verse
+# Welcome!
 
 **Verse is an online programming tool** that makes it easy to
 create simple programs and games. In the future, you'll
