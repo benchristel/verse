@@ -34,7 +34,10 @@ make it work.
 # Hello, World!
 
 Okay, you've installed an awesome web browser and you're
-ready to code! The classic introduction to coding is the
+ready to code! [Open this link in a new tab to go to the
+Verse code editor](https://druidic.github.io).
+
+The classic introduction to coding is the
 "Hello, World" program, which just makes the text "Hello,
 World" appear on the screen.
 
