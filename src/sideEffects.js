@@ -1,6 +1,14 @@
 import Definer from './Definer'
 import thunk from './thunk'
-import {App, NullBard, startDisplay, wait, retry} from './verse'
+import {
+  App,
+  NullBard,
+  startDisplay,
+  startInputDisplay,
+  wait,
+  retry,
+  waitForChar
+} from './verse'
 import tryThings from './tryThings'
 import debounce from 'debounce'
 
@@ -70,10 +78,14 @@ function View(actions) {
 
 definer.defineModule('__VERSE__')({
   *init() {
+    yield startInputDisplay(() => [])
     yield startDisplay(() => {
       return tryThings(window)
     })
     if (window.run) {
+      if (tryThings(window).length) {
+        yield waitForAnyKeyBeforeRunning
+      }
       yield startDisplay(() => [])
       yield window.run
     } else {
@@ -81,6 +93,13 @@ definer.defineModule('__VERSE__')({
     }
   }
 })
+
+function *waitForAnyKeyBeforeRunning() {
+  yield startInputDisplay(() => [
+    'Press any key to start the *run() function'
+  ])
+  yield waitForChar()
+}
 
 function *waitForever() {
   yield wait(100)
