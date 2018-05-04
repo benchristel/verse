@@ -1,9 +1,9 @@
 # BUGS
 
-- render display as soon as startdisplay and startInputDisplay are called
 - disable Cmd+L "go to line number" hotkey - it's very
   surprising if you're expecting Cmd+L to focus the URL bar.
 - disable "run" button when "can't run" is shown
+- rewrite pico-fermi-bagel to work with the new API
 
 # HIGH-RISK FEATURES
 
@@ -11,28 +11,20 @@
 
 # UX CONCERNS
 
-
-- refresh the display when the code changes in the editor so
-  live updating will work
-- Errors thrown from app code shouldn't crash the editor. Wrap
-  all calls to user-defined functions in try/catch
 - enable cloudflare for dns.js.org so HTTPS will work with
   the verse.js.org domain.
-- `log()` should actually print to the log. You shouldn't have to
-  yield it, because people want to log from everywhere, not
-  just generator functions.
-- `update()` should be a yieldable effect for consistency.
+- provide a better means of hiding the display pane. startDisplay(() => [])
+  should show the display but print nothing.
+- Errors thrown from app code shouldn't crash the editor. Wrap
+  all calls to user-defined functions in try/catch
 - display an error when the user creates one effect object
   but yields a different one (the most likely scenario is
   that they forgot to yield the first effect).
 - display a warning when the user edits code with MemoryStorage
   active, telling them their changes won't be saved
 - change "Run" to "Restart" while the program is running.
-- move run button to the top of the screen. Add a big fat
-  "play" icon in the center when nothing is running.
 - clear the display and log when a program exits. Currently,
   it's hard to tell whether the program is still running.
-- errors thrown from the program should be logged.
 
 # LOW-RISK FEATURES
 
@@ -44,13 +36,14 @@
   })
 - button and API to clear log
 - save/load
+- create a `debug()` function that prints to the log and
+  doesn't have to be yielded
+- Add a big fat "play" icon in the center when nothing is running.
+- Run app code in strict mode
 
 # BREAKING CHANGES
 
 - rename reducer to updater
-- remove typechecking from state and add it (as an option/suggestion)
-  to action creators. Tests can cover updaters, as long as the
-  actions being sent to the updater are sane.
 
 # ICEBOX
 
