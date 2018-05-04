@@ -74,7 +74,7 @@ definer.defineModule('__VERSE__')({
       return tryThings(window)
     })
     if (window.run) {
-      yield startDisplay(() => [''])
+      yield startDisplay(() => [])
       yield window.run
     } else {
       yield waitForever
