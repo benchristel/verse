@@ -14,7 +14,7 @@ export default connectProps(props => {
       theme="xcode"
       value={editorText(props)}
       onChange={text => {props.changeEditorText(text, props.currentlyEditingFile, props)}}
-      onLoad={setLinterOptions}
+      onLoad={disableWorker}
       onBlur={save}
       name="AceEditor"
       editorProps={{$blockScrolling: true}}
@@ -29,6 +29,6 @@ export default connectProps(props => {
   }
 })
 
-function setLinterOptions(editor) {
+function disableWorker(editor) {
   editor.getSession().setUseWorker(false)
 }
