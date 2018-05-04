@@ -1,6 +1,6 @@
 import Definer from './Definer'
 import thunk from './thunk'
-import {App, NullBard} from './verse'
+import {App, NullBard, startDisplay, wait, retry} from './verse'
 import tryThings from './tryThings'
 import debounce from 'debounce'
 
@@ -25,12 +25,7 @@ export default {
       // eslint-disable-next-line
       new Function('define', script)(define)
       thunk(actions.clearEvalError)
-      let tried = tryThings(window, actions.handleEvalError)
-      if (tried.length) {
-        actions.displayOnScreen(tried)
-      } else {
-        app.redraw()
-      }
+      app.redraw()
     } catch(e) {
       thunk(actions.handleEvalError, e)
     }
@@ -71,6 +66,25 @@ function View(actions) {
   function showScreen() {
     actions.showScreen()
   }
+}
+
+definer.defineModule('__VERSE__')({
+  *init() {
+    yield startDisplay(() => {
+      return tryThings(window)
+    })
+    if (window.run) {
+      yield startDisplay(() => [''])
+      yield window.run
+    } else {
+      yield waitForever
+    }
+  }
+})
+
+function *waitForever() {
+  yield wait(100)
+  yield retry()
 }
 
 document.body.addEventListener('keydown', event => {

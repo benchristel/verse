@@ -40,17 +40,15 @@ describe('tryThings', () => {
     ])
   })
 
-  it('calls the error callback when a function blows up', () => {
+  it('prints the error when a function blows up', () => {
     let obj = {
       'try and fail'() {
-        throw 'kablooie'
+        throw new Error('kablooie')
       }
     }
-    let error
-    function handleError(e) {
-      error = e
-    }
-    expect(tryThings(obj, handleError)).toEqual([])
-    expect(error).toBe('kablooie')
+    expect(tryThings(obj)).toEqual([
+      'try and fail',
+      'ERROR: kablooie'
+    ])
   })
 })

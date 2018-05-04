@@ -1,4 +1,4 @@
-export default function tryThings(context, handleError) {
+export default function tryThings(context) {
   return Object.keys(context)
     .filter(s => s.startsWith('try '))
     .filter(fname => typeof context[fname] === 'function')
