@@ -1,3 +1,5 @@
+export * from './functionalUtils'
+
 export function App(global) {
   let {
     viewTestResults,
