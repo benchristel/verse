@@ -14,7 +14,7 @@ export default connectProps(props => {
       theme="xcode"
       value={editorText(props)}
       onChange={text => {props.changeEditorText(text, props.currentlyEditingFile, props)}}
-      onLoad={disableWorker}
+      onLoad={configure}
       onBlur={save}
       name="AceEditor"
       editorProps={{$blockScrolling: true}}
@@ -29,6 +29,10 @@ export default connectProps(props => {
   }
 })
 
-function disableWorker(editor) {
-  editor.getSession().setUseWorker(false)
+function configure(editor) {
+  let session = editor.getSession()
+  session.setUseWorker(false)
+  session.setTabSize(2)
+  session.setUseSoftTabs(true)
+  session.setUseWrapMode(true)
 }
