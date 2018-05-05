@@ -15,13 +15,13 @@ Here's a simple program you can copy-paste to get started.
 
 ```javascript
 define({
-    *init() {
-        let intro = "Hello! What's your name?"
-        let name = yield waitForInput(intro)
-        yield log('Nice to meet you, ' + name + '!')
-        yield wait(1)
-        yield retry()
-    }
+  *run() {
+    let intro = "Hello! What's your name?"
+    let name = yield waitForInput(intro)
+    yield log('Nice to meet you, ' + name + '!')
+    yield wait(1)
+    yield retry()
+  }
 })
 ```
 
