@@ -8,7 +8,6 @@ import Editor from './Editor'
 import Hide from './Hide'
 import Pane from './Pane'
 import Terminal from './Terminal'
-import Hamburger from './Hamburger'
 import storage from '../storage'
 import stackParser from '../stackParser'
 
@@ -72,11 +71,7 @@ const EditorHeaderBar = connectProps(props => {
       </div>
       <StatusBadge
         onClick={() => props.evalError && props.showErrorPanel()}
-        style={{position: 'absolute', top: '4px', right: '40px'}}/>
-      <Hamburger
-        onClick={props.openMenu}
-        style={{width: '32px', height: '32px', right: 0, top: 0, position: 'absolute'}}
-      />
+        style={{position: 'absolute', top: '4px', right: '6px'}}/>
     </div>
   )
 })
