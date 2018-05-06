@@ -36,4 +36,5 @@ function configure(editor) {
   session.setUseSoftTabs(true)
   session.setUseWrapMode(true)
   editor.setBehavioursEnabled(false) // disable auto-insertion of matching parens
+  editor.renderer.setShowGutter(false) // hide line numbers
 }
