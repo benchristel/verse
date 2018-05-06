@@ -1,13 +1,9 @@
 # User feedback
 
-- disable autoinsertion of matching parentheses
 - explain how to build the hello world program step-by-step
 - clarify that it doesn't work on mobile
 - clarify email treasure hunt and why
 - s/new tab/new window — instruct the user to right click
-- hide line numbers
-- remove main.js from header
-- autofocus the editor
 - describe where to find the curly braces on the keyboard,
   maybe with a picture
 - explain nonsignificance of whitespace earlier
