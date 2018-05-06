@@ -35,4 +35,5 @@ function configure(editor) {
   session.setTabSize(2)
   session.setUseSoftTabs(true)
   session.setUseWrapMode(true)
+  editor.setBehavioursEnabled(false) // disable auto-insertion of matching parens
 }
