@@ -1,3 +1,18 @@
+# User feedback
+
+- disable autoinsertion of matching parentheses
+- explain how to build the hello world program step-by-step
+- clarify that it doesn't work on mobile
+- clarify email treasure hunt and why
+- s/new tab/new window — instruct the user to right click
+- hide line numbers
+- remove main.js from header
+- autofocus the editor
+- describe where to find the curly braces on the keyboard,
+  maybe with a picture
+- explain nonsignificance of whitespace earlier
+- fix highlighting of code so tutorial and editor match
+
 # BUGS
 
 - disable Cmd+L "go to line number" hotkey - it's very
@@ -25,6 +40,19 @@
 - change "Run" to "Restart" while the program is running.
 - clear the display and log when a program exits. Currently,
   it's hard to tell whether the program is still running.
+- highlight locations of syntax errors with
+  ```
+  .myMarker {
+      background: #fcc;
+      position: absolute;
+      border-radius: 1em;
+  }
+
+  import Ace from 'brace'
+  const AceRange = Ace.acequire('ace/range').Range
+  session.addMarker(new AceRange(1, 4, 2, 10), "myMarker");
+  ```
+
 
 # LOW-RISK FEATURES
 
