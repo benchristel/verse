@@ -80,10 +80,18 @@ definer.defineModule('__VERSE__')({
   *init() {
     yield startInputDisplay(() => [])
     yield startDisplay(() => {
-      return tryThings(window)
+      if (window.displayText) {
+        try {
+          return ['' + window.displayText()]
+        } catch (e) {
+          return ['ERROR: ' + e.message]
+        }
+      } else {
+        return []
+      }
     })
     if (window.run) {
-      if (tryThings(window).length) {
+      if (window.displayText) {
         yield waitForAnyKeyBeforeRunning
       }
       yield startDisplay(() => [])

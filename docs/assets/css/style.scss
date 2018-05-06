@@ -1,0 +1,12 @@
+---
+---
+
+@import "{{ site.theme }}";
+
+/**
+ * Make syntax highlighting approximate the xcode ace theme
+ */
+.highlight .k {
+  font-weight: normal;
+  color: #c3c;
+}

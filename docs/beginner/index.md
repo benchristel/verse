@@ -4,11 +4,8 @@ fun hobbies/careers out there, so I hope I can impart some
 of that joy in these tutorials.
 
 If you get stuck or have any questions as you work through
-the examples and exercises, please email me at (my
-name)@gmail.com and I'll do my best to help you out. My name
-is the same as my Github username, which is in the URL of
-this page (hopefully this little treasure hunt will prevent
-me from getting too much email spam...)
+the examples and exercises, please email me at
+`ben.christel@gmail.com` and I'll do my best to help you out.
 
 # Supported Platforms
 
@@ -34,61 +31,97 @@ make it work.
 # Hello, World!
 
 Okay, you've installed an awesome web browser and you're
-ready to code! [Open this link in a new tab to go to the
-Verse code editor](https://druidic.github.io).
+ready to code! [Open this link in a new window to bring up
+the Verse code editor](https://druidic.github.io).
 
-The classic introduction to coding is the
-"Hello, World" program, which just makes the text "Hello,
-World" appear on the screen.
+![Screenshot of a new Verse project with no code in the editor](./new-project.png)
 
-Type the code below into the Verse editor window—the white
-area on the left half of the screen. You can copy-paste the
-code if you'd rather, but I encourage you to type it out by
-hand. This will start building your muscle memory for code.
+The white area—the left half of the screen, basically—is
+the *editor*, the place where we'll type
+our code. When the code runs, it will display things on
+the right half of the screen.
+
+We'll start with the classic introduction to coding:
+the "Hello, World" program, which just makes the text
+"Hello, World" (or whatever message we want) appear on the
+screen.
+
+To start, type the code below into the editor. To type the
+`{}` characters, hold `shift` and use the keys just to the
+right of `P` (assuming you have an American keyboard).
 
 ```javascript
 define({
-  'try me'() {
-    return 'Hello, World!'
+})
+```
+
+This line of code forms the backbone of our program. All
+our other code will go between the curly braces `{ ... }`.
+
+When you're done with that, the word "OK" should be shown
+in a green bubble at the top right of the editor, to
+indicate that the computer understands what you typed. If
+it says "Can't run" instead, check your work and make sure
+it matches the example.
+
+Now let's define a **function** that will put our "Hello,
+World" message on the screen. A *function* is a list of
+instructions for the computer that tell it how to perform
+some task and give us back the result. If you think of the
+computer as a cook, a function is like a recipe.
+
+To define a function, we first have to give it a name.
+Most of the time when we create a function, we can choose
+any name we want as long as it contains only letters and
+numbers (no spaces or punctuation). However, we're going
+to give this function a very specific name: `displayText`.
+The name `displayText` tells Verse to use this function to
+determine what text will be shown on the screen.
+
+After the name of the function, we need to put a pair
+of parentheses `()` and a pair of curly braces `{}`.
+
+```javascript
+define({
+  displayText() {
   }
 })
 ```
 
-Done already? All right! Click the "run" button to see your
-code in action.
+When your code looks like the example above, you should
+see the green "OK" bubble again. If it says "Can't run"
+instead, check your work for mistakes.
 
-> If it doesn't work, and the message "Can't run" appears at
-> the top of the screen, you may have made a typo. Check back
-> over the code and try to find the problem. Worst case,
+> If nothing you type seems to be working at this point,
 > just copy-paste the example code into the editor.
 >
 > If you've copy-pasted it and it *still* doesn't work,
 > please email me and let me know.
 
-Okay, okay, this program is not very exciting. But even from
-this simple example, we can start to learn how Verse
-structures code.
+We're almost done! We have a function, but it doesn't do
+anything. We just need to add an instruction,
+or *statement*, between the curly braces. The computer will
+follow this instruction when it runs the `displayText`
+function.
 
-At the top and bottom of our program we have
-`define({ ... })`, which tells the computer
-that the stuff in between the `({ ... })` is a list of
-**functions** we want it to use. A *function* is a list of
-instructions for the computer that tell it how to perform
-some task and give us back the result. If you think of the
-computer as a cook, a function is like a recipe.
+```javascript
+define({
+  displayText() {
+    return 'Hello, World!'
+  }
+})
+```
 
-Right below the `define` is the program's first (and so far
-only) function. To create a function, we first give it
-a name, which in this case is
-`try me`. Following the name, we have a pair
-of parentheses `()` and then a pair of curly braces `{ ... }`.
-In between the curly braces we put the **statements** of the
-function—that is, the steps the computer should perform.
-Our function has just one statement, which tells the
-computer to take the text `'Hello, World!'` and `return` it
-—that is, give it back to us. In later tutorials, we'll see
-how to create functions with many statements that do
-more interesting things.
+Here, we're using the `return` keyword to hand off the text
+`'Hello, World!'` to the computer. The text will then get
+drawn on the screen. We surround the text in single quotes
+to tell the computer where it begins and ends.
+
+When you're done typing, you should once again see the
+green "OK" bubble. If you do, you can click the "Run"
+button just to the right of it to run your program!
+
+![A screenshot of the running Hello World program](./hello-world.png)
 
 > ## Clean Code Tip
 >
@@ -115,22 +148,8 @@ read.
 things for you, so for now you don't have to worry too much
 about this.
 
-In Verse, functions that start with the word `try` are
-special. Whatever is `return`ed from them is automatically
-displayed on the screen, along with the name of the
-function. Most functions don't have this special ability.
-
 > ## Experiments
 >
-> 1. Delete the `try` from the function name. What
->    happens?
-> 2. Change the function name to `try it`. What
->    happens?
-> 3. Change the function name to just `try`. Does that
->    work?
-> 4. Change the function name back to `try it` and delete
->    the `return`. What result do you see? Put the `return`
->    back.
 > 5. The quotes around 'Hello, World!' tell the
 >    computer exactly where the text starts and ends. Try
 >    changing 'Hello, World!' to 'Doesn't work'. What do
@@ -150,7 +169,7 @@ key things we've learned:
 - When we want to define a snippet of text that the computer
   should process, we surround it in single quotes so the
   computer knows exactly where it starts and ends.
-- When a function with a name like `try <something>`
+- When a function with the name `displayText`
   `return`s a piece of text, that text is shown on the
   screen when the program runs.
 - We can indent our code to make programs easier to read.
