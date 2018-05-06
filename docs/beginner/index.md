@@ -60,8 +60,7 @@ code in action.
 > If it doesn't work, and the message "Can't run" appears at
 > the top of the screen, you may have made a typo. Check back
 > over the code and try to find the problem. Worst case,
-> just copy-paste the code from this tutorial into the
-> editor.
+> just copy-paste the example code into the editor.
 >
 > If you've copy-pasted it and it *still* doesn't work,
 > please email me and let me know.
@@ -82,12 +81,39 @@ Right below the `define` is the program's first (and so far
 only) function. To create a function, we first give it
 a name, which in this case is
 `try me`. Following the name, we have a pair
-of parentheses `()` and then a pair of curly braces `{}`.
+of parentheses `()` and then a pair of curly braces `{ ... }`.
 In between the curly braces we put the **statements** of the
 function—that is, the steps the computer should perform.
 Our function has just one statement, which tells the
 computer to take the text `'Hello, World!'` and `return` it
-—that is, give it back to us.
+—that is, give it back to us. In later tutorials, we'll see
+how to create functions with many statements that do
+more interesting things.
+
+> ## Clean Code Tip
+>
+> You'll notice that the code within `define({ ... })`
+is indented a couple spaces, and the code within the function
+is indented another level beyond that. This indentation is
+optional; for example, we could have written
+>
+> ```javascript
+define({
+'try me'() {
+return 'Hello, World!'
+}
+})
+```
+>
+> but using indentation makes it easier to see which things
+are nested inside which other things. It doesn't make a
+big difference now, but as you start writing more complex
+programs, proper indentation will make them much easier to
+read.
+>
+> As you type, the editor will helpfully indent
+things for you, so for now you don't have to worry too much
+about this.
 
 In Verse, functions that start with the word `try` are
 special. Whatever is `return`ed from them is automatically
@@ -112,26 +138,22 @@ function. Most functions don't have this special ability.
 > 6. Change the text 'Hello, World!' to whatever message you
 >    want.
 
-# A Note on Formatting
+Congratulations! You've written your first program and taken
+your first steps into the world of Verse! Let's review the
+key things we've learned:
 
-In the "Hello, World" example the code within `define({ ... })`
-is indented a couple spaces, and the code within the function
-is indented another level beyond that. This indentation is
-optional; for example, we could have written
-
-```javascript
-define({
-'try me'() {
-return 'Hello, World!'
-}
-})
-```
-
-but using indentation makes it easier to see which things
-are nested inside which other things.
-As you type, the editor will helpfully indent
-things for you, so for now you don't have to worry too much
-about this.
+- In Verse, we write code on the left half of the screen,
+  and see our programs run on the right half.
+- Every program is wrapped in `define({ ... })`.
+- Programs are built by defining *functions*, which are like
+  recipes the computer follows to make whatever we want.
+- When we want to define a snippet of text that the computer
+  should process, we surround it in single quotes so the
+  computer knows exactly where it starts and ends.
+- When a function with a name like `try <something>`
+  `return`s a piece of text, that text is shown on the
+  screen when the program runs.
+- We can indent our code to make programs easier to read.
 
 # Shouting at the World
 
@@ -173,8 +195,8 @@ define({
 ```
 
 And this would totally work if our computer knew how to
-fry text. Unfortunately, it doesn't... yet. Don't worry,
-we'll get there.
+fry text. But there's no function named `fried`, so this
+program will give us an error if we try to run it.
 
 You may be wondering where the `uppercase` function comes
 from. In other words, why does `uppercase` work but `fried`
@@ -257,6 +279,38 @@ define({
 >    same output. Why do you think this is?
 > 5. What do you expect `reverse(reverse('hello'))` to output?
 >    Try it!
+
+# Making an Interactive Program
+
+The programs we've written so far have an unfortunate
+shortcoming: in order to make them process different text,
+we have to change their code. That makes them
+next to useless for people who don't know how to program.
+
+We need to make our programs *interactive* so anyone can use
+them. For example, it would be great if our "reverse"
+program could prompt the user to type in the text they want
+to reverse, and then show them the reversed output.
+
+In Verse, we create interactive programs by defining a
+special function called `run`. We'll learn more about how
+this function works in later tutorials; for now just
+copy the code below.
+
+```
+define({
+  process(input) {
+    return reverse(input)
+  },
+
+  *run() {
+    let input = yield waitForInput()
+    yield log(process(input))
+    yield retry()
+  }
+})
+
+```
 
 <!--
 # Hello, You!
