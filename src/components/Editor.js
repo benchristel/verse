@@ -12,6 +12,7 @@ export default connectProps(props => {
     <AceEditor
       mode="javascript"
       theme="xcode"
+      focus={true}
       value={editorText(props)}
       onChange={text => {props.changeEditorText(text, props.currentlyEditingFile, props)}}
       onLoad={configure}
