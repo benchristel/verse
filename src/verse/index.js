@@ -1,3 +1,5 @@
+import { partialApply } from './functionalUtils'
+
 export * from './functionalUtils'
 
 export function App(global) {
@@ -300,13 +302,6 @@ export function lastOf(list) {
   return list[list.length - 1]
 }
 
-window.partialApply = partialApply
-export function partialApply(fn, firstArgs, name) {
-  return {[name]: (...remainingArgs) =>
-    fn(...firstArgs, ...remainingArgs)
-  }[name]
-}
-
 window.isTruthy = isTruthy
 export function isTruthy(a) {
   return !!a
@@ -364,6 +359,11 @@ export function isObject(a) {
 window.isGeneratorFunction = isGeneratorFunction
 export function isGeneratorFunction(a) {
   return Object.prototype.toString.call(a) === '[object GeneratorFunction]'
+}
+
+window.isFunction = isFunction
+export function isFunction(a) {
+  return typeof a === 'function'
 }
 
 window.or = or
@@ -513,4 +513,16 @@ export function isArrayOf(type) {
 
 export function isNullOr(type) {
   return a => a === null || satisfies(type, a)
+}
+
+window.echo = echo
+export function echo(inputProcessorName) {
+  return function *() {
+    let input = yield waitForInput()
+    if (!isFunction(window[inputProcessorName])) {
+      throw new Error('' + inputProcessorName + ' is not a function')
+    }
+    yield log(window[inputProcessorName](input))
+    yield retry()
+  }
 }
