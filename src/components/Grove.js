@@ -69,7 +69,6 @@ const EditorHeaderBar = connectProps(props => {
   return (
     <div className="EditorHeaderBar" style={props.style}>
       <div className="filename">
-        main.js
       </div>
       <StatusBadge
         onClick={() => props.evalError && props.showErrorPanel()}
