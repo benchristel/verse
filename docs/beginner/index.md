@@ -126,6 +126,8 @@ When you're done typing, you should once again see the
 green "OK" bubble. If you do, you can click the "Run"
 button just to the right of it to run your program!
 
+![A screenshot of the running Hello World program](./hello-world.png)
+
 ## Experiments
 
 Now that you've got a working chunk of code, I encourage you
@@ -146,7 +148,7 @@ what doesn't.
    Are there places where adding spaces will break the code?
 6. What happens if you delete the `return` keyword?
 
-![A screenshot of the running Hello World program](./hello-world.png)
+## Review
 
 Congratulations! You've written your first program and taken
 your first steps into the world of Verse! Let's review the
