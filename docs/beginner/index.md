@@ -307,7 +307,7 @@ special function called `run`. We'll learn more about how
 this function works in later tutorials; for now just
 copy the code below.
 
-```
+```javascript
 define({
   process(input) {
     return reverse(input)
