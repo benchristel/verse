@@ -6,7 +6,15 @@
 /**
  * Make syntax highlighting approximate the xcode ace theme
  */
-.highlight .k {
-  font-weight: normal;
-  color: #c3c;
+.highlight {
+  /* keywords and operators are magenta */
+  .k, .kv, .kd, .o {
+    font-weight: normal;
+    color: #c800a4;
+  }
+
+  /* numbers are blue */
+  .mi {
+    color: #3a00dc;
+  }
 }

@@ -4,35 +4,35 @@ fun hobbies/careers out there, so I hope I can impart some
 of that joy in these tutorials.
 
 If you get stuck or have any questions as you work through
-the examples and exercises, please email me at
-`ben.christel@gmail.com` and I'll do my best to help you out.
+the examples and exercises, please post
+[@VerseCode on Facebook](https://www.facebook.com/VerseCode/)
+and I'll do my best to help you out.
 
 # Supported Platforms
 
 Before we get started, let's make sure you have the right
-setup. Currently, Verse should work on the following
-systems:
-
-- Windows
-- macOS 10.11 (El Capitan) or newer
+setup. Currently, Verse works on macOS 10.11 (El Capitan)
+or newer (it *might* work on Windows and Linux, but I
+haven't tested it).
 
 Additionally, you'll need the latest version of one of
 these web browsers:
 
-- Firefox
-- Chrome
+- [Firefox](https://www.mozilla.org/en-US/firefox/new/) (recommended)
+- [Chrome](https://www.google.com/chrome/index.html)
 
 Support for more platforms (including mobile) is coming
 soon, but for now it's just these. If there's a particular
-OS or browser you think I should support, just email me.
+OS or browser you think I should support, just post on
+the [Verse Facebook page](https://www.facebook.com/VerseCode/).
 If enough people ask for it, I'll figure out a way to
 make it work.
 
 # Hello, World!
 
 Okay, you've installed an awesome web browser and you're
-ready to code! [Open this link in a new window to bring up
-the Verse code editor](https://druidic.github.io).
+ready to code! [Right-click this link and open it in a new
+window to bring up Verse](https://druidic.github.io).
 
 ![Screenshot of a new Verse project with no code in the editor](./new-project.png)
 
@@ -58,17 +58,19 @@ define({
 This line of code forms the backbone of our program. All
 our other code will go between the curly braces `{ ... }`.
 
-When you're done with that, the word "OK" should be shown
-in a green bubble at the top right of the editor, to
-indicate that the computer understands what you typed. If
+Once you've typed that out, the word "OK" should be shown
+in a green bubble at the top right of the editor. This
+indicates that the computer understands what you typed. If
 it says "Can't run" instead, check your work and make sure
-it matches the example.
+it matches the example. Computers are very picky about the
+code they'll accept.
 
 Now let's define a **function** that will put our "Hello,
 World" message on the screen. A *function* is a list of
 instructions for the computer that tell it how to perform
 some task and give us back the result. If you think of the
-computer as a cook, a function is like a recipe.
+computer as a restaurant cook, a function is like a recipe
+that tells it how to make one of the items on the menu.
 
 To define a function, we first have to give it a name.
 Most of the time when we create a function, we can choose
@@ -76,7 +78,8 @@ any name we want as long as it contains only letters and
 numbers (no spaces or punctuation). However, we're going
 to give this function a very specific name: `displayText`.
 The name `displayText` tells Verse to use this function to
-determine what text will be shown on the screen.
+determine what text will be shown on the screen when the
+program runs.
 
 After the name of the function, we need to put a pair
 of parentheses `()` and a pair of curly braces `{}`.
@@ -92,11 +95,13 @@ When your code looks like the example above, you should
 see the green "OK" bubble again. If it says "Can't run"
 instead, check your work for mistakes.
 
-> If nothing you type seems to be working at this point,
-> just copy-paste the example code into the editor.
+> If nothing you type seems to give you the "OK" at this
+> point, just copy-paste the example code into the editor.
 >
 > If you've copy-pasted it and it *still* doesn't work,
-> please email me and let me know.
+> please message
+> [@VerseCode on Facebook](https://www.facebook.com/VerseCode/)
+> and let me know.
 
 We're almost done! We have a function, but it doesn't do
 anything. We just need to add an instruction,
@@ -115,47 +120,33 @@ define({
 Here, we're using the `return` keyword to hand off the text
 `'Hello, World!'` to the computer. The text will then get
 drawn on the screen. We surround the text in single quotes
-to tell the computer where it begins and ends.
+so the computer knows where it begins and ends.
 
 When you're done typing, you should once again see the
 green "OK" bubble. If you do, you can click the "Run"
 button just to the right of it to run your program!
 
+## Experiments
+
+Now that you've got a working chunk of code, I encourage you
+to play around with changing it to see what works and
+what doesn't.
+
+1. Try changing the function name `displayText` to something
+   else. What happens?
+2. The quotes around 'Hello, World!' tell the
+   computer exactly where the text starts and ends. Try
+   changing 'Hello, World!' to 'Doesn't work'. What do
+   you think is causing the problem?
+3. Change the text 'Hello, World!' to whatever message you
+   want.
+4. Try deleting the spaces and indentation from the code.
+   Which spaces are necessary and which ones aren't?
+5. Try adding more spaces between the words and punctuation.
+   Are there places where adding spaces will break the code?
+6. What happens if you delete the `return` keyword?
+
 ![A screenshot of the running Hello World program](./hello-world.png)
-
-> ## Clean Code Tip
->
-> You'll notice that the code within `define({ ... })`
-is indented a couple spaces, and the code within the function
-is indented another level beyond that. This indentation is
-optional; for example, we could have written
->
-> ```javascript
-define({
-'try me'() {
-return 'Hello, World!'
-}
-})
-```
->
-> but using indentation makes it easier to see which things
-are nested inside which other things. It doesn't make a
-big difference now, but as you start writing more complex
-programs, proper indentation will make them much easier to
-read.
->
-> As you type, the editor will helpfully indent
-things for you, so for now you don't have to worry too much
-about this.
-
-> ## Experiments
->
-> 5. The quotes around 'Hello, World!' tell the
->    computer exactly where the text starts and ends. Try
->    changing 'Hello, World!' to 'Doesn't work'. What do
->    you think is causing the problem?
-> 6. Change the text 'Hello, World!' to whatever message you
->    want.
 
 Congratulations! You've written your first program and taken
 your first steps into the world of Verse! Let's review the
@@ -172,7 +163,6 @@ key things we've learned:
 - When a function with the name `displayText`
   `return`s a piece of text, that text is shown on the
   screen when the program runs.
-- We can indent our code to make programs easier to read.
 
 # Shouting at the World
 
@@ -182,7 +172,7 @@ greeting into ALL CAPS SO IT LOOKS LIKE IT'S SHOUTING.
 
 ```javascript
 define({
-  'try me'() {
+  displayText() {
     return uppercase('Hello, World!')
   }
 })
@@ -207,7 +197,7 @@ computer for fried applesauce:
 
 ```javascript
 define({
-  'try me'() {
+  displayText() {
     return fried('applesauce')
   }
 })
@@ -241,8 +231,8 @@ That's because a *function call* like `uppercase('Hello, World!')`
 stands in for the result of the function. You can replace
 one with the other and the output of the program won't
 change. The five-dollar term for this is *referential
-transparency*, which you can now use to impress all your
-friends.
+transparency* (and yes, you can totally impress people by
+mentioning referential transparency at parties).
 
 Of course, you may be wondering: why *not* just replace the
 function call with the uppercased result? It would be a lot
@@ -262,9 +252,8 @@ to make `fried('applesauce')`, but `fried('lamb chops')` or
 `fried('crème brûlée')` too. Just as *frying* is a process that can
 be applied to almost anything, *uppercasing* is a process
 that can be applied to any text. In programming, this type
-of simple process
-that can be applied to an infinity of different
-objects is called an *abstraction*.
+of simple process that can be applied to an infinity of
+different objects is called an *abstraction*.
 
 # Talking Backwards
 
@@ -274,30 +263,30 @@ backwards version of it, so `hello` becomes `olleh`.
 
 ```javascript
 define({
-  'try me'() {
+  displayText() {
     return reverse('Hello, World!')
   }
 })
 ```
 
-> ## Experiments
->
-> 1. Try replacing "Hello, World!" in the program above
->    with a message of your choice.
-> 2. A word or phrase that is spelled the same forwards and
->    backwards is called a *palindrome*. Use the `reverse`
->    function to demonstrate that `tacocat` is a palindrome. Or
->    this epitaph for Napoleon: `able was I ere I saw elba`.
-> 3. Try writing a program that outputs the reversed,
->    uppercase version of a string: that is, if you paste in
->    the text 'hello world' it should output 'DLROW OLLEH'.
->    Hint: remember that a function call stands in for the
->    result of the function.
-> 4. It seems like `reverse(uppercase('hello'))`
->    and `uppercase(reverse('hello'))` always produce the
->    same output. Why do you think this is?
-> 5. What do you expect `reverse(reverse('hello'))` to output?
->    Try it!
+## Experiments
+
+1. Try replacing "Hello, World!" in the program above
+   with a message of your choice.
+2. A word or phrase that is spelled the same forwards and
+   backwards is called a *palindrome*. Use the `reverse`
+   function to demonstrate that `tacocat` is a palindrome. Or
+   try this epitaph for Napoleon: `able was I ere I saw elba`.
+3. Try writing a program that outputs the reversed,
+   uppercase version of a string: that is, if you paste in
+   the text 'hello world' it should output 'DLROW OLLEH'.
+   Hint: remember that a function call stands in for the
+   result of the function.
+4. It seems like `reverse(uppercase('hello'))`
+   and `uppercase(reverse('hello'))` always produce the
+   same output. Why do you think this is?
+5. What do you expect `reverse(reverse('hello'))` to output?
+   Try it!
 
 # Making an Interactive Program
 
@@ -328,7 +317,6 @@ define({
     yield retry()
   }
 })
-
 ```
 
 <!--
