@@ -5,13 +5,6 @@ if (token.length <= 1) {
   storage = LocalStorage()
 } else {
   storage = MemoryStorage()
-  // the URL has a unique ID which can be used to validate
-  // posted messages
-  window.addEventListener('message', ({data}) => {
-    if (data.token === token && data.action === 'loadFiles') {
-      storage.load(data.files)
-    }
-  })
 }
 
 export default storage
