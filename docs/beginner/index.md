@@ -223,7 +223,7 @@ exactly the same as if we'd written
 
 ```javascript
 define({
-  'try me'() {
+  displayText() {
     return 'HELLO, WORLD!'
   }
 })
