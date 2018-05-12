@@ -436,7 +436,7 @@ with multiple statements.
 
 Fortunately, it's not very complicated: statements within a
 function run in top-down order. When running our program,
-the computer runs the `let` statement, and only once the
+the computer starts with the `let` statement, and only once the
 variable has been created and the text stored does it
 move on to the `return`. Because of this strict ordering,
 the `let` statement must come before the `return`
@@ -584,6 +584,8 @@ define({
 
 There's a lot going on here
 
+-->
+
 # Making an Interactive Program
 
 The programs we've written so far have an unfortunate
@@ -628,6 +630,7 @@ Type your name, or any message you like, and then hit the
 hitting `return` after each one, and the program will echo
 back the reversed versions.
 
+<!--
 ## Function Parameters
 
 The definition of the `process` function has the word
