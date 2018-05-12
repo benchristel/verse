@@ -440,7 +440,7 @@ the computer starts with the `let` statement, and only once the
 variable has been created and the text stored does it
 move on to the `return`. Because of this strict ordering,
 the `let` statement must come before the `return`
-statement—otherwise, our variable won't exist when we try
+statement—otherwise, the variable won't exist when we try
 to use it, and our program will crash.
 
 ## Clean Code Tip: Naming Variables
