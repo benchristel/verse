@@ -32,7 +32,7 @@ make it work.
 
 Okay, you've installed an awesome web browser and you're
 ready to code! [Right-click this link and open it in a new
-window to bring up Verse](https://druidic.github.io).
+window to bring up Verse](https://verse.js.org).
 
 ![Screenshot of a new Verse project with no code in the editor](./new-project.png)
 

@@ -9,7 +9,7 @@ to start learning to code. But even professional programmers
 will find it useful for quickly sketching ideas or bringing
 their side projects to life.
 
-[**Try it out!**](https://druidic.github.io) No need to create
+[**Try it out!**](https://verse.js.org) No need to create
 an account or log in. Just click the link and start coding.
 Here's a simple program you can copy-paste to get started.
 
