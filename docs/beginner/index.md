@@ -277,7 +277,7 @@ define({
    with a message of your choice.
 2. A word or phrase that is spelled the same forwards and
    backwards is called a *palindrome*. Use the `reverse`
-   function to demonstrate that `tacocat` is a palindrome. Or
+   function to demonstrate that `tacocat` is a [palindrome](https://en.wikipedia.org/wiki/Palindrome). Or
    try this epitaph for Napoleon: `able was I ere I saw elba`.
 3. Try writing a program that outputs the reversed,
    uppercase version of a string: that is, if you paste in
@@ -289,6 +289,300 @@ define({
    same output. Why do you think this is?
 5. What do you expect `reverse(reverse('hello'))` to output?
    Try it!
+
+# Mirror Text
+
+In this lesson, we'll deepen our knowledge of how to
+process and transform text. We'll write a program that,
+given a word or phrase, creates a
+[palindrome](https://en.wikipedia.org/wiki/Palindrome) by
+"mirroring" it, like this:
+
+```
+"hello" -> "helloolleh"
+"rats live on " -> "rats live on  no evil star"
+```
+
+We already know how to reverse text, so we're halfway there!
+The tricky bit is, how do we output *both* the original text
+(the first half of the palindrome) and the reversed version
+(the second half)?
+
+Let's start simple by *hardcoding* the reversed text, rather
+than using `reverse` to generate it. We can glue the forward
+and reversed text together using the `+` operator.
+
+```javascript
+define({
+  displayText() {
+    return 'hello' + 'olleh'
+  }
+})
+```
+
+Run the program (if it's not running already); at this
+point, it should output `helloolleh`.
+
+Now, using the principle of referential transparency and our
+knowledge of how `reverse` works, we can replace `'olleh'`
+with `reverse('hello')`:
+
+```javascript
+define({
+  displayText() {
+    return 'hello' + reverse('hello')
+  }
+})
+```
+
+When you're done making that change, the output should still
+be `helloolleh`. Make sure you're still seeing the green "OK"
+bubble too; if it says "Can't run", the output you're seeing
+is likely from the previous version of the program, with
+the hardcoded text.
+
+## Using Variables
+
+There's one more change we can make to improve this code.
+The text `'hello'` is repeated twice, so if we want our
+program to output a different palindrome, we have to change
+it in two places, e.g.
+
+```javascript
+define({
+  displayText() {
+    return 'rats live on ' + reverse('rats live on ')
+  }
+})
+```
+
+That's a lot of typing! Worse, having the text in two places
+makes it less clear that our program is designed
+to output a palindrome. If we changed just one of the places,
+the output would no longer be a palindrome:
+
+```javascript
+define({
+  displayText() {
+    return 'rats live on ' + reverse('hello')
+  }
+})
+```
+
+The way we can fix this is by using a *variable*.
+**Variables** are one of the most useful concepts in
+programming. A variable is like a container where you can
+store information (like text and numbers) that you aren't
+going to use right away but want to save for later.
+
+Let's add a variable called `forwardsText` to our program to
+store the text we're going to reverse. The keyword `let`
+tells the computer that we're creating a new variable, and
+the `=` operator puts the value to its right into the
+variable.
+
+```javascript
+define({
+  displayText() {
+    let forwardsText = 'hello'
+    return 'hello' + reverse('hello')
+  }
+})
+```
+
+You can read this in your head as "let forwards text be
+hello". Read it as dramatically as you like! It
+has the authority of an autocratic proclamation. Rest
+assured that now and henceforth, `forwardsText` *is*
+`'hello'`.
+
+We can use our newly minted variable in our `return`
+statement, just by replacing the hardcoded value `'hello'`
+with the name of our variable. Like function calls, this
+replacement follows the principle of referential
+transparency: because we're replacing the value `'hello'`
+with a variable that's storing the text `'hello'`, the
+output of our program won't change.
+
+```javascript
+define({
+  displayText() {
+    let forwardsText = 'hello'
+    return forwardsText + reverse(forwardsText)
+  }
+})
+```
+
+Now we can easily change our program to output any text
+we want!
+
+```javascript
+define({
+  displayText() {
+    let forwardsText = 'rats live on '
+    return forwardsText + reverse(forwardsText)
+  }
+})
+```
+
+## Statements in Functions
+
+So far, we've only seen functions with one step, or
+*statement*—and that statement has always started with
+`return`. Now that we're using variables, we've introduced
+a second type of statement—the `let` statement—and now
+we have to understand how the computer interprets functions
+with multiple statements.
+
+Fortunately, it's not very complicated: statements within a
+function run in top-down order. When running our program,
+the computer runs the `let` statement, and only once the
+variable has been created and the text stored does it
+move on to the `return`. Because of this strict ordering,
+the `let` statement must come before the `return`
+statement—otherwise, our variable won't exist when we try
+to use it, and our program will crash.
+
+## Clean Code Tip: Naming Variables
+
+In this tutorial we named our variable `forwardsText`, but
+we could have named it anything we wanted. (There are some
+restrictions on variable names, though: they can only
+contain uppercase and lowercase letters, numbers, and the
+symbols `$` and `_`, and they can't start with a number.)
+With this awesome power and freedom comes the responsibility
+to choose good names for our variables.
+
+In general, it's good for variable names to be:
+
+- **descriptive**: Imagine someone else is reading your
+  code, trying to figure out what it does and why.
+  Names that give clues about how the information in
+  the variable is going to be used are going to be very
+  helpful to that person! Even if you're not planning on
+  sharing your code with anyone, *you* might someday need to
+  figure out what your code does after not looking at it for
+  months. When choosing a name, ask yourself: "will this jog
+  my memory after I've forgotten what this code is supposed
+  to do?"
+- **short**: While descriptive names are great, very long
+  names are hard to type and make your code look cluttered.
+  We could have named our variable `textThatWeAreGoingToPassToReverseToCreateAPalindrome`
+  but that would be far, far too long. Going to the other
+  extreme, we could give our variables single-letter names.
+  These can be mnemonic (e.g. `t` for `text`), or simply
+  sequential (if we have multiple variables, name them
+  `a`, `b`, `c`...). Such short names sacrifice
+  descriptiveness, but sometimes that's okay.
+- **camelCased**: Since spaces aren't allowed in variable
+  names, it's nice to have some other way to hint at where
+  the word boundaries fall. Each word in a variable name
+  (after the first) should start with a capital letter. This
+  gives the name "humps", like a camel—hence the term
+  "camel case".
+
+Other names I considered for this variable include:
+
+- `text`: Nice and short so it's easy to type, but tells us
+  very little about what this variable *means* to our
+  program. Since we can see the value `'hello'` is stored
+  in the variable, we already know it's text!
+- `halfPalindrome`: Very descriptive, but longer and harder
+  to spell. It also presents a bit of a puzzle to someone
+  who's not familiar with what the code is doing—the
+  concept of a "half palindrome" is not something that
+  most readers of our code will already have in mind. The
+  mental effort it would take to solve this little puzzle
+  could probably be better spent just reading and
+  understanding the code.
+- `textToMirror`: This is the same length as `forwardsText`,
+  but focuses more on what we're going to do to the text
+  rather than what it *is*. A fine choice!
+- `forwards`: Since we already know the variable is storing
+  text, why repeat that information in the name?
+- `toMirror`: See above.
+
+You definitely don't have to think about every variable
+name this much, but it's good to get in the habit of
+choosing names deliberately. When you start writing more
+complex code, good variable names will make the difference
+between manageable and incomprehensible.
+
+## Experiments
+
+1. Try changing the value stored in the `forwardsText`
+   variable. Can you invent a new palindrome that's an
+   actual phrase or sentence in English (or any language of
+   your choice)?
+2. Change the variable name following `let` to `broken`
+   (don't change the places where the variable is used).
+   What error do you see?
+3. Change the variable name to whatever you want. Update the
+   places where it's used, too, so the program works.
+4. What happens if you move the `return` statement up one
+   line, so it comes before the `let`? For example:
+
+   ```javascript
+   define({
+     displayText() {
+       return forwardsText + reverse(forwardsText)
+       let forwardsText = 'hello'
+     }
+   })
+   ```
+5. Try to change the program so it outputs an "inside-out"
+   palindrome—that is, if the text stored in the variable
+   is `'hello'`, it should output `ollehhello`.
+
+<!--
+# Mad Libs
+
+If you've never played Mad Libs before, here's the basic
+concept: it's a storytelling game for large groups of people.
+One person writes down a story, but leaves some of the words
+out, like: "Once there was a ____ and his/her name was ____".
+That person (the "storyteller") then asks the others (the
+"audience") for words to fill in the blanks, giving them
+clues like "I need a type of animal", or "I need a name".
+When all the blanks are filled, the storyteller reads the
+completed story: "Once there was a **kangaroo** and his
+name was **Mortimer**". It's usually hilarious because the
+audience doesn't know the story beforehand, so the blanks
+end up getting filled with ridiculously silly words. The
+storyteller has slightly less fun than everyone else,
+though, because a) the storyteller knows the story
+beforehand, so it's not as funny, and b) they have to do
+the extra work of writing everything down.
+
+In this tutorial, we're going to start our first project:
+a Mad Libs game that automates the role of storyteller.
+It will eventually select randomly from a pre-written list
+of stories, prompt the players to take turns filling in the
+blanks, and display the completed story when all the blanks
+are filled.
+
+That's much too complex to do all at once, though, so we're
+going to start small. Our first step will be to define
+a function that takes an animal and a name as input and
+outputs the "kangaroo named Mortimer" story, but with
+any animal and name we want.
+
+First, we need to define a function that takes inputs, or
+*parameters*. The parameters of a function go between
+the parentheses following its name. The parameters name
+the "blanks" that must be filled in when the function is
+called.
+
+Let's define a f
+
+```javascript
+define({
+  story(animal, name) {
+  }
+})
+```
+
+There's a lot going on here
 
 # Making an Interactive Program
 
@@ -305,7 +599,7 @@ to reverse, and then show them the reversed output.
 In Verse, we create interactive programs by defining a
 special function called `run`. We'll learn more about how
 this function works in later tutorials; for now just
-copy the code below.
+copy-paste the code below.
 
 ```javascript
 define({
@@ -320,6 +614,28 @@ define({
   }
 })
 ```
+
+Now when you click the "Run" button, you'll see an *input
+prompt* at the bottom of the screen. It looks sort of like
+this:
+
+```
+> _
+```
+
+Type your name, or any message you like, and then hit the
+`return` key. You can type as many messages as you want,
+hitting `return` after each one, and the program will echo
+back the reversed versions.
+
+## Function Parameters
+
+The definition of the `process` function has the word
+`input` between parentheses after the function name. Here,
+`input` is called a *parameter*. Parameters are a way for
+a function definition to say "fill in the blank with
+anything you want". When you call the function, you then
+have to fill in the parameters between the
 
 <!--
 # Hello, You!
