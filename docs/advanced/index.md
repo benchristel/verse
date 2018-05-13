@@ -49,7 +49,7 @@ but you don't know exactly what that thing will turn into, and
 you don't mind writing the best JavaScript there is to make
 it happen, Verse might work for you.
 
-Other cool things about Verse include:
+# Features
 
 - Support for both imperative and functional programming,
   with a clean separation between the two as described in
