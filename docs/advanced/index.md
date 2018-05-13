@@ -137,3 +137,147 @@ time-consuming compilation step before it runs. Additionally,
 Elm Reactor requires you to be on a Unix-like system where
 you can install and run command-line programs, while Verse
 requires only a web browser.
+
+# Tutorial
+
+Verse programs are built from functions, which all share
+a single global namespace. Here's how functions are
+defined in Verse:
+
+```javascript
+define({
+  foo() {
+    return bar()
+  },
+
+  bar() {
+    return 'hello from bar'
+  }
+})
+```
+
+If you define a function named `displayText`, the return
+value of that function is displayed on the screen.
+The display updates whenever you change the code.
+
+```javascript
+define({
+  displayText() {
+    return [1, 2, 3].map(x => x * 2)
+  }
+})
+```
+
+## Procedural API
+
+[Generator functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function%2A)
+are the units of procedural code in
+Verse. This documentation refers to them as *routines*.
+
+If you define a routine named
+`run`, it will be started when you click the "Run"
+button.
+
+```javascript
+define({
+  *run() {
+    yield log('Hello, World!')
+  }
+})
+```
+
+Within a routine, you can `yield` special values to
+cause side effects, like printing to the screen or
+prompting the user for input. Verse refers to these values,
+oddly enough, as "effects". They can be constructed via
+functions in the Verse standard library as detailed below.
+
+Available effects include:
+
+- `yield log(message: String)`: prints the message to the screen.
+- `yield waitForInput(prompt: String)`: displays a text prompt
+  and waits for the user to press the `return` key before
+  continuing. The return value of the `yield` is a string
+  containing the text the user typed, excluding the final
+  newline.
+- `yield wait(seconds: Number)`: waits for the specified number
+  of seconds before returning.
+- `yield waitForChar()`: waits for the user to press a key before
+  returning. Returns the `key` property of
+  the `keydown` event, which in all supported browsers is
+  equal to the character the user typed, or one of the following:
+
+  - `Enter`
+  - `Backspace`
+
+- `yield retry()`: Restarts the current coroutine from the
+  beginning. Does not return. Note that local variables get
+  reset by a retry, since it actually invokes a new
+  generator instance with a new scope.
+- `yield (subroutine: GeneratorFunction)`: Runs the given routine
+  until it returns. Returns whatever the subroutine returns.
+  Note that this construct will not return if the subroutine
+  `jump`s.
+- `yield jump(routine: GeneratorFunction)`: Aborts the execution
+  of the entire current call stack of routines, and starts
+  the given routine as the new top-level routine.
+- `yield startDisplay(view: function(state): Array(String))`:
+  Registers the given function as the currently active view.
+  The view function is called whenever a user interaction
+  (like a keypress) occurs, and its return value is displayed
+  on the screen, one array element per line. When the current
+  routine returns, the view function is discarded and the
+  previously active view is restored.
+
+## Managing State
+
+Most of a Verse program's state is maintained in
+a single immutable object tree called "the state"
+(some temporary state is usually held in local variables in
+routines).
+The state
+can only be accessed (read or modified) by emitting
+*actions* which are processed by *reducers* that create
+an updated version of the state. If you're familiar with
+Redux—it's almost exactly like Redux. To learn more about
+the state/action/reducer concept, read [the Redux docs](https://redux.js.org/introduction/motivation).
+
+One difference from Redux is that Verse introduces
+mandatory runtime typechecking of the state. This guards
+(if only partially) against the state being corrupted by
+buggy reducers.
+
+Here's a simple program that uses the state to count
+keypresses:
+
+```javascript
+define({
+  getStateType() {
+    return isNumber
+  },
+
+  *run(update) {
+    yield startDisplay(state => {
+      return [
+        `${state} keypresses so far`
+      ]
+    })
+    yield waitForChar()
+    update(tally())
+    yield retry()
+  },
+
+  tally() {
+    return {type: 'tally'}
+  },
+
+  reducer(count, action) {
+    switch (action.type) {
+      case 'tally':
+        return count + 1
+      default:
+        return count
+    }
+  }
+})
+```
