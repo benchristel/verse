@@ -1,9 +1,10 @@
 # What is Verse?
 
-**[Verse](https://verse.js.org) is an all-in-one online
-programming tool** that
-makes it easy to grow programs from quick sketches to
-production-ready applications. It's currently in early-stage
+**[Verse](https://verse.js.org) is an all-in-one
+programming environment** that lets you **write and run
+JavaScript in your web browser**. Verse
+makes it easy to grow quick sketches into
+share-ready apps and games. It's currently in early-stage
 development.
 
 If you decide to try it out, please let me know via
@@ -29,8 +30,9 @@ and we'll figure out how to collaborate on your code.
 
 # Why Use Verse?
 
-Starting a new side project—even for a tiny, one-off tool—can
-feel like you're wading through a miasma of tiny decisions.
+Starting a new side project—even if it's a tiny, one-off tool—can
+feel like you're wading through a miasma of small yet
+important decisions.
 *What should I name the Github repo? Do I need a GUI? What language am I going to use?
 Do I need a framework? What about unit tests? Am I
 going to use a module loader, or can I get away with
@@ -40,7 +42,7 @@ scale and architecture of your project before you've written
 a line of code. **Verse aims to remove as many of those
 decision points as possible.** To achieve that, it provides
 a **framework that scales smoothly from
-no-GUI one-liners to full-featured programs and games**.
+no-UI one-liners to fully-featured interactive programs**.
 
 If you're itching to make some *thing*,
 but you don't know exactly what that thing will turn into, and
@@ -63,10 +65,21 @@ Other cool things about Verse include:
   }
   ```
 
+  Verse is designed so that **stateful and side-effecting code
+  *must* go in generator coroutines**. Coroutines
+  can call normal functions but not vice-versa, so it is
+  impossible for
+  side effects to infect a component that looks like a pure
+  function.
+
 - A [model-view-update architecture](https://guide.elm-lang.org/architecture/)
   inspired by [Elm](http://elm-lang.org/) and [Redux](https://redux.js.org/).
+- Immediate hot-swapping of your program's code as you
+  change it, enabling the fastest feedback loop imaginable.
+  Seriously. The only way to make it faster is to drink
+  more coffee.
 - **[UNDER CONSTRUCTION]** A lightning-fast unit test
-  framework with minimal syntax:
+  framework with [minimal syntax](https://benchristel.github.io/blog/2018/04/20/es6-methods-and-the-verse-test-framework/):
 
   ```javascript
   'test addition'() {
@@ -76,20 +89,37 @@ Other cool things about Verse include:
 
 # Why *Not* Use Verse?
 
-There are some reasons you might not want to use Verse.
+If you're thinking of using Verse for your next project,
+you should understand that it makes some extremely harsh
+tradeoffs. Verse's stance is that *everything* inessential
+to the creation of working software can and must be
+sacrificed in the name of streamlining the development
+experience. In particular, that means UI gloss goes
+out the window. For better or for worse, you're not gonna
+be writing any CSS in a Verse project. If that sounds
+more frustrating than liberating, Verse is probably not
+going to work for you.
 
-- **You need the DOM**: Verse doesn't support HTML or CSS.
+Here are some other reasons you might not
+want to use Verse:
+
+- **You can't access the DOM**. Verse doesn't let you craft
+  your own HTML.
   Right now, it can make text-only terminal-UI style apps,
   and eventually it will let you draw stuff on a `<canvas>`,
   too. But if you need an `<input type="date">`... yikes.
   Use something else.
-- **You need to leverage NPM packages**: "Installing" a
+- **You can't install NPM packages.** "Installing" a
   dependency in Verse means copy-pasting it into your
   source code. Verse aims to provide a comprehensive
   "standard library"
   of basic utilities, but if you need more specialized tools
   it's going to be a bit painful to get them into your
   program.
+
+As Verse matures, I expect some of these constraints will be
+relaxed, worked around, or reversed. But don't hold your
+breath.
 
 # Comparison to Similar Tools
 
@@ -107,10 +137,3 @@ time-consuming compilation step before it runs. Additionally,
 Elm Reactor requires you to be on a Unix-like system where
 you can install and run command-line programs, while Verse
 requires only a web browser.
-
-The environment and framework are fairly tightly
-coupled—not so much in implementation but very much so in
-workflow and design philosophy—and this coupling presents
-both drawbacks and opportunities.
-
-# Design Principles
