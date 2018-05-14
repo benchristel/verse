@@ -6,7 +6,10 @@ makes it easy to grow quick sketches into
 share-ready apps and games. It's currently in early-stage
 development.
 
-If you decide to try it out, please let me know via
+[Access the editor here!](https://verse.js.org) No sign-in
+needed. Just click the link and start coding!
+
+If you decide to give Verse a try, please let me know via
 [@VerseCode on Facebook](https://www.facebook.com/VerseCode/)
 how your experience could be improved. I want Verse to
 be **the absolute easiest way to turn ideas into working
