@@ -1,3 +1,5 @@
+import { has, isGeneratorFunction } from './verse'
+
 export default function Definer(global) {
   let definitions = {}
 
@@ -10,7 +12,7 @@ export default function Definer(global) {
   function defineModule(moduleName) {
     return function(defns) {
       Object.keys(defns).forEach(name => {
-        if (hasOwnProperty(global, name) && !definitionsForModule(moduleName).includes(name)) {
+        if (has(name, global) && !definitionsForModule(moduleName).includes(name)) {
           throw Error('The definition of ' + name +
             ' in ' + moduleName +
             ' overwrites another definition. Please rename '
@@ -24,7 +26,7 @@ export default function Definer(global) {
   }
 
   function renameModule(oldName, newName) {
-    if (!hasOwnProperty(definitions, oldName)) {
+    if (!has(oldName, definitions)) {
       throw Error('No module named ' + oldName + ' exists')
     }
     definitions[newName] = definitions[oldName]
@@ -49,6 +51,7 @@ export default function Definer(global) {
 
 function wrapInErrorHandling(fn) {
   if (typeof fn !== 'function') return fn
+  if (fn.generatedByVerse) return fn
   if (isGeneratorFunction(fn)) {
     return function*() {
       try {
@@ -72,19 +75,10 @@ function wrapInErrorHandling(fn) {
   }
 }
 
-function hasOwnProperty(obj, prop) {
-  return Object.prototype.hasOwnProperty.call(obj, prop)
-}
-
-// todo this function is defined in verse.js too
-function isGeneratorFunction(a) {
-  return Object.prototype.toString.call(a) === '[object GeneratorFunction]'
-}
-
 function mapValues(fn, obj) {
   let result = {}
   for (let k in obj) {
-    if (hasOwnProperty(obj, k)) {
+    if (has(k, obj)) {
       result[k] = fn(obj[k])
     }
   }

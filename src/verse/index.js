@@ -1,6 +1,7 @@
 import { partialApply } from './functionalUtils'
 
 export * from './functionalUtils'
+export * from './action'
 
 export function App(global) {
   let {
