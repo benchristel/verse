@@ -1,8 +1,7 @@
 # What is Verse?
 
-**[Verse](https://verse.js.org) is an all-in-one
-programming environment** that lets you **write and run
-JavaScript in your web browser**. Verse
+**[Verse](https://verse.js.org) is a browser-based
+JavaScript development environment** that
 makes it easy to grow quick sketches into
 share-ready apps and games. It's currently in early-stage
 development.
@@ -39,7 +38,8 @@ going to use a module loader, or can I get away with
 inlining everything in one HTML file?*
 In effect, traditional tools force you to decide on the
 scale and architecture of your project before you've written
-a line of code. **Verse aims to remove as many of those
+a line of code, and reversing those decisions later can be
+costly. **Verse aims to remove as many of those
 decision points as possible.** To achieve that, it provides
 a **framework that scales smoothly from
 no-UI one-liners to fully-featured interactive programs**.
@@ -49,8 +49,21 @@ but you don't know exactly what that thing will turn into, and
 you don't mind writing the best JavaScript there is to make
 it happen, Verse might work for you.
 
+Here are some projects that would work great with Verse:
+
+- [A script to generate wizard names](https://gist.github.com/benchristel/c47faab3b269d8dc45c78221e392553f) in the style of the Zork games
+- A financial calculator
+- A BASIC interpreter
+- A Dwarf Fortress clone
+- A Pokémon clone (once I get around to adding graphical capabilities...)
+- A DM assistant for roleplaying games
+- A contact-list database
+- (If/when the [WebUSB proposal](https://wicg.github.io/webusb/) becomes a standard)
+  an app that controls an Arduino to do... pretty much anything.
+
 # Features
 
+- Offline storage of your code and program state.
 - Support for both imperative and functional programming,
   with a clean separation between the two as described in
   [Gary Bernhardt's excellent talk "Boundaries"](https://www.destroyallsoftware.com/talks/boundaries).
