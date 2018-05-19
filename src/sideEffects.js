@@ -9,7 +9,6 @@ import {
   retry,
   waitForChar
 } from './verse'
-import tryThings from './tryThings'
 import debounce from 'debounce'
 
 let app = NullBard()
