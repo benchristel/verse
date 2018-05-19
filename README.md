@@ -24,6 +24,8 @@ define({
 })
 ```
 
+You can find the [**Verse Documentation** here](https://benchristel.github.io/verse/).
+
 ## Guiding Principles
 
 - **Just Code.** Verse apps don't use HTML or CSS,
@@ -48,7 +50,7 @@ define({
   There's no sneaky code in Verse phoning home with data
   about you. Your code is stored only on *your*
   device, until you choose to share it with the world.
-- **Offline First.** We know not everyone has access to fast
+- **Works Offline.** We know not everyone has access to fast
   Internet all the time. Once you've accessed the Verse site,
   it's stored on your device so you can use it even without
   an Internet connection.
