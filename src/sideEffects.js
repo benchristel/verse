@@ -1,5 +1,5 @@
 import Definer from './Definer'
-import thunk from './thunk'
+import nextTurn from './nextTurn'
 import {
   App,
   NullBard,
@@ -32,10 +32,10 @@ export default {
       let define = definer.defineModule(moduleName)
       // eslint-disable-next-line
       new Function('define', script)(define)
-      thunk(actions.clearEvalError)
+      nextTurn(actions.clearEvalError)
       app.redraw()
     } catch(e) {
-      thunk(actions.handleEvalError, e)
+      nextTurn(actions.handleEvalError, e)
     }
   }, 15)
 }
