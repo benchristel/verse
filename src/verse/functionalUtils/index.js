@@ -52,3 +52,15 @@ export function partialApply(fn, firstArgs, name) {
     fn(...firstArgs, ...remainingArgs)
   }[name]
 }
+
+export function renameFunction(fn, nameCreator) {
+  let cache = null
+  Object.defineProperty(fn, 'name', {
+    get() {
+      if (cache === null) {
+        cache = nameCreator()
+      }
+      return cache
+    }
+  })
+}

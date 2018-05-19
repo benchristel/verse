@@ -93,6 +93,14 @@ describe('a function created by Definer', () => {
     definer = Definer(global)
   })
 
+  it('has a name', () => {
+    definer.defineModule('mod')({
+      foo() {}
+    })
+
+    expect(global.foo.name).toBe('foo')
+  })
+
   it('adds its name to a custom stack array on any exceptions that pass through it', () => {
     definer.defineModule('mod')({
       kaboom() {

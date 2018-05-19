@@ -1,4 +1,5 @@
 import { has, isGeneratorFunction } from './verse'
+import { renameFunction } from './verse/functionalUtils'
 
 export default function Definer(global) {
   let definitions = {}
@@ -52,8 +53,14 @@ export default function Definer(global) {
 function wrapInErrorHandling(fn) {
   if (typeof fn !== 'function') return fn
   if (fn.generatedByVerse) return fn
+  let wrapped = null
   if (isGeneratorFunction(fn)) {
-    return function*() {
+    /*
+     * The duplication here is intentional; for performance
+     * reasons we don't want yet *another* function call in
+     * the critical path.
+     */
+    wrapped = function*() {
       try {
         return yield *fn.apply(null, arguments)
       } catch (e) {
@@ -62,17 +69,21 @@ function wrapInErrorHandling(fn) {
         throw e
       }
     }
-  }
-
-  return function() {
-    try {
-      return fn.apply(null, arguments)
-    } catch (e) {
-      e.verseStack = e.verseStack || []
-      e.verseStack.push(fn.name)
-      throw e
+  } else {
+    wrapped = function() {
+      try {
+        return fn.apply(null, arguments)
+      } catch (e) {
+        e.verseStack = e.verseStack || []
+        e.verseStack.push(fn.name)
+        throw e
+      }
     }
   }
+
+  renameFunction(wrapped, () => fn.name)
+
+  return wrapped
 }
 
 function mapValues(fn, obj) {
