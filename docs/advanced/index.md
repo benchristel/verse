@@ -247,16 +247,22 @@ Available effects include:
 
 ## Managing State
 
-Most of a Verse program's state is maintained in
-a single immutable object tree called "the state"
-(some temporary state is usually held in local variables in
-routines).
-The state
-can only be accessed (read or modified) by emitting
+Most of a Verse program's state is maintained in a single
+immutable object tree called "the state" (some temporary
+state is usually held in local variables in routines). The
+state can only be accessed (read or modified) by emitting
 *actions* which are processed by *reducers* that create
 an updated version of the state. If you're familiar with
 Redux—it's almost exactly like Redux. To learn more about
 the state/action/reducer concept, read [the Redux docs](https://redux.js.org/introduction/motivation).
+
+An advantage of the immutable-state-tree model is that
+actions are *transactional*. If a reducer throws an
+exception while processing an action, the state is not
+corrupted; any parts of the action that did succeed are
+rolled back. You can create actions that affect
+disparate parts of the state, and have confidence that
+they'll never get out of sync.
 
 One difference from Redux is that Verse introduces
 mandatory runtime typechecking of the state. This guards

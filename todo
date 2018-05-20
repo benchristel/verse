@@ -1,3 +1,8 @@
+- license
+- code of conduct
+- fix buttons in header of docs - should have a CTA for editor
+  and a link to docs home
+
 # User feedback
 
 - explain how to build the hello world program step-by-step
