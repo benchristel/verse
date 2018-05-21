@@ -1,0 +1,4 @@
+.Editor .syntaxError {
+  position: absolute;
+  background-color: #fda;
+}
