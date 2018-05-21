@@ -132,6 +132,9 @@ want to use Verse:
   of basic utilities, but if you need more specialized tools
   it's going to be a bit painful to get them into your
   program.
+- **Verse makes it harder to collaborate on code with a team.**
+  You *can* put Verse code in a Git repo, but it's slightly
+  awkward since Verse is browser-only.
 
 As Verse matures, I expect some of these constraints will be
 relaxed, worked around, or reversed. But don't hold your
