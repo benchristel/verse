@@ -24,6 +24,8 @@ define({
 })
 ```
 
+## Documentation
+
 You can find the [**Verse Documentation** here](https://benchristel.github.io/verse/).
 
 ## Guiding Principles
