@@ -1,13 +1,10 @@
-# What is Verse?
+# Advanced Developer Documentation
 
-**[Verse](https://verse.js.org) is a browser-based
-JavaScript development environment** that
-makes it easy to grow quick sketches into
-share-ready apps and games. It's currently in early-stage
-development.
+This section of the documentation provides a concise guide
+to Verse programming aimed at experienced JavaScript
+developers.
 
-[Access the editor here!](https://verse.js.org) No sign-in
-needed. Just click the link and start coding!
+## Feedback
 
 If you decide to give Verse a try, please let me know via
 [@VerseCode on Facebook](https://www.facebook.com/VerseCode/)
