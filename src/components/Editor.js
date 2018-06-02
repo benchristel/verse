@@ -4,6 +4,7 @@ import AceEditor from 'react-ace'
 import { editorText } from '../selectors'
 import storage from '../storage'
 import { getLineInfo } from 'acorn'
+import { findEndOfToken } from '../findEndOfToken'
 
 import 'brace/mode/javascript'
 import 'brace/theme/xcode'
@@ -49,11 +50,12 @@ function configure(editor) {
 function toMarker(code) {
   return function(errorLocation) {
     let start = getLineInfo(code, firstNonspaceCharBefore(errorLocation.pos, code))
+    let end = getLineInfo(code, findEndOfToken(errorLocation.pos, code))
     return {
       startRow: start.line - 1,
-      startCol: start.column,
-      endRow: errorLocation.line,
-      endCol: errorLocation.column + 1,
+      startCol: start.column + 1,
+      endRow: end.line - 1,
+      endCol: end.column,
       className: 'syntaxError',
       type: 'background'
     }
