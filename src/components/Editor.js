@@ -1,9 +1,8 @@
 import React from 'react'
 import connectProps from './connectProps'
 import AceEditor from 'react-ace'
-import { editorText } from '../selectors/editorText'
+import { editorText } from '../selectors'
 import storage from '../storage'
-import { syntaxErrorLocations } from '../syntaxErrorLocations'
 import { getLineInfo } from 'acorn'
 
 import 'brace/mode/javascript'
@@ -26,10 +25,7 @@ export default connectProps(props => {
       name="AceEditor"
       editorProps={{$blockScrolling: true}}
       style={{width: '100%', height: '95%', top: '5%', position: 'absolute'}}
-      markers={
-        syntaxErrorLocations(text)
-          .map(toMarker(text))
-      }
+      markers={props.syntaxErrorLocations.map(toMarker(text))}
     />
   )
 

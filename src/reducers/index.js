@@ -10,7 +10,8 @@ export default combineReducers({
   files,
   currentlyEditingFile,
   evalError,
-  isErrorPanelShown
+  isErrorPanelShown,
+  syntaxErrorLocations,
 })
 
 function menuOpen(curr=false, action) {
@@ -99,6 +100,19 @@ function isErrorPanelShown(curr=false, action) {
 
     case 'clearEvalError':
     return false
+
+    default:
+    return curr
+  }
+}
+
+function syntaxErrorLocations(curr=[], action) {
+  switch (action.type) {
+    case 'changeEditorText':
+    return []
+
+    case 'markSyntaxErrors':
+    return action.syntaxErrorLocations
 
     default:
     return curr

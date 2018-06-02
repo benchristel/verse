@@ -1,6 +1,6 @@
 import { parse } from 'acorn'
 
-export function syntaxErrorLocations(code) {
+export function findSyntaxErrorLocations(code) {
   try {
     parse(code)
     return []
