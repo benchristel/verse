@@ -23,8 +23,6 @@
 
 # UX CONCERNS
 
-- enable cloudflare for dns.js.org so HTTPS will work with
-  the verse.js.org domain.
 - provide a better means of hiding the display pane. startDisplay(() => [])
   should show the display but print nothing.
 - Errors thrown from app code shouldn't crash the editor. Wrap
