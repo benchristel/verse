@@ -77,9 +77,8 @@ be absurd.
 
 I think they probably aren't thinking of the tradeoff in
 those terms, though. It's more likely that their experience
-with slow compile/test cycles has reinforced the intuition
-that everyone has from the day they start programming: that
-computers *can't possibly be that fast*.
+with slow compile/test cycles has reinforced their inborn
+human intuition that computers *can't possibly be that fast*.
 
 I remember the first time I had my own intuition on this
 point challenged: I was writing a tic-tac-toe game in
