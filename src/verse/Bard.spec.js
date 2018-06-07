@@ -94,7 +94,7 @@ describe('Bard', () => {
       tell('done')
     })
 
-    b.receiveKeydown('a')
+    b.receiveKeydown({key: 'a'})
     expect(store.emit).not.toBeCalled()
   })
 

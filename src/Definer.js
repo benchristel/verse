@@ -7,7 +7,8 @@ export default function Definer(global) {
   return {
     defineModule,
     renameModule,
-    deleteModule
+    deleteModule,
+    deleteAllModules,
   }
 
   function defineModule(moduleName) {
@@ -39,6 +40,14 @@ export default function Definer(global) {
       delete global[name]
     })
     delete definitions[moduleName]
+  }
+
+  function deleteAllModules() {
+    for (let moduleName in definitions) {
+      if (has(moduleName, definitions)) {
+        deleteModule(moduleName)
+      }
+    }
   }
 
   function definitionsForModule(moduleName) {

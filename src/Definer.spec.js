@@ -84,6 +84,17 @@ describe('Definer', () => {
     definer.deleteModule('mod1')
     expect(() => definer.renameModule('mod1', 'mod2')).toThrow()
   })
+
+  it('deletes all modules', () => {
+    definer.defineModule('mod1')({foo: 1})
+    definer.defineModule('mod2')({bar: 2})
+    definer.defineModule('mod3')({baz: 3, quux: 4})
+    definer.deleteAllModules()
+    expect(global.foo).not.toBeDefined()
+    expect(global.bar).not.toBeDefined()
+    expect(global.baz).not.toBeDefined()
+    expect(global.quux).not.toBeDefined()
+  })
 })
 
 describe('a function created by Definer', () => {

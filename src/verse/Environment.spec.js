@@ -1,9 +1,9 @@
 import Environment from './Environment'
 
 describe('Environment', () => {
-  let env, output
+  let env, view
   beforeEach(() => {
-    env = Environment(o => output = o)
+    env = Environment(v => view = v)
   })
 
   afterEach(() => {
@@ -19,19 +19,26 @@ describe('Environment', () => {
   `
 
   it('can define a "hello world" program', () => {
-    env.deploy('main.js', helloWorld)
     env.run()
-    expect(output).toEqual({
+    env.deploy('main.js', helloWorld)
+    expect(view.displayLines).toEqual(['hello world'])
+  })
+
+  it('outputs all the display components', () => {
+    env.run()
+    env.deploy('main.js', helloWorld)
+    expect(view).toEqual({
       logLines: [],
       displayLines: ['hello world'],
       inputLines: [],
       syntaxError: '',
       testFailure: '',
-      crash: ''
+      crash: '',
     })
   })
 
   it('cleans up', () => {
+    env.run()
     env.deploy('main.js', helloWorld)
     expect(window.displayText).toBeDefined()
     env.clean()
@@ -39,22 +46,21 @@ describe('Environment', () => {
   })
 
   it('does not run code if not explicitly requested to run', () => {
-    env.deploy('main.js', `
-      define({
-        displayText() {
-          window.sideEffect = true
-        }
-      })
-    `)
-
+    env.deploy('main.js', 'window.sideEffect = true')
     expect(window.sideEffect).not.toBeDefined()
   })
 
-  it('hot-swaps code', () => {
+  it('DOES run code if requested after the code is deployed', () => {
     env.deploy('main.js', helloWorld)
     env.run()
+    expect(view.displayLines).toEqual(['hello world'])
+  })
+
+  it('hot-swaps code', () => {
+    env.run()
+    env.deploy('main.js', helloWorld)
     env.deploy('main.js', helloWorld.replace('hello world', 'changed'))
-    expect(output.displayLines).toEqual(['changed'])
+    expect(view.displayLines).toEqual(['changed'])
   })
 
   const echo = `
@@ -66,15 +72,20 @@ describe('Environment', () => {
     })
   `
 
-  xit('runs an interactive app', () => {
+  it('runs an interactive app', () => {
     env.deploy('main.js', echo)
     env.run()
+    expect(view.inputLines).toEqual([
+      '',
+      '> _'
+    ])
     for (let ch of 'abc') env.keydown({key: ch})
-    expect(output.inputLines).toEqual([
+    expect(view.inputLines).toEqual([
       '',
       '> abc_'
     ])
     env.keydown({key: 'Enter'})
-    expect(output.logLines).toEqual(['abc'])
+    expect(view.logLines).toEqual(['abc'])
+    expect(view.inputLines).toEqual([])
   })
 })
