@@ -17,8 +17,8 @@ export default function Environment(onOutput) {
   }
 
   function deploy(filename, code) {
-    const define = definer.defineModule(filename)
-    if (bard) {
+    if (isRunning()) {
+      const define = definer.defineModule(filename)
       // eslint-disable-next-line
       new Function('define', code)(define)
       bard.redraw()
@@ -49,7 +49,7 @@ export default function Environment(onOutput) {
   }
 
   function keydown(event) {
-    if (bard) {
+    if (isRunning()) {
       bard.receiveKeydown(event)
       updateOutput()
     }
@@ -58,7 +58,7 @@ export default function Environment(onOutput) {
   /* PRIVATE METHODS */
 
   function updateOutput() {
-    if (bard) {
+    if (isRunning()) {
       onOutput({
         logLines,
         displayLines,
@@ -69,11 +69,15 @@ export default function Environment(onOutput) {
       })
     }
   }
+
+  function isRunning() {
+    return !!bard
+  }
 }
 
 /* APPLICATION STARTUP ROUTINES */
 
-function* init() {
+function *init() {
   yield startInputDisplay(() => [])
   yield startDisplay(() => {
     if (window.displayText) {
