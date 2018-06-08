@@ -1,13 +1,12 @@
 import Definer from '../Definer'
-import { Bard, Store } from './index'
+import { Bard, Store, has } from './index'
+import init from './init'
 
 export default function Environment(onOutput) {
   const definer = Definer(window)
-  let bard = null
-  let logLines = []
-  let displayLines = []
-  let inputLines = []
+  let runningApp = null
   let stagedModules = {}
+  let view = {}
 
   return {
     deploy,
@@ -17,98 +16,46 @@ export default function Environment(onOutput) {
   }
 
   function deploy(filename, code) {
-    if (isRunning()) {
-      const define = definer.defineModule(filename)
-      // eslint-disable-next-line
-      new Function('define', code)(define)
-      bard.redraw()
-      updateOutput()
+    if (runningApp) {
+      evalModule(filename, code)
+      runningApp.redraw()
+      onOutput(view)
     } else {
       stagedModules[filename] = code
     }
   }
 
   function run() {
-    bard = Bard(Store({}, a => a), {
-      log: l => logLines = [l], //TODO
-      screen: s => displayLines = s,
-      input: i => inputLines = i,
-      error(e) { console.log(e) }, // TODO
-    })
+    runningApp = Bard(Store({}, a => a)/*TODO*/, v => view = v)
     for (let name in stagedModules) {
       if (has(name, stagedModules)) {
-        deploy(name, stagedModules[name])
+        evalModule(name, stagedModules[name])
       }
     }
-    bard.begin(init)
-    updateOutput()
+    stagedModules = {}
+    runningApp.begin(init)
+    onOutput(view)
   }
 
+  /**
+   * clean() is intended for use only by tests
+   */
   function clean() {
     definer.deleteAllModules()
   }
 
-  function keydown(event) {
-    if (isRunning()) {
-      bard.receiveKeydown(event)
-      updateOutput()
+  function keydown(event) { // TODO: rename to receiveKeydown
+    if (runningApp) {
+      runningApp.receiveKeydown(event)
+      onOutput(view)
     }
   }
 
   /* PRIVATE METHODS */
 
-  function updateOutput() {
-    if (isRunning()) {
-      onOutput({
-        logLines,
-        displayLines,
-        inputLines,
-        syntaxError: '',
-        testFailure: '',
-        crash: ''
-      })
-    }
+  function evalModule(filename, code) {
+    const define = definer.defineModule(filename)
+    // eslint-disable-next-line
+    new Function('define', code)(define)
   }
-
-  function isRunning() {
-    return !!bard
-  }
-}
-
-/* APPLICATION STARTUP ROUTINES */
-
-function *init() {
-  yield startInputDisplay(() => [])
-  yield startDisplay(() => {
-    if (window.displayText) {
-      try {
-        return ['' + window.displayText()]
-      } catch (e) {
-        return ['ERROR: ' + e.message]
-      }
-    } else {
-      return []
-    }
-  })
-  if (window.run) {
-    if (window.displayText) {
-      yield waitForAnyKeyBeforeRunning
-    }
-    yield startDisplay(() => [])
-    yield window.run
-  } else {
-    yield waitForever
-  }
-}
-
-function *waitForAnyKeyBeforeRunning() {
-  yield startInputDisplay(() => [
-    'Press any key to start the *run() function'
-  ])
-  yield waitForChar()
-}
-
-function *waitForever() {
-  yield wait(100)
-  yield retry()
 }

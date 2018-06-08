@@ -46,6 +46,13 @@ describe('Definer', () => {
     expect(() => define2({foo: 2})).toThrow()
   })
 
+  it('lets modules overwrite their own definitions', () => {
+    let define = definer.defineModule('mod')
+    define({foo: 1})
+    define({foo: 2})
+    expect(global.foo).toBe(2)
+  })
+
   it('does not modify definitions from module2 when module1 is redefined', () => {
     definer.defineModule('mod1')({foo: 1})
     definer.defineModule('mod2')({bar: 2})

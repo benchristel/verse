@@ -31,9 +31,7 @@ describe('Environment', () => {
       logLines: [],
       displayLines: ['hello world'],
       inputLines: [],
-      syntaxError: '',
-      testFailure: '',
-      crash: '',
+      error: null,
     })
   })
 
@@ -63,6 +61,14 @@ describe('Environment', () => {
     expect(view.displayLines).toEqual(['changed'])
   })
 
+  it('does not reinstate the old version of a function after hot-swap and restart', () => {
+    env.deploy('main.js', helloWorld)
+    env.run()
+    env.deploy('main.js', helloWorld.replace('hello world', 'changed'))
+    env.run()
+    expect(view.displayLines).toEqual(['changed'])
+  })
+
   const echo = `
     define({
       *run() {
@@ -87,5 +93,33 @@ describe('Environment', () => {
     env.keydown({key: 'Enter'})
     expect(view.logLines).toEqual(['abc'])
     expect(view.inputLines).toEqual([])
+  })
+
+  it('hot-swaps interactive code', () => {
+    env.deploy('main.js', `
+      define({
+        munge(input) { return input },
+
+        *run() {
+          let input = yield waitForInput()
+          yield log(munge(input))
+        }
+      })
+    `)
+
+    env.run()
+    env.deploy('main.js', `
+      define({
+        munge(input) { return reverse(input) },
+
+        *run() {
+          let input = yield waitForInput()
+          yield log(munge(input))
+        }
+      })
+    `)
+    for (let ch of 'abc') env.keydown({key: ch})
+    env.keydown({key: 'Enter'})
+    expect(view.logLines).toEqual(['cba'])
   })
 })

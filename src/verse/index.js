@@ -44,6 +44,12 @@ export function Bard(store, view) {
   let waitingForChar = false
   let waitTimeout = null
 
+  /* view caches */
+  let error = null
+  let logLines = []
+  let displayLines = []
+  let inputLines = []
+
   return {
     begin,
     receiveKeydown,
@@ -72,18 +78,24 @@ export function Bard(store, view) {
   }
 
   function redraw() {
-    updateScreen()
+    handleErrors(updateScreen)
   }
 
   function run(returnFromYield) {
+    handleErrors(() => runOrThrow(returnFromYield))
+  }
+
+  function handleErrors(mightFail) {
     try {
-      return tryRun(returnFromYield)
+      error = null
+      mightFail()
     } catch (e) {
-      view.error(translateError(e))
+      error = translateError(e)
+      outputView()
     }
   }
 
-  function tryRun(returnFromYield) {
+  function runOrThrow(returnFromYield) {
     waitingForChar = false
     waitTimeout = null
     let saga
@@ -133,7 +145,8 @@ export function Bard(store, view) {
       return
 
       case 'log':
-      view.log(effect.message)
+      logLines.push(effect.message)
+      outputView()
       run()
       return
 
@@ -152,7 +165,8 @@ export function Bard(store, view) {
       return
 
       default:
-      view.error(new Error('You `yield`ed something weird: ' + JSON.stringify(effect)))
+      error = new Error('You `yield`ed something weird: ' + JSON.stringify(effect))
+      outputView()
       return
     }
   }
@@ -185,8 +199,9 @@ export function Bard(store, view) {
       if (render && inputRender) break;
     }
 
-    if (render) view.screen(render(store.getState()))
-    if (inputRender) view.input(inputRender(store.getState()))
+    displayLines = render ? render(store.getState()) : []
+    inputLines = inputRender ? inputRender(store.getState()) : []
+    outputView()
   }
 
   function callAndRender(fn) {
@@ -194,6 +209,15 @@ export function Bard(store, view) {
       fn()
       updateScreen()
     }
+  }
+
+  function outputView() {
+    view({
+      logLines,
+      displayLines,
+      inputLines,
+      error,
+    })
   }
 }
 

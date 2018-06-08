@@ -3,19 +3,20 @@ import { Bard, Store } from './index'
 jest.useFakeTimers()
 
 describe('Bard', () => {
+  const blankView = {
+    error: null,
+    logLines: [],
+    displayLines: [],
+    inputLines: [],
+  }
+
   let store, view, b
   beforeEach(() => {
     store = {
       emit: jest.fn(),
       getState: jest.fn()
     }
-    view = {
-      log: jest.fn(),
-      screen: jest.fn(),
-      input: jest.fn(),
-      error: jest.fn()
-    }
-    b = Bard(store, view)
+    b = Bard(store, v => view = v)
   })
 
   it('tells a simple tale', () => {
@@ -269,16 +270,35 @@ describe('Bard', () => {
     b.begin(function*(tell) {
       yield retry()
     })
-    expect(view.error).toBeCalled()
-    expect(lastOf(view.error.mock.calls)[0].message)
-      .toBe('Too many retry() calls. Is there an infinite loop?')
+    expect(view).toEqual({
+      ...blankView,
+      error: expect.objectContaining({
+        message: 'Too many retry() calls. Is there an infinite loop?'
+      })
+    })
   })
 
   it('logs a message', () => {
     b.begin(function*(tell) {
       yield log('hello, world!')
     })
-    expect(view.log).toBeCalledWith('hello, world!')
+
+    expect(view).toEqual({
+      ...blankView,
+      logLines: ['hello, world!']
+    })
+  })
+
+  it('logs multiple messages', () => {
+    b.begin(function*(tell) {
+      yield log('hello!')
+      yield log('goodbye!')
+    })
+
+    expect(view).toEqual({
+      ...blankView,
+      logLines: ['hello!', 'goodbye!']
+    })
   })
 
   it('plugs the display into a render function', () => {
@@ -290,32 +310,11 @@ describe('Bard', () => {
         return ['1234']
       })
     })
-    expect(view.screen).toBeCalledWith(['whoa'])
-    expect(view.input).toBeCalledWith(['1234'])
-  })
-
-  it('re-renders whenever there is a pause in the story', () => {
-    b.begin(function*(tell) {
-      yield startDisplay(() => {
-        return ['whoa']
-      })
-      yield wait(1)
+    expect(view).toEqual({
+      ...blankView,
+      displayLines: ['whoa'],
+      inputLines: ['1234']
     })
-    expect(view.screen.mock.calls.length).toBe(2)
-  })
-
-  it('re-renders when the Bard pauses for input', () => {
-    b.begin(function*(tell) {
-      yield startDisplay(() => {
-        return ['whoa']
-      })
-      yield startInputDisplay(() => {
-        return ['1234']
-      })
-      yield waitForChar()
-    })
-    expect(view.screen.mock.calls.length).toBe(3)
-    expect(view.input.mock.calls.length).toBe(2)
   })
 
   it('re-renders when a stack frame pops', () => {
@@ -326,13 +325,12 @@ describe('Bard', () => {
       })
       x++
     })
-    expect(view.screen.mock.calls.length).toBe(2)
-    expect(view.screen).toBeCalledWith([1])
+    expect(view.displayLines).toEqual([1])
   })
 
   it('passes the state to the render function', () => {
     store = Store(isString, state => state + 'x')
-    b = Bard(store, view)
+    b = Bard(store, v => view = v)
     b.begin(function*(tell) {
       yield startDisplay(state => {
         return [state]
@@ -340,13 +338,16 @@ describe('Bard', () => {
       yield startInputDisplay(state => {
         return [state + '1234']
       })
+      yield wait(1)
       tell({})
       yield wait(1)
     })
-    expect(view.screen).toBeCalledWith([''])
-    expect(view.screen).toBeCalledWith(['x'])
-    expect(view.input).toBeCalledWith(['1234'])
-    expect(view.input).toBeCalledWith(['x1234'])
+
+    expect(view.displayLines).toEqual([''])
+    expect(view.inputLines).toEqual(['1234'])
+    jest.runTimersToTime(1000)
+    expect(view.displayLines).toEqual(['x'])
+    expect(view.inputLines).toEqual(['x1234'])
   })
 
   it('reverts the display when the stack frame that rendered it pops', () => {
@@ -363,14 +364,13 @@ describe('Bard', () => {
       }
       yield wait(1)
     })
-    expect(view.screen).toBeCalledWith(['outside'])
-    expect(view.screen).not.toBeCalledWith(['inside'])
+    expect(view.displayLines).toEqual(['outside'])
     jest.runTimersToTime(1001)
     // now we're in the inner function*()
-    expect(view.screen).toBeCalledWith(['inside'])
+    expect(view.displayLines).toEqual(['inside'])
     jest.runTimersToTime(1000)
     // now we're back out
-    expect(view.screen).lastCalledWith(['outside'])
+    expect(view.displayLines).toEqual(['outside'])
   })
 
   it('renders even if more stack frames have been pushed on top of the one that is rendering', () => {
@@ -385,8 +385,8 @@ describe('Bard', () => {
         yield wait(1)
       }
     })
-    expect(view.screen.mock.calls.length).toEqual(3)
-    expect(view.input.mock.calls.length).toEqual(2)
+    expect(view.displayLines).toEqual(['outside'])
+    expect(view.inputLines).toEqual(['input outside'])
   })
 
   it('renders when a timer goes off', () => {
@@ -398,18 +398,16 @@ describe('Bard', () => {
       yield startDisplay(() => [count])
       yield wait(2)
     })
-    expect(view.screen).toBeCalledWith([0])
+    expect(view.displayLines).toEqual([0])
     jest.runTimersToTime(1001)
-    expect(view.screen).toBeCalledWith([1])
+    expect(view.displayLines).toEqual([1])
   })
 
   it('errors if you yield something weird', () => {
     b.begin(function*(tell) {
       yield {boo: 'hoo'}
     })
-    expect(view.error).toBeCalled()
-    expect(lastOf(view.error.mock.calls)[0].message)
-      .toEqual('You `yield`ed something weird: {"boo":"hoo"}')
+    expect(view.error.message).toEqual('You `yield`ed something weird: {"boo":"hoo"}')
   })
 
   it('halts after an error', () => {
@@ -419,17 +417,56 @@ describe('Bard', () => {
       }
       yield log('never called')
     })
-    expect(view.error).toBeCalled()
-    expect(view.log).not.toBeCalled()
+    expect(view.error.message).toBe('You `yield`ed something weird: "bork"')
+    expect(view.logLines).toEqual([])
+  })
+
+  it('renders an error thrown by the display function', () => {
+    b.begin(function*() {
+      yield startDisplay(() => {
+        throw new Error('yikes')
+      })
+    })
+    expect(view.error.message).toBe('yikes')
+  })
+
+  it('renders an error thrown during a redraw', () => {
+    let fail = false
+    b.begin(function*() {
+      yield startDisplay(() => {
+        if (fail) throw new Error('yikes')
+      })
+      yield wait(1)
+    })
+    fail = true
+    b.redraw() // should not throw
+    expect(view.error.message).toBe('yikes')
+  })
+
+  it('clears the display error on a successful redraw', () => {
+    let fail = true
+    b.begin(function*() {
+      yield startDisplay(() => {
+        if (fail) throw new Error('kaboom')
+        return ['it works now']
+      })
+    })
+
+    expect(view.error.message).toBe('kaboom')
+    fail = false
+    b.redraw()
+    expect(view.error).toBeNull()
+    expect(view.displayLines).toEqual(['it works now'])
   })
 
   it('forces a redraw', () => {
     b.begin(function*(tell) {
-      yield startDisplay(function() {})
+      let redraws = 0
+      yield startDisplay(() => [redraws++])
       yield wait(1)
     })
-    let pastCalls = view.screen.mock.calls.length
+    expect(view.displayLines).toEqual([1])
     b.redraw()
-    expect(view.screen.mock.calls.length).toBe(pastCalls + 1)
+    expect(view.displayLines).toEqual([2])
   })
 })

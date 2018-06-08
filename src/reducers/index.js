@@ -29,8 +29,11 @@ function menuOpen(curr=false, action) {
 
 function logs(curr=[], action) {
   switch (action.type) {
-    case 'logFromApp':
+    case 'logFromApp': //TODO remove
     return [...curr, action.message]
+
+    case 'display':
+    return action.logLines
 
     default:
     return curr
@@ -42,6 +45,9 @@ function screenLines(curr=[], action) {
     case 'displayOnScreen':
     return action.lines
 
+    case 'display':
+    return action.displayLines
+
     default:
     return curr
   }
@@ -51,6 +57,9 @@ function inputLines(curr=[], action) {
   switch (action.type) {
     case 'displayInputPrompt':
     return action.lines
+
+    case 'display':
+    return action.inputLines
 
     default:
     return curr
@@ -85,6 +94,9 @@ function evalError(curr='', action) {
     case 'clearEvalError':
     return ''
 
+    case 'display':
+    return action.error ? action.error.message : ''
+
     default:
     return curr
   }
@@ -100,6 +112,13 @@ function isErrorPanelShown(curr=false, action) {
 
     case 'clearEvalError':
     return false
+
+    case 'display':
+    if (!action.error) {
+      return false
+    } else {
+      return curr
+    }
 
     default:
     return curr

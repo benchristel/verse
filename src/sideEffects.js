@@ -1,122 +1,33 @@
-import Definer from './Definer'
 import nextTurn from './nextTurn'
-import {
-  App,
-  NullBard,
-  startDisplay,
-  startInputDisplay,
-  wait,
-  retry,
-  waitForChar
-} from './verse'
+import Environment from './verse/Environment'
 import debounce from 'debounce'
+import store from './store'
+import { display } from './actions'
 
-let app = NullBard()
-let definer = Definer(window)
+let env = Environment(view => {
+  //TODO: is nextTurn needed here?
+  nextTurn(() => store.dispatch(display(view)))
+})
 
 export default {
   runApp(actions) {
-    app.stop()
-    let appHooks = {
-      init:         window.init,
-      getStateType: window.getStateType,
-      reducer:      window.reducer,
-      view:         View(actions)
-    }
-    app = App(appHooks)
+    env.run()
   },
 
   evaluateScript: debounce(function (script, moduleName, actions) {
     try {
-      let define = definer.defineModule(moduleName)
-      // eslint-disable-next-line
-      new Function('define', script)(define)
-      nextTurn(actions.clearEvalError)
-      app.redraw()
+      env.deploy(moduleName, script)
     } catch(e) {
+      // TODO: incorporate this into Environment's error handling logic
       nextTurn(actions.handleEvalError, e)
     }
   }, 15)
 }
 
-function View(actions) {
-  return {
-    log,
-    screen,
-    input,
-    error,
-    hideScreen,
-    showScreen
-  }
-
-  function log(message) {
-    actions.logFromApp(message)
-  }
-
-  function screen(lines) {
-    actions.displayOnScreen(lines)
-  }
-
-  function input(lines) {
-    actions.displayInputPrompt(lines)
-  }
-
-  function error(e) {
-    console.log(e.stack)
-    actions.handleEvalError(e)
-  }
-
-  function hideScreen() {
-    actions.hideScreen()
-  }
-
-  function showScreen() {
-    actions.showScreen()
-  }
-}
-
-definer.defineModule('__VERSE__')({
-  *init() {
-    yield startInputDisplay(() => [])
-    yield startDisplay(() => {
-      if (window.displayText) {
-        try {
-          return ['' + window.displayText()]
-        } catch (e) {
-          return ['ERROR: ' + e.message]
-        }
-      } else {
-        return []
-      }
-    })
-    if (window.run) {
-      if (window.displayText) {
-        yield waitForAnyKeyBeforeRunning
-      }
-      yield startDisplay(() => [])
-      yield window.run
-    } else {
-      yield waitForever
-    }
-  }
-})
-
-function *waitForAnyKeyBeforeRunning() {
-  yield startInputDisplay(() => [
-    'Press any key to start the *run() function'
-  ])
-  yield waitForChar()
-}
-
-function *waitForever() {
-  yield wait(100)
-  yield retry()
-}
-
 document.body.addEventListener('keydown', event => {
   if (event.target !== document.body) return
   if (!isNonPrintingKey(event) && !modifierKeysPressed(event)) {
-    app.receiveKeydown(event)
+    env.keydown(event)
     event.preventDefault()
   }
 })

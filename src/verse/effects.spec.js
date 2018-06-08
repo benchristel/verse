@@ -7,17 +7,11 @@ describe('waitForInput', () => {
       emit: jest.fn(),
       getState: jest.fn()
     }
-    view = {
-      log: jest.fn(),
-      screen: jest.fn(),
-      input: jest.fn(),
-      error: jest.fn()
-    }
-    b = Bard(store, view)
+    b = Bard(store, v => view = v)
   })
 
   afterEach(() => {
-    expect(view.error).not.toHaveBeenCalled()
+    expect(view.error).toBeNull()
   })
 
   it('prints the prompt', () => {
@@ -25,10 +19,12 @@ describe('waitForInput', () => {
       yield waitForInput('Your message here')
     })
 
-    expect(view.input).toHaveBeenCalledWith([
-      'Your message here',
-      '> _'
-    ])
+    expect(view).toEqual(expect.objectContaining({
+      inputLines: [
+        'Your message here',
+        '> _'
+      ]
+    }))
   })
 
   it('defaults the prompt to blank', () => {
@@ -36,7 +32,7 @@ describe('waitForInput', () => {
       yield waitForInput()
     })
 
-    expect(view.input).toHaveBeenCalledWith([
+    expect(view.inputLines).toEqual([
       '',
       '> _'
     ])
@@ -67,12 +63,12 @@ describe('waitForInput', () => {
       yield waitForInput()
     })
     b.receiveKeydown({key: 'h'})
-    expect(view.input).toHaveBeenCalledWith([
+    expect(view.inputLines).toEqual([
       '',
       '> h_'
     ])
     b.receiveKeydown({key: 'i'})
-    expect(view.input).toHaveBeenCalledWith([
+    expect(view.inputLines).toEqual([
       '',
       '> hi_'
     ])
@@ -83,12 +79,12 @@ describe('waitForInput', () => {
       yield waitForInput()
     })
     b.receiveKeydown({key: 'h'})
-    expect(view.input).toHaveBeenCalledWith([
+    expect(view.inputLines).toEqual([
       '',
       '> h_'
     ])
     b.receiveKeydown({key: 'Backspace'})
-    expect(lastOf(view.input.mock.calls)[0]).toEqual([
+    expect(view.inputLines).toEqual([
       '',
       '> _'
     ])
@@ -99,7 +95,7 @@ describe('waitForInput', () => {
       yield waitForInput()
     })
     b.receiveKeydown({key: 'Backspace'})
-    expect(lastOf(view.input.mock.calls)[0]).toEqual([
+    expect(view.inputLines).toEqual([
       '',
       '> _'
     ])
@@ -110,7 +106,6 @@ describe('waitForInput', () => {
       yield waitForInput()
     })
     b.receiveKeydown({key: 'Enter'})
-    expect(lastOf(view.input.mock.calls)[0])
-      .toEqual([''])
+    expect(view.inputLines).toEqual([])
   })
 })
