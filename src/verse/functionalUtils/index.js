@@ -64,3 +64,29 @@ export function renameFunction(fn, nameCreator) {
     }
   })
 }
+
+window.get = get
+export function get(key, collection) {
+  return collection[key]
+}
+
+window.range = range
+export function range(start, end) {
+  if (end === undefined) return [start]
+
+  if (end > start) {
+    let items = []
+    for (let i = start; i <= end; i++) items.push(i)
+    return items
+  } else {
+    // descending order
+    let items = []
+    for (let i = start; i >= end; i--) items.push(i)
+    return items
+  }
+}
+
+window.count = count
+export function count(collection) {
+  return collection.length
+}
