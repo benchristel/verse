@@ -27,7 +27,7 @@ export default {
 document.body.addEventListener('keydown', event => {
   if (event.target !== document.body) return
   if (!isNonPrintingKey(event) && !modifierKeysPressed(event)) {
-    env.keydown(event)
+    env.receiveKeydown(event)
     event.preventDefault()
   }
 })

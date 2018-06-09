@@ -85,18 +85,18 @@ describe('Environment', () => {
       '',
       '> _'
     ])
-    for (let ch of 'abc') env.keydown({key: ch})
+    typeKeys('abc')
     expect(view.inputLines).toEqual([
       '',
       '> abc_'
     ])
-    env.keydown({key: 'Enter'})
+    env.receiveKeydown({key: 'Enter'})
     expect(view.logLines).toEqual(['abc'])
     expect(view.inputLines).toEqual([])
   })
 
   it('hot-swaps interactive code', () => {
-    env.deploy('main.js', `
+    const munge = `
       define({
         munge(input) { return input },
 
@@ -105,21 +105,41 @@ describe('Environment', () => {
           yield log(munge(input))
         }
       })
-    `)
+    `
 
+    env.deploy('main.js', munge)
     env.run()
+    env.deploy('main.js', munge.replace('return input', 'return reverse(input)'))
+    typeKeys('abc')
+    env.receiveKeydown({key: 'Enter'})
+    expect(view.logLines).toEqual(['cba'])
+  })
+
+  it('runs an app that uses the store', () => {
     env.deploy('main.js', `
       define({
-        munge(input) { return reverse(input) },
+        getStateType() {
+          return isNumber
+        },
 
-        *run() {
-          let input = yield waitForInput()
-          yield log(munge(input))
+        reducer(state) {
+          return state + 1
+        },
+
+        *run(update) {
+          yield startDisplay(state => [state])
+          update({})
+          update({})
+          update({})
+          yield wait(1)
         }
       })
     `)
-    for (let ch of 'abc') env.keydown({key: ch})
-    env.keydown({key: 'Enter'})
-    expect(view.logLines).toEqual(['cba'])
+    env.run()
+    expect(view.displayLines).toEqual([3])
   })
+
+  function typeKeys(text) {
+    for (let ch of text) env.receiveKeydown({key: ch})
+  }
 })

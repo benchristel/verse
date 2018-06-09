@@ -12,7 +12,7 @@ export default function Environment(onOutput) {
     deploy,
     run,
     clean,
-    keydown
+    receiveKeydown
   }
 
   function deploy(filename, code) {
@@ -26,12 +26,16 @@ export default function Environment(onOutput) {
   }
 
   function run() {
-    runningApp = Bard(Store({}, a => a)/*TODO*/, v => view = v)
     for (let name in stagedModules) {
       if (has(name, stagedModules)) {
         evalModule(name, stagedModules[name])
       }
     }
+    const getStateType = window.getStateType || {} // (() => ({}))
+    const reducer = window.reducer
+    runningApp = Bard(
+      Store(getStateType, reducer),
+      v => view = v)
     stagedModules = {}
     runningApp.begin(init)
     onOutput(view)
@@ -44,7 +48,7 @@ export default function Environment(onOutput) {
     definer.deleteAllModules()
   }
 
-  function keydown(event) { // TODO: rename to receiveKeydown
+  function receiveKeydown(event) {
     if (runningApp) {
       runningApp.receiveKeydown(event)
       onOutput(view)
