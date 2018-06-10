@@ -32,6 +32,8 @@ it was because I had better tools for dealing with it.
 
 **Truth to Materials**
 
+"You can't hide a bad architecture with a good GUI"—kent beck https://www.youtube.com/watch?v=KtHQGs3zFAM&t=549s
+
 **Precursors**
 
 One of the experiences that caused me to believe something like
