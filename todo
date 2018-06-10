@@ -3,6 +3,19 @@
 - link to docs from editor
 - link to TOS from editor
 
+// deployment status
+//  (-_-)   - not checking (grey)
+// 「(°ヘ°)? - syntax error, early runtime error (red)
+//  \(^_^)/ - syntax, runtime, tests ok (blue-green)
+//  /(.__.) - test failure (yellow)
+
+// app status
+// grey - not running     _/_ (open switch)    [RUN]
+// blue-green - running   ___ (closed switch)  [RESTART]
+// blue-green - running   •__ ("unsaved" dot)  [RESTART]
+// black - crashed         X                   [RESTART]
+
+
 # User feedback
 
 - s/new tab/new window — instruct the user to right click
@@ -14,6 +27,10 @@
   surprising if you're expecting Cmd+L to focus the URL bar.
 - disable "run" button when "can't run" is shown
 - rewrite pico-fermi-bagel to work with the new API
+- latent bug: once multiple files are supported, what will happen
+  if some files have syntax errors when Verse first starts?
+  How will those errors be reported to the user? One way of
+  avoiding this is to only save files that eval successfully.
 
 # HIGH-RISK FEATURES
 

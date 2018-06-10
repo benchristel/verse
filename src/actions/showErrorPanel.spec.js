@@ -1,6 +1,5 @@
 import reducer from '../reducers'
 import { showErrorPanel } from './showErrorPanel'
-import { handleEvalError } from './handleEvalError'
 
 describe('showErrorPanel', () => {
   it('shows the error panel', () => {

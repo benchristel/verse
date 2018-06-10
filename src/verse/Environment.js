@@ -6,7 +6,13 @@ export default function Environment(onOutput) {
   const definer = Definer(window)
   let runningApp = null
   let stagedModules = {}
-  let view = {}
+  let view = { // TODO: duplicated in Bard
+    logLines: [],
+    displayLines: [],
+    inputLines: [],
+    error: null,
+    syntaxErrors: {}, // maps filenames to Errors
+  }
 
   return {
     deploy,
@@ -31,11 +37,12 @@ export default function Environment(onOutput) {
         evalModule(name, stagedModules[name])
       }
     }
+
     const getStateType = window.getStateType || {} // (() => ({}))
     const reducer = window.reducer
     runningApp = Bard(
       Store(getStateType, reducer),
-      v => view = v)
+      v => view = {...view, ...v})
     stagedModules = {}
     runningApp.begin(init)
     onOutput(view)
@@ -58,8 +65,36 @@ export default function Environment(onOutput) {
   /* PRIVATE METHODS */
 
   function evalModule(filename, code) {
-    const define = definer.defineModule(filename)
-    // eslint-disable-next-line
-    new Function('define', code)(define)
+    try {
+      const define = definer.defineModule(filename)
+      // eslint-disable-next-line
+      new Function('define', code)(define)
+      view = clearSyntaxErrorFrom(view, filename)
+    } catch (error) {
+      view = recordSyntaxErrorOn(view, filename, error)
+    }
   }
+
+  function clearSyntaxErrorFrom(view, filename) {
+    return {
+      ...view,
+      syntaxErrors: exclude(filename, view.syntaxErrors)
+    }
+  }
+
+  function recordSyntaxErrorOn(view, filename, error) {
+    return {
+      ...view,
+      syntaxErrors: {
+        ...view.syntaxErrors,
+        [filename]: error
+      }
+    }
+  }
+}
+
+function exclude(name, object) {
+  let copy = {...object}
+  delete copy[name]
+  return copy
 }

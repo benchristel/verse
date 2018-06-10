@@ -15,12 +15,7 @@ export default {
   },
 
   evaluateScript: debounce(function (script, moduleName, actions) {
-    try {
-      env.deploy(moduleName, script)
-    } catch(e) {
-      // TODO: incorporate this into Environment's error handling logic
-      nextTurn(actions.handleEvalError, e)
-    }
+    env.deploy(moduleName, script)
   }, 15)
 }
 
