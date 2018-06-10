@@ -32,6 +32,7 @@ describe('Environment', () => {
       displayLines: ['hello world'],
       inputLines: [],
       error: null,
+      syntaxErrors: {},
     })
   })
 
@@ -52,6 +53,12 @@ describe('Environment', () => {
     env.deploy('main.js', helloWorld)
     env.run()
     expect(view.displayLines).toEqual(['hello world'])
+  })
+
+  it('reports an error if one of the modules fails to eval', () => {
+    env.deploy('main.js', helloWorld + '}') // syntax error!
+    env.run()
+    expect(view.syntaxErrors['main.js'].toString()).toContain('SyntaxError')
   })
 
   it('hot-swaps code', () => {

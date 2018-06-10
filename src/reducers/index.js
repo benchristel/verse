@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux'
+import { doWith } from '../verse/functionalUtils'
 
 export default combineReducers({
   menuOpen,
@@ -9,7 +10,6 @@ export default combineReducers({
   }),
   files,
   currentlyEditingFile,
-  evalError,
   isErrorPanelShown,
   syntaxErrorLocations,
 })
@@ -69,13 +69,27 @@ function inputLines(curr=[], action) {
 function files(curr={}, action) {
   switch (action.type) {
     case 'loadFiles':
-    return action.files
+    return map(text => ({text, syntaxError: null}), action.files)
 
-    case 'changeEditorText':
-    return {
-      ...curr,
-      [action.file]: action.text
+    case 'changeEditorText': {
+      const {file, text} = action
+      return {
+        ...curr,
+        [file]: {
+          ...curr[file],
+          text
+        }
+      }
     }
+
+    case 'display':
+    return map((file, name) => {
+      let error = action.syntaxErrors[name] || null
+      return {
+        ...file,
+        syntaxError: error
+      }
+    }, curr)
 
     default:
     return curr
@@ -84,22 +98,6 @@ function files(curr={}, action) {
 
 function currentlyEditingFile(curr='main.js', action) {
   return curr
-}
-
-function evalError(curr='', action) {
-  switch (action.type) {
-    case 'handleEvalError':
-    return action.error || ''
-
-    case 'clearEvalError':
-    return ''
-
-    case 'display':
-    return action.error ? action.error.message : ''
-
-    default:
-    return curr
-  }
 }
 
 function isErrorPanelShown(curr=false, action) {
@@ -136,4 +134,14 @@ function syntaxErrorLocations(curr=[], action) {
     default:
     return curr
   }
+}
+
+function map(fn, object) {
+  let result = {}
+  for (let prop in object) {
+    if (object.hasOwnProperty(prop)) {
+      result[prop] = fn(object[prop], prop)
+    }
+  }
+  return result
 }

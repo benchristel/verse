@@ -10,6 +10,7 @@ import Pane from './Pane'
 import Terminal from './Terminal'
 import storage from '../storage'
 import stackParser from '../stackParser'
+import { getSyntaxErrors } from '../selectors'
 
 export default connectProps(class extends React.Component {
   componentWillMount() {
@@ -55,7 +56,7 @@ const RightPane = connectProps(props => {
       <Pane style={{height: '32px', top: 0, width: '100%', backgroundColor: '#888', zIndex: 10, padding: '4px 6px'}}>
         <Button onClick={() => props.runApp(props)}>Run</Button>
       </Pane>
-      <Hide If={!props.evalError || !props.isErrorPanelShown}>
+      <Hide If={!props.isErrorPanelShown || getSyntaxErrors(props).length === 0}>
         <Pane style={{height: '100%', width: '100%', backgroundColor: '#db6', zIndex: 20, padding: '12px'}}>
           <ErrorPanel />
         </Pane>
@@ -70,7 +71,7 @@ const EditorHeaderBar = connectProps(props => {
       <div className="filename">
       </div>
       <StatusBadge
-        onClick={() => props.evalError && props.showErrorPanel()}
+        onClick={() => props.showErrorPanel()}
         style={{position: 'absolute', top: '4px', right: '6px'}}/>
     </div>
   )
@@ -79,7 +80,7 @@ const EditorHeaderBar = connectProps(props => {
 const StatusBadge = connectProps(props => {
   let message = 'OK'
   let className = 'StatusBadge'
-  if (props.evalError) {
+  if (getSyntaxErrors(props).length) {
     message = "Can't run"
     className += ' error'
   }
@@ -95,13 +96,14 @@ const StatusBadge = connectProps(props => {
 
 const ErrorPanel = connectProps(props => (
   <div className="ErrorPanel">{
-    props.evalError.toString()
-    + '\n\n' + renderStackInfo(props.evalError)
+    getSyntaxErrors(props).map(e =>
+      `${e.error.toString()}\n\n`
+      + renderStackInfo(e.error))
+      .join('\n\n')
   }</div>
 ))
 
 function renderStackInfo(error) {
-  console.log(error)
   if (error.verseStack) {
     return 'at function ' +
       error.verseStack.join('()\n  called from ')

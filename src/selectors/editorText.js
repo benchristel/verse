@@ -1,3 +1,5 @@
 export function editorText(state) {
-  return state.files[state.currentlyEditingFile] || ''
+  let file = state.files[state.currentlyEditingFile]
+  if (!file) return ''
+  return file.text
 }
