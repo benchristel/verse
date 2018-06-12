@@ -31,6 +31,78 @@ focus mainly on specific experiences from my own programming
 career, though as Verse is a general system, I will try to
 generalize those experiences into principles.
 
+## Precursors
+
+People have been trying for a long time to reinvent software
+development. Think of Unix, Smalltalk, Visual Basic, and Android.
+Each of these systems tried to reimagine the tools and patterns
+we use to create software.
+
+Verse also resides in this category.
+What makes it different from its predecessors is its
+focus on testability. Verse is designed to support fast,
+granular automated tests, often to the exclusion of other
+features. This will likely be controversial; unit testing
+seems to have as many vocal detractors as supporters.
+I think a lot of the people who criticize unit testing do so, quite reasonably, because they've had bad experiences with it, and those bad experiences have led them to assume that unit testing can never be done well. As someone who has had many good experiences with
+unit testing (as well as my share of bad ones), I contend
+that it *can* be done well—but that our existing tools and
+libraries are standing in our way.
+
+You don't need to take my word for it, though: just read
+David Heinemeier Hansson's posts ["TDD is dead. Long live testing"](http://david.heinemeierhansson.com/2014/tdd-is-dead-long-live-testing.html)
+and [Test-induce ddesign damage](http://david.heinemeierhansson.com/2014/test-induced-design-damage.html)
+and you'll see what I'm talking about.
+
+David (or DHH) is the creator of Ruby on Rails, a framework for building web applications. The examples he gives in those articles refer to Rails, and it's probably safe to assume that a large percentage of the code he writes and tests is Rails code. With that in mind, let's go over the examples he gives of why TDD and unit testing are ineffective:
+
+- you end up with "an overly complex web of intermediary objects" which exist only to "avoid doing anything that's 'slow'," such as IO. [the unspoken assumption here is that these intermediary objects are the only way to isolate your business logic from IO]
+- "unit testing" in "the traditional sense of the word" means "all dependencies are mocked out" [this is pure nonsense; it is neither "traditional" nor necessary to use mocks to isolate the code under test. Again, the unspoken assumption is that mocks are the only way to isolate the component under test.]
+
+Now, I'd like to pose the following (mostly rhetorical) question: is DHH's dislike of TDD and "unit tests" due to flaws in TDD _per se_, or to the design of Rails being incompatible with TDD?
+
+All of DHH's criticisms boil down to this:
+
+- Rails makes it hard to write units of code that are both simple/readable and testable in isolation.
+- Rails is good.
+- Simple, readable code is good.
+- Therefore, unit testing is bad.
+
+Now, this is kind of silly. There is no *a priori* reason why
+code can't be simple, readable, *and* testable. But because
+DHH is so invested in Rails, he (probably subconsciously)
+sees this have-your-cake-and-eat-it scenario as a threat. If
+it's really possible, it means he has a lot of design rework
+to do. So of course he's resistant to seeing that it *is*
+possible. Anyone would be.
+
+It's worth noting that DHH's perspective is not really
+*wrong*, when you take the design of Rails as a given.
+Rails testing is a trilemma, and therefore there
+are two other perspectives on it that are equally valid:
+
+- Rails is good; unit testing is good; therefore simple code is bad.
+- Unit testing is good; simple code is good; therefore Rails is bad.
+
+In summary: Rails, unit testing, simple code: pick two.
+
+Though all of these are logical perspectives, the third
+("Rails is bad") is perhaps the most pragmatic. We cannot
+reduce our need to comprehend and test our code as easily
+as we can switch web frameworks. Of course, the pragmatism
+of this perspective hinges
+on whether is some alternative that lends itself better to
+testing and simplicity than Rails does. So far I haven't
+seen such an alternative.
+
+All of this is a bit of a digression: Verse is not a
+replacement for Rails, and really has nothing to do with Rails;
+I picked on DHH's posts simply because they're well-written,
+relatively (in)famous criticisms of unit testing. But the
+testing/simplicity trilemma is not solely about Rails. It applies to
+any technology not designed explicitly to support simple,
+testable code.
+
 ## Words
 
 - software dev is a game of telephone - we can't understand each other because we don't agree on what our words mean.
