@@ -51,7 +51,7 @@ libraries are standing in our way.
 
 You don't need to take my word for it, though: just read
 David Heinemeier Hansson's posts ["TDD is dead. Long live testing"](http://david.heinemeierhansson.com/2014/tdd-is-dead-long-live-testing.html)
-and [Test-induce ddesign damage](http://david.heinemeierhansson.com/2014/test-induced-design-damage.html)
+and [Test-induced design damage](http://david.heinemeierhansson.com/2014/test-induced-design-damage.html)
 and you'll see what I'm talking about.
 
 David (or DHH) is the creator of Ruby on Rails, a framework for building web applications. The examples he gives in those articles refer to Rails, and it's probably safe to assume that a large percentage of the code he writes and tests is Rails code. With that in mind, let's go over the examples he gives of why TDD and unit testing are ineffective:
