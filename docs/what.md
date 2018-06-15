@@ -667,11 +667,16 @@ programming fundamentally changes. You no longer have to
 tell the computer when to run your tests. The test
 results are just *there*—they're part of your view of the
 project, just like the source code buffers, or the file
-browser.
+browser. As a result, there's less state you have to hold
+in your head. No need to remember if the test results on the
+screen apply to the latest version of your code, or remember
+what changes you've made since that last test run.
+
 It's the difference between imperative and functional
 programming. It's the difference between writing sheet music
 and recording an improvised jam session. It's the difference
 between having to remember to press ctrl-S to save and not.
+It's the difference between having a WYSIWYG editor and not.
 
 Wrong. There is a massive difference between *instantaneous* and merely
 *fast*. Without instantaneous feedback, singers would hit wrong notes.
