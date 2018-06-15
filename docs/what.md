@@ -634,8 +634,10 @@ respond to you, you wouldn't really notice the difference.)
 
 So performance matters, but only to a point.
 In most cases, the amount of performance that
-can be gained by optimizing an algorithm is not worth the
-cost in programming time. "Stupider" methods, like
+can be gained by optimizing a design is not worth the
+cost in programming time (which includes not just the time
+to do the optimization, but the cost of understanding the
+code later). "Stupider" methods, like
 memoization, caching, and throttling, are often perfectly
 sufficient to solve the performance problems that actually
 impact the users of the software.
@@ -655,9 +657,21 @@ has time to think or even type another character.
 You may think this is silly, or perhaps a form of senseless
 extremism. It certainly isn't immediately obvious why a
 hundred-millisecond test suite is better than a
-three-second test suite. Both constitute a subjectively
+one-second test suite. Both constitute a subjectively
 "fast" feedback loop. So there shouldn't be much difference
 between them, right?
+
+Wrong. When your tests are fast enough that your code can
+execute on every change, the experience of
+programming fundamentally changes. You no longer have to
+tell the computer when to run your tests. The test
+results are just *there*—they're part of your view of the
+project, just like the source code buffers, or the file
+browser.
+It's the difference between imperative and functional
+programming. It's the difference between writing sheet music
+and recording an improvised jam session. It's the difference
+between having to remember to press ctrl-S to save and not.
 
 Wrong. There is a massive difference between *instantaneous* and merely
 *fast*. Without instantaneous feedback, singers would hit wrong notes.
