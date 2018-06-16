@@ -12,6 +12,7 @@ export default combineReducers({
   currentlyEditingFile,
   isErrorPanelShown,
   syntaxErrorLocations,
+  crash,
 })
 
 function menuOpen(curr=false, action) {
@@ -112,7 +113,7 @@ function isErrorPanelShown(curr=false, action) {
     return false
 
     case 'display':
-    if (!action.error) {
+    if (!action.error && isEmpty(action.syntaxErrors)) {
       return false
     } else {
       return curr
@@ -136,6 +137,16 @@ function syntaxErrorLocations(curr=[], action) {
   }
 }
 
+function crash(curr=null, action) {
+  switch (action.type) {
+    case 'display':
+    return action.error
+
+    default:
+    return curr
+  }
+}
+
 function map(fn, object) {
   let result = {}
   for (let prop in object) {
@@ -144,4 +155,9 @@ function map(fn, object) {
     }
   }
   return result
+}
+
+function isEmpty(object) {
+  for (let prop in object) return false
+  return true
 }

@@ -3,6 +3,7 @@ import {
   startDisplay,
   waitForChar,
   wait,
+  waitForever,
   retry
 } from './index'
 
@@ -30,7 +31,7 @@ export default function *init() {
     yield startDisplay(() => [])
     yield window.run
   } else {
-    yield waitForever
+    yield waitForever()
   }
 }
 
@@ -39,9 +40,4 @@ function *waitForAnyKeyBeforeRunning() {
     'Press any key to start the *run() function'
   ])
   yield waitForChar()
-}
-
-function *waitForever() {
-  yield wait(100)
-  yield retry()
 }

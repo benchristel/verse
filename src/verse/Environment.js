@@ -6,13 +6,7 @@ export default function Environment(onOutput) {
   const definer = Definer(window)
   let runningApp = null
   let stagedModules = {}
-  let view = { // TODO: duplicated in Bard
-    logLines: [],
-    displayLines: [],
-    inputLines: [],
-    error: null,
-    syntaxErrors: {}, // maps filenames to Errors
-  }
+  let view = blankView()
 
   return {
     deploy,
@@ -32,6 +26,8 @@ export default function Environment(onOutput) {
   }
 
   function run() {
+    if (runningApp) runningApp.stop()
+    view = blankView()
     for (let name in stagedModules) {
       if (has(name, stagedModules)) {
         evalModule(name, stagedModules[name])
@@ -42,10 +38,12 @@ export default function Environment(onOutput) {
     const reducer = window.reducer
     runningApp = Bard(
       Store(getStateType, reducer),
-      v => view = {...view, ...v})
+      v => {
+        view = {...view, ...v}
+        onOutput(view)
+      })
     stagedModules = {}
     runningApp.begin(init)
-    onOutput(view)
   }
 
   /**
@@ -89,6 +87,16 @@ export default function Environment(onOutput) {
         ...view.syntaxErrors,
         [filename]: error
       }
+    }
+  }
+
+  function blankView() {
+    return {
+      logLines: [],
+      displayLines: [],
+      inputLines: [],
+      error: null,
+      syntaxErrors: {}, // maps filenames to Errors
     }
   }
 }

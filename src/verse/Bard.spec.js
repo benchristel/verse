@@ -62,6 +62,28 @@ describe('Bard', () => {
     expect(store.emit).toBeCalledWith('done INTERRUPTED')
   })
 
+  it('waits forever', () => {
+    b.begin(function*(tell) {
+      yield waitForever()
+      tell('should never happen')
+    })
+
+    expect(view.error).toBeNull()
+    jest.runTimersToTime(2 << 32)
+    expect(store.emit).not.toBeCalled()
+  })
+
+  it('cancels the wait when it is stopped', () => {
+    b.begin(function*(tell) {
+      yield wait(1)
+      tell('should never happen')
+    })
+    jest.runTimersToTime(500)
+    b.stop()
+    jest.runTimersToTime(1000)
+    expect(store.emit).not.toBeCalled()
+  })
+
   it('interrupts with a custom signal', () => {
     b.begin(function*(tell) {
       let signal = yield wait(1)
@@ -419,6 +441,8 @@ describe('Bard', () => {
     })
     expect(view.error.message).toBe('You `yield`ed something weird: "bork"')
     expect(view.logLines).toEqual([])
+    b.redraw() // should do nothing
+    expect(view.error.message).toBe('You `yield`ed something weird: "bork"')
   })
 
   it('renders an error thrown by the display function', () => {
@@ -441,22 +465,6 @@ describe('Bard', () => {
     fail = true
     b.redraw() // should not throw
     expect(view.error.message).toBe('yikes')
-  })
-
-  it('clears the display error on a successful redraw', () => {
-    let fail = true
-    b.begin(function*() {
-      yield startDisplay(() => {
-        if (fail) throw new Error('kaboom')
-        return ['it works now']
-      })
-    })
-
-    expect(view.error.message).toBe('kaboom')
-    fail = false
-    b.redraw()
-    expect(view.error).toBeNull()
-    expect(view.displayLines).toEqual(['it works now'])
   })
 
   it('forces a redraw', () => {

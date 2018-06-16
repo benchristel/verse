@@ -86,6 +86,10 @@ export function Bard(store, view) {
   }
 
   function handleErrors(mightFail) {
+    if (error) {
+      outputView()
+      return
+    }
     try {
       error = null
       mightFail()
@@ -124,6 +128,10 @@ export function Bard(store, view) {
       case 'wait':
       updateScreen()
       waitTimeout = setTimeout(run, effect.seconds * 1000)
+      return
+
+      case 'waitForever':
+      updateScreen()
       return
 
       case 'startTimer':
@@ -232,6 +240,13 @@ export function wait(seconds) {
   return {
     effectType: 'wait',
     seconds
+  }
+}
+
+window.waitForever = waitForever
+export function waitForever() {
+  return {
+    effectType: 'waitForever'
   }
 }
 
