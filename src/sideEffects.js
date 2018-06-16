@@ -14,7 +14,7 @@ export default {
     env.run()
   },
 
-  evaluateScript: debounce(function (script, moduleName, actions) {
+  evaluateScript: debounce(function (moduleName, script) {
     env.deploy(moduleName, script)
   }, 15)
 }

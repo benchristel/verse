@@ -4,7 +4,7 @@ import { has } from '../verse'
 export function loadFiles(objectThatMapsFileNamesToContents, actions) {
   if (has('main.js', objectThatMapsFileNamesToContents)) {
     let contents = objectThatMapsFileNamesToContents['main.js']
-    sideEffects.evaluateScript(contents, 'main.js', actions)
+    sideEffects.evaluateScript('main.js', contents)
   }
 
   return {

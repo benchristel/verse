@@ -1,7 +1,7 @@
 import sideEffects from '../sideEffects'
 
-export function changeEditorText(text, file, actions) {
-  sideEffects.evaluateScript(text, 'main.js', actions)
+export function changeEditorText(text, file) {
+  sideEffects.evaluateScript(file, text)
   return {
     type: 'changeEditorText',
     text,
