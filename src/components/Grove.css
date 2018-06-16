@@ -3,6 +3,7 @@
   border-left: 5px solid #888;
   border-bottom: 5px solid #444;
   border-right: 5px solid #666;
+  box-sizing: border-box;
 }
 
 .EditorHeaderBar {

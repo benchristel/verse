@@ -23,7 +23,7 @@ export default connectProps(class extends React.Component {
     return (
       <div className="Grove">
         <Backdrop>
-          <CenteredContainer height="640px" width="1024px">
+          <CenteredContainer height="650px" width="1034px">
             <LeftPane/>
             <RightPane/>
           </CenteredContainer>
