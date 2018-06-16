@@ -2,7 +2,6 @@ import { combineReducers } from 'redux'
 import { doWith } from '../verse/functionalUtils'
 
 export default combineReducers({
-  menuOpen,
   appUi: combineReducers({
     logs,
     screenLines,
@@ -15,21 +14,8 @@ export default combineReducers({
   crash,
 })
 
-function menuOpen(curr=false, action) {
-  switch (action.type) {
-    case 'openMenu':
-    return true
-
-    default:
-    return curr
-  }
-}
-
 function logs(curr=[], action) {
   switch (action.type) {
-    case 'logFromApp': //TODO remove
-    return [...curr, action.message]
-
     case 'display':
     return action.logLines
 
