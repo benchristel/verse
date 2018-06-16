@@ -11,6 +11,7 @@ import Terminal from './Terminal'
 import storage from '../storage'
 import stackParser from '../stackParser'
 import { getSyntaxErrors } from '../selectors'
+import sideEffects from '../sideEffects'
 
 export default connectProps(class extends React.Component {
   componentWillMount() {
@@ -48,7 +49,7 @@ const RightPane = connectProps(props => {
         <Terminal/>
       </Pane>
       <Pane style={{height: '32px', top: 0, backgroundColor: '#888', zIndex: 10, padding: '4px 6px'}}>
-        <Button onClick={() => props.runApp(props)}>Run</Button>
+        <Button onClick={() => sideEffects.runApp()}>Run</Button>
       </Pane>
       <Hide If={!props.isErrorPanelShown || getSyntaxErrors(props).length === 0}>
         <Pane style={{backgroundColor: '#db6', zIndex: 30, padding: '12px'}}>

@@ -10,7 +10,7 @@ let env = Environment(view => {
 })
 
 export default {
-  runApp(actions) {
+  runApp() {
     env.run()
   },
 

@@ -1,4 +1,3 @@
-export * from './runApp'
 export * from './changeEditorText'
 export * from './loadFiles'
 export * from './showErrorPanel'
