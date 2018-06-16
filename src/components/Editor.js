@@ -20,12 +20,12 @@ export default connectProps(props => {
       theme="xcode"
       focus={true}
       value={text}
-      onChange={text => {props.changeEditorText(text, props.currentlyEditingFile, props)}}
+      onChange={text => {props.changeEditorText(text, props.currentlyEditingFile)}}
       onLoad={configure}
       onBlur={save}
       name="AceEditor"
-      editorProps={{$blockScrolling: true}}
-      style={{width: '100%', height: '95%', top: '5%', position: 'absolute'}}
+      editorProps={{$blockScrolling: Infinity}} // prevent stupid warning
+      style={{width: '100%', height: '608px', top: '32px', position: 'absolute'}}
       markers={props.syntaxErrorLocations.map(toMarker(text))}
     />
   )
@@ -43,7 +43,7 @@ function configure(editor) {
   session.setTabSize(2)
   session.setUseSoftTabs(true)
   session.setUseWrapMode(true)
-  editor.setBehavioursEnabled(false) // disable auto-insertion of matching parens
+  editor.setBehavioursEnabled(true) // enable auto-insertion of matching parens
   editor.renderer.setShowGutter(false) // hide line numbers
 }
 

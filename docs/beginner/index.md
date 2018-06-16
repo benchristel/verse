@@ -47,8 +47,11 @@ the "Hello, World" program, which just makes the text
 screen.
 
 To start, type the code below into the editor. To type the
-`{}` characters, hold `shift` and use the keys just to the
-right of `P` (assuming you have an American keyboard).
+`{}` characters (programmers call them "curly braces"),
+hold `shift` and use the keys just to the
+right of `P` (assuming you have an American keyboard). Note
+that when you type an opening parenthesis `(` or curly brace
+`}`, a matching `)` or `}` will be inserted automatically.
 
 ```javascript
 define({
