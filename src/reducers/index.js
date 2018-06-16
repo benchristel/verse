@@ -109,9 +109,6 @@ function isErrorPanelShown(curr=false, action) {
     case 'hideErrorPanel':
     return false
 
-    case 'clearEvalError':
-    return false
-
     case 'display':
     if (!action.error && isEmpty(action.syntaxErrors)) {
       return false
