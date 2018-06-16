@@ -20,9 +20,6 @@ function menuOpen(curr=false, action) {
     case 'openMenu':
     return true
 
-    case 'closeMenu':
-    return false
-
     default:
     return curr
   }
@@ -56,9 +53,6 @@ function screenLines(curr=[], action) {
 
 function inputLines(curr=[], action) {
   switch (action.type) {
-    case 'displayInputPrompt':
-    return action.lines
-
     case 'display':
     return action.inputLines
 

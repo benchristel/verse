@@ -37,12 +37,6 @@ let LeftPane = connectProps(props => {
     <Pane style={{width: '50%'}}>
       <EditorHeaderBar/>
       <Editor/>
-      <Hide If={!props.menuOpen}>
-        <Pane style={{right: 0, width: '240px', backgroundColor: '#2a6', zIndex: 10}}>
-          <Button onClick={props.closeMenu}>CLOSE</Button>
-          woot
-        </Pane>
-      </Hide>
     </Pane>
   )
 })
