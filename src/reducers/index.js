@@ -40,9 +40,6 @@ function logs(curr=[], action) {
 
 function screenLines(curr=[], action) {
   switch (action.type) {
-    case 'displayOnScreen':
-    return action.lines
-
     case 'display':
     return action.displayLines
 
