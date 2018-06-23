@@ -1,4 +1,3 @@
-window.action = action
 export function action(...argNames) {
   let fn = function(...args) {
     let obj = {}

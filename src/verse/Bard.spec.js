@@ -1,4 +1,5 @@
 import { Bard, Store } from './index'
+import '../api'
 
 jest.useFakeTimers()
 

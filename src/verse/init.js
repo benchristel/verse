@@ -2,9 +2,7 @@ import {
   startInputDisplay,
   startDisplay,
   waitForChar,
-  wait,
-  waitForever,
-  retry
+  waitForever
 } from './index'
 
 /*

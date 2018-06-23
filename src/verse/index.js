@@ -199,7 +199,6 @@ const SIGNAL_INTERRUPTED = {
   }
 }
 
-window.wait = wait
 export function wait(seconds) {
   return {
     effectType: 'wait',
@@ -207,21 +206,18 @@ export function wait(seconds) {
   }
 }
 
-window.waitForever = waitForever
 export function waitForever() {
   return {
     effectType: 'waitForever'
   }
 }
 
-window.waitForChar = waitForChar
 export function waitForChar() {
   return {
     effectType: 'waitForChar'
   }
 }
 
-window.waitForInput = waitForInput
 export function waitForInput(prompt='') {
   return function*() {
     let entered = ''
@@ -262,7 +258,6 @@ export function startTimer(seconds, callback) {
   }
 }
 
-window.jump = jump
 export function jump(generator) {
   return {
     effectType: 'jump',
@@ -277,7 +272,6 @@ export function retry() {
   }
 }
 
-window.log = log
 export function log(message) {
   return {
     effectType: 'log',
@@ -285,7 +279,6 @@ export function log(message) {
   }
 }
 
-window.startDisplay = startDisplay
 export function startDisplay(render) {
   return {
     effectType: 'startDisplay',
@@ -293,7 +286,6 @@ export function startDisplay(render) {
   }
 }
 
-window.startInputDisplay = startInputDisplay
 export function startInputDisplay(render) {
   return {
     effectType: 'startInputDisplay',
@@ -301,76 +293,62 @@ export function startInputDisplay(render) {
   }
 }
 
-window.lastOf = lastOf
 export function lastOf(list) {
   return list[list.length - 1]
 }
 
-window.isTruthy = isTruthy
 export function isTruthy(a) {
   return !!a
 }
 
-window.isExactly = isExactly
 export function isExactly(a, b) {
   return a === b
 }
 
-window.has = has
 export function has(prop, obj) {
   if (arguments.length < 2) return partialApply(has, arguments, 'has(' + prop + ')')
   return Object.prototype.hasOwnProperty.call(obj, prop)
 }
 
-window.isIn = isIn
 export function isIn(obj, prop) {
   if (arguments.length < 2) return partialApply(isIn, arguments)
   return Object.prototype.hasOwnProperty.call(obj, prop)
 }
 
-window.startsWith = startsWith
 export function startsWith(prefix, s) {
   return s.indexOf(prefix) === 0
 }
 
-window.not = not
 export function not(predicate) {
   let name = 'not(' + predicate.name + ')'
   return {[name]: (...args) => !predicate(...args)}[name]
 }
 
-window.isEmpty = isEmpty
 export function isEmpty(a) {
   for (let item of a) return false && item // make linter happy
   return true
 }
 
-window.isString = isString
 export function isString(a) {
   return typeof a === 'string'
 }
 
-window.isNumber = isNumber
 export function isNumber(a) {
   return a === +a
 }
 
-window.isObject = isObject
 export function isObject(a) {
   return Object.prototype.toString.call(a) === '[object Object]'
 }
 
-window.isGeneratorFunction = isGeneratorFunction
 export function isGeneratorFunction(a) {
   return Object.prototype.toString.call(a) === '[object GeneratorFunction]'
 }
 
-window.isFunction = isFunction
 export function isFunction(a) {
   return typeof a === 'function'
 }
 
-window.or = or
 export function or(p, q) {
   let name = 'or(' + p.name + ', ' + q.name + ')'
   return {[name]: (...args) =>
@@ -418,6 +396,15 @@ export function _expect(subject, predicate, ...params) {
       }
     }
   }
+}
+
+export function assert(subject, predicate, ...args) {
+  let matches = predicate(subject, ...args)
+  if (!matches) throw new Error('Asserted that\n'
+      + '  ' + subject + '\n'
+      + predicate.name + '\n'
+      + '  ' + args.join(', '))
+
 }
 
 export function runTests(tests) {

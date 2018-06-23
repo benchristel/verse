@@ -10,6 +10,8 @@ import {
   count
 } from '.'
 
+import '../../api'
+
 describe('uppercase', () => {
   it('does nothing to the empty string', () => {
     expect(uppercase('')).toBe('')

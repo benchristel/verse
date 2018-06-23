@@ -1,20 +1,15 @@
-window.doWith = doWith
-window._ = doWith
 export function doWith(subject, ...fns) {
   return fns.reduce((value, f) => f(value), subject)
 }
 
-window.uppercase = uppercase
 export function uppercase(s) {
   return ('' + s).toUpperCase()
 }
 
-window.lowercase = lowercase
 export function lowercase(s) {
   return ('' + s).toLowerCase()
 }
 
-window.reverse = reverse
 export function reverse(s) {
   s = '' + s
   if (s.length < 2) return s
@@ -26,7 +21,6 @@ export let replace = curryable(3,
     return subject.split(pattern).join(replacement)
   }
 )
-window.replace = replace
 
 export function firstOf(a) {
   return a[0]
@@ -65,12 +59,10 @@ export function renameFunction(fn, nameCreator) {
   })
 }
 
-window.get = get
 export function get(key, collection) {
   return collection[key]
 }
 
-window.range = range
 export function range(start, end) {
   if (end === undefined) return [start]
 
@@ -86,7 +78,6 @@ export function range(start, end) {
   }
 }
 
-window.count = count
 export function count(collection) {
   return collection.length
 }

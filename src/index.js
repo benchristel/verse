@@ -5,6 +5,7 @@ import store from './store'
 import './index.css'
 import Grove from './components/Grove'
 import registerServiceWorker from './registerServiceWorker'
+import './api'
 
 ReactDOM.render(
   <Provider store={store}>
