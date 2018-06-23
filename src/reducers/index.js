@@ -1,5 +1,4 @@
 import { combineReducers } from 'redux'
-import { doWith } from '../verse/functionalUtils'
 
 export default combineReducers({
   appUi: combineReducers({

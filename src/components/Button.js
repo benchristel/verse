@@ -1,5 +1,4 @@
 import React from 'react'
-import connectProps from './connectProps'
 import './Button.css'
 
 export default props => (
