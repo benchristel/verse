@@ -615,7 +615,7 @@ define({
   *run() {
     let input = yield waitForInput()
     yield log(process(input))
-    yield retry()
+    yield retry(run)
   }
 })
 ```

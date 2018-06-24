@@ -226,10 +226,9 @@ Available effects include:
   - `Enter`
   - `Backspace`
 
-- `yield retry()`: Restarts the current coroutine from the
-  beginning. Does not return. Note that local variables get
-  reset by a retry, since it actually invokes a new
-  generator instance with a new scope.
+- `yield retry(coroutine)`: Aborts the current coroutine
+  and starts the given one from the
+  beginning. Does not return.
 - `yield (subroutine: GeneratorFunction)`: Runs the given routine
   until it returns. Returns whatever the subroutine returns.
   Note that this construct will not return if the subroutine
@@ -285,8 +284,8 @@ define({
       ]
     })
     yield waitForChar()
-    update(tally())
-    yield retry()
+    yield perform(tally())
+    yield retry(run)
   },
 
   tally() {

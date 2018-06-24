@@ -13,6 +13,7 @@ export function Bard(store, view) {
   let logLines = []
   let displayLines = []
   let inputLines = []
+  let gotosThisTurn = 0
 
   return {
     begin,
@@ -58,7 +59,7 @@ export function Bard(store, view) {
       error = null
       mightFail()
     } catch (e) {
-      error = translateError(e)
+      error = e
       outputView()
     }
   }
@@ -67,6 +68,10 @@ export function Bard(store, view) {
     waitingForChar = false
     waitTimeout = null
     let saga
+
+    // TODO: a limit of 100 is really small. Optimize
+    // UI rendering so it can be set higher
+    if (gotosThisTurn > 100) throw new Error('Infinite retry loop detected')
 
     if (!stack.length) return
     let {value: effect, done} = lastOf(stack).next(returnFromYield)
@@ -78,41 +83,53 @@ export function Bard(store, view) {
     }
 
     if (isGeneratorFunction(effect)) {
+      gotosThisTurn++
+      push(effect)
+      run()
+      return
+    }
+
+    if (isIterator(effect)) {
+      gotosThisTurn++
       push(effect)
       run()
       return
     }
 
     switch (effect.effectType) {
+      case 'perform':
+      store.emit(effect.action)
+      run()
+      return
+
       case 'waitForChar':
+      gotosThisTurn = 0
       updateScreen()
       waitingForChar = true
       return
 
       case 'wait':
+      gotosThisTurn = 0
       updateScreen()
       waitTimeout = setTimeout(run, effect.seconds * 1000)
       return
 
       case 'waitForever':
+      gotosThisTurn = 0
       updateScreen()
       return
 
-      case 'startTimer':
-      let interval = setInterval(callAndRender(effect.callback), effect.seconds * 1000)
-      lastOf(stack).timers.push(interval)
-      run()
-      return
-
       case 'jump':
+      gotosThisTurn++
       while (stack.length) pop()
       push(effect.generator)
       run()
       return
 
       case 'retry':
-      saga = pop()
-      push(saga.generator)
+      gotosThisTurn++
+      pop()
+      push(effect.generator)
       run()
       return
 
@@ -144,9 +161,9 @@ export function Bard(store, view) {
   }
 
   function push(generator) {
-    let saga = generator(store.emit)
-    saga.timers = []
-    saga.generator = generator
+    let saga =
+      isIterator(generator) ?
+      generator : generator()
     saga.render = null
     saga.inputRender = null
     stack.push(saga)
@@ -154,9 +171,7 @@ export function Bard(store, view) {
 
   function pop() {
     updateScreen()
-    let saga = stack.pop()
-    saga.timers.forEach(clearInterval)
-    return saga
+    return stack.pop()
   }
 
   function updateScreen() {
@@ -174,13 +189,6 @@ export function Bard(store, view) {
     displayLines = render ? render(store.getState()) : []
     inputLines = inputRender ? inputRender(store.getState()) : []
     outputView()
-  }
-
-  function callAndRender(fn) {
-    return function() {
-      fn()
-      updateScreen()
-    }
   }
 
   function outputView() {
@@ -227,7 +235,7 @@ export function waitForInput(prompt='') {
         '> ' + entered + '_'
       ]
     })
-    yield function*() {
+    yield function* getOneChar() {
       let c = yield waitForChar()
       switch (c) {
         case 'Enter':
@@ -240,7 +248,7 @@ export function waitForInput(prompt='') {
         default:
         entered += c
       }
-      yield retry()
+      yield retry(getOneChar)
     }
     // TODO: empty string here is a hack to work around
     // the UI's awkward display implementation.
@@ -266,9 +274,10 @@ export function jump(generator) {
 }
 
 window.retry = retry
-export function retry() {
+export function retry(generator) {
   return {
-    effectType: 'retry'
+    effectType: 'retry',
+    generator
   }
 }
 
@@ -290,6 +299,13 @@ export function startInputDisplay(render) {
   return {
     effectType: 'startInputDisplay',
     render
+  }
+}
+
+export function perform(action) {
+  return {
+    effectType: 'perform',
+    action
   }
 }
 
@@ -343,6 +359,10 @@ export function isObject(a) {
 
 export function isGeneratorFunction(a) {
   return Object.prototype.toString.call(a) === '[object GeneratorFunction]'
+}
+
+export function isIterator(a) {
+  return Object.prototype.toString.call(a) === '[object Generator]'
 }
 
 export function isFunction(a) {
@@ -431,17 +451,6 @@ export function getTestFunctions(global) {
     .filter(({name}) => startsWith('test_', name))
 }
 
-export function translateError(error) {
-  if (
-    // webkit
-    (error instanceof RangeError && error.message === 'Maximum call stack size exceeded')
-    // moz
-    || (error.message === 'too much recursion')) {
-    error.message = 'Too many retry() calls. Is there an infinite loop?'
-  }
-  return error
-}
-
 export function defaultingTo(defaultValue, predicate) {
   if (defaultValue === undefined) throw 'Type must have a default value'
   if (!predicate(defaultValue)) throw 'Given default value does not satisfy the type'
@@ -508,12 +517,12 @@ export function isNullOr(type) {
 
 window.echo = echo
 export function echo(inputProcessorName) {
-  return function *() {
+  return function* loop() {
     let input = yield waitForInput()
     if (!isFunction(window[inputProcessorName])) {
       throw new Error('' + inputProcessorName + ' is not a function')
     }
     yield log(window[inputProcessorName](input))
-    yield retry()
+    yield retry(loop)
   }
 }

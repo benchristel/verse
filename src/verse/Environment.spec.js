@@ -134,17 +134,34 @@ describe('Environment', () => {
           return state + 1
         },
 
-        *run(update) {
+        *run() {
           yield startDisplay(state => [state])
-          update({})
-          update({})
-          update({})
+          yield perform({})
+          yield perform({})
+          yield perform({})
           yield wait(1)
         }
       })
     `)
     env.run()
     expect(view.displayLines).toEqual([3])
+  })
+
+  it('outputs the stack trace on a crash', () => {
+    env.deploy('main.js', `
+      define({
+        *run() {
+          yield *hey()
+        },
+
+        *hey() {
+          blargh()
+
+        }
+      })
+    `)
+    env.run()
+    expect(view.error.verseStack).toEqual(['hey', 'run'])
   })
 
   function typeKeys(text) {

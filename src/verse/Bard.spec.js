@@ -1,4 +1,4 @@
-import { Bard, Store } from './index'
+import { Bard, Store, perform } from './index'
 import '../api'
 
 jest.useFakeTimers()
@@ -21,16 +21,17 @@ describe('Bard', () => {
   })
 
   it('tells a simple tale', () => {
-    b.begin(function*(tell) {
-      tell('once upon a time')
+    b.begin(function*() {
+      yield perform('once upon a time')
     })
+    expect(view.error).toBeNull()
     expect(store.emit).toBeCalledWith('once upon a time')
   })
 
   it('pauses for effect', () => {
-    b.begin(function*(tell) {
+    b.begin(function*() {
       yield wait(1)
-      tell('once upon a time')
+      yield perform('once upon a time')
     })
     expect(store.emit).not.toBeCalled()
     jest.runTimersToTime(1001)
@@ -38,11 +39,11 @@ describe('Bard', () => {
   })
 
   it('pauses repeatedly', () => {
-    b.begin(function*(tell) {
+    b.begin(function*() {
       yield wait(1)
-      tell('once upon a time')
+      yield perform('once upon a time')
       yield wait(1)
-      tell('there was a dog')
+      yield perform('there was a dog')
     })
     expect(store.emit).not.toBeCalled()
     jest.runTimersToTime(1001)
@@ -53,9 +54,9 @@ describe('Bard', () => {
   })
 
   it('interrupts a pause', () => {
-    b.begin(function*(tell) {
+    b.begin(function*() {
       let signal = yield wait(1)
-      tell('done ' + signal)
+      yield perform('done ' + signal)
     })
 
     expect(store.emit).not.toBeCalled()
@@ -64,9 +65,9 @@ describe('Bard', () => {
   })
 
   it('waits forever', () => {
-    b.begin(function*(tell) {
+    b.begin(function*() {
       yield waitForever()
-      tell('should never happen')
+      yield perform('should never happen')
     })
 
     expect(view.error).toBeNull()
@@ -75,9 +76,9 @@ describe('Bard', () => {
   })
 
   it('cancels the wait when it is stopped', () => {
-    b.begin(function*(tell) {
+    b.begin(function*() {
       yield wait(1)
-      tell('should never happen')
+      yield perform('should never happen')
     })
     jest.runTimersToTime(500)
     b.stop()
@@ -86,9 +87,9 @@ describe('Bard', () => {
   })
 
   it('interrupts with a custom signal', () => {
-    b.begin(function*(tell) {
+    b.begin(function*() {
       let signal = yield wait(1)
-      tell('done ' + signal)
+      yield perform('done ' + signal)
     })
 
     expect(store.emit).not.toBeCalled()
@@ -97,11 +98,11 @@ describe('Bard', () => {
   })
 
   it('cancels the timeout for an interrupted wait', () => {
-    b.begin(function*(tell) {
+    b.begin(function*() {
       yield wait(1)
-      tell('done')
+      yield perform('done')
       yield wait(10)
-      tell('should only be called after 10 seconds')
+      yield perform('should only be called after 10 seconds')
     })
 
     b.interrupt()
@@ -113,9 +114,9 @@ describe('Bard', () => {
   })
 
   it('ignores keypresses while pausing', () => {
-    b.begin(function*(tell) {
+    b.begin(function*() {
       yield wait(1)
-      tell('done')
+      yield perform('done')
     })
 
     b.receiveKeydown({key: 'a'})
@@ -123,26 +124,27 @@ describe('Bard', () => {
   })
 
   it('starts a story-within-a-story', () => {
-    b.begin(function*(tell) {
-      tell('ahem')
-      yield function*(tell) {
-        tell('a story')
-      }
-      tell('the end')
+    function* story(subject) {
+      yield perform('a story about ' + subject)
+    }
+    b.begin(function*() {
+      yield perform('ahem')
+      yield story('dogs')
+      yield perform('the end')
     })
 
     expect(store.emit).toBeCalledWith('ahem')
-    expect(store.emit).toBeCalledWith('a story')
+    expect(store.emit).toBeCalledWith('a story about dogs')
     expect(store.emit).toBeCalledWith('the end')
   })
 
   it('gets the result of a story-within-a-story', () => {
-    b.begin(function*(tell) {
-      let story = yield function*(tell) {
+    b.begin(function*() {
+      let story = yield function*() {
         return 'cool story bro'
       }
-      tell(story)
-      tell('the end')
+      yield perform(story)
+      yield perform('the end')
     })
 
     expect(store.emit).toBeCalledWith('cool story bro')
@@ -150,10 +152,10 @@ describe('Bard', () => {
   })
 
   it('waits for divine inspiration from the keyboard', () => {
-    b.begin(function*(tell) {
-      tell('once there was a dog, and his favorite number was...')
+    b.begin(function*() {
+      yield perform('once there was a dog, and his favorite number was...')
       let number = yield waitForChar()
-      tell(number + '!')
+      yield perform(number + '!')
     })
 
     b.receiveKeydown({key: '3'})
@@ -163,9 +165,9 @@ describe('Bard', () => {
   })
 
   it('interrupts a wait for a keypress', () => {
-    b.begin(function*(tell) {
+    b.begin(function*() {
       let c = yield waitForChar()
-      tell('' + c)
+      yield perform('' + c)
     })
 
     b.interrupt()
@@ -173,11 +175,11 @@ describe('Bard', () => {
   })
 
   it('receives multiple keypresses', () => {
-    b.begin(function*(tell) {
+    b.begin(function*() {
       let result = '', a
       while((a = yield waitForChar()) !== '\n')
         result += a
-      tell(result)
+      yield perform(result)
     })
 
     b.receiveKeydown({key: '1'})
@@ -189,7 +191,7 @@ describe('Bard', () => {
 
   it('waits for a line of input', () => {
     function waitForInput() {
-      return function*(tell) {
+      return function*() {
         let result = '', a
         while((a = yield waitForChar()) !== 'Enter')
           result += a
@@ -197,10 +199,10 @@ describe('Bard', () => {
       }
     }
 
-    b.begin(function*(tell) {
-      tell('once there was a dog, and his name was...')
+    b.begin(function*() {
+      yield perform('once there was a dog, and his name was...')
       let name = yield waitForInput()
-      tell(name + '!')
+      yield perform(name + '!')
     })
 
     b.receiveKeydown({key: 'j'})
@@ -212,63 +214,12 @@ describe('Bard', () => {
     expect(store.emit).toBeCalledWith('jim!')
   })
 
-  it('starts a background timer thread', () => {
-    b.begin(function*(tell) {
-      let i = 0
-      yield startTimer(1, () => {
-        tell('hello ' + i++)
-      })
-      tell('main thread')
-      yield wait(3)
-    })
-
-    expect(store.emit).toBeCalledWith('main thread')
-    expect(store.emit).not.toBeCalledWith('hello 0')
-    jest.runTimersToTime(1001)
-    expect(store.emit).toBeCalledWith('hello 0')
-    expect(store.emit).not.toBeCalledWith('hello 1')
-    jest.runTimersToTime(1000)
-    expect(store.emit).toBeCalledWith('hello 1')
-  })
-
-  it('stops timers when the stack frame that created them pops', () => {
-    b.begin(function*(tell) {
-      let a = 0, b = 0
-      yield startTimer(0.99, () => tell('a = ' + a++))
-      yield startTimer(0.49, () => tell('b = ' + b++))
-      tell('main thread')
-      yield wait(3)
-      tell('done')
-    })
-
-    expect(store.emit).toBeCalledWith('main thread')
-    expect(store.emit.mock.calls.length).toBe(1)
-    jest.runTimersToTime(1000)
-    expect(store.emit).toBeCalledWith('a = 0')
-    expect(store.emit).toBeCalledWith('b = 0')
-    expect(store.emit).toBeCalledWith('b = 1')
-    expect(store.emit.mock.calls.length).toBe(4)
-    jest.runTimersToTime(1000)
-    expect(store.emit).toBeCalledWith('a = 1')
-    expect(store.emit).toBeCalledWith('b = 2')
-    expect(store.emit).toBeCalledWith('b = 3')
-    expect(store.emit.mock.calls.length).toBe(7)
-    jest.runTimersToTime(1001)
-    expect(store.emit).toBeCalledWith('a = 2')
-    expect(store.emit).toBeCalledWith('b = 4')
-    expect(store.emit).toBeCalledWith('b = 5')
-    expect(store.emit).toBeCalledWith('done')
-    expect(store.emit.mock.calls.length).toBe(11)
-    jest.runTimersToTime(9999)
-    expect(store.emit.mock.calls.length).toBe(11)
-  })
-
   it('jumps to another story', () => {
-    b.begin(function*(tell) {
-      yield jump(function*(tell) {
-        tell('done')
+    b.begin(function*() {
+      yield jump(function*() {
+        yield perform('done')
       })
-      tell('this never happens')
+      yield perform('this never happens')
     })
 
     expect(store.emit).toBeCalledWith('done')
@@ -277,10 +228,10 @@ describe('Bard', () => {
 
   it('retries the current story', () => {
     let tries = 1
-    b.begin(function*(tell) {
-      tell('try ' + tries)
+    b.begin(function* main() {
+      yield perform('try ' + tries)
       if (tries++ > 2) return
-      yield retry()
+      yield main
     })
 
     expect(store.emit).toBeCalledWith('try 1')
@@ -289,20 +240,53 @@ describe('Bard', () => {
     expect(store.emit).not.toBeCalledWith('try 4')
   })
 
+  it('performs an action by yielding it', () => {
+    b.begin(function*() {
+      yield perform('the action')
+    })
+    expect(store.emit).toBeCalledWith('the action')
+  })
+
+  it('loops', () => {
+    let iterations = 0
+    b.begin(function*() {
+      yield function* retryable() {
+        yield perform(iterations++)
+        if (iterations < 3) yield retryable()
+      }
+    })
+
+    expect(store.emit).toBeCalledWith(0)
+    expect(store.emit).toBeCalledWith(1)
+    expect(store.emit).toBeCalledWith(2)
+  })
+
   it('aborts if it senses an infinite loop of retries', () => {
-    b.begin(function*(tell) {
-      yield retry()
+    b.begin(function* main() {
+      yield retry(main)
     })
     expect(view).toEqual({
       ...blankView,
       error: expect.objectContaining({
-        message: 'Too many retry() calls. Is there an infinite loop?'
+        message: 'Infinite retry loop detected'
+      })
+    })
+  })
+
+  it('aborts if it senses infinite recursion', () => {
+    b.begin(function* main() {
+      yield main
+    })
+    expect(view).toEqual({
+      ...blankView,
+      error: expect.objectContaining({
+        message: 'Infinite retry loop detected'
       })
     })
   })
 
   it('logs a message', () => {
-    b.begin(function*(tell) {
+    b.begin(function*() {
       yield log('hello, world!')
     })
 
@@ -313,7 +297,7 @@ describe('Bard', () => {
   })
 
   it('logs multiple messages', () => {
-    b.begin(function*(tell) {
+    b.begin(function*() {
       yield log('hello!')
       yield log('goodbye!')
     })
@@ -325,7 +309,7 @@ describe('Bard', () => {
   })
 
   it('plugs the display into a render function', () => {
-    b.begin(function*(tell) {
+    b.begin(function*() {
       yield startDisplay(() => {
         return ['whoa']
       })
@@ -341,7 +325,7 @@ describe('Bard', () => {
   })
 
   it('re-renders when a stack frame pops', () => {
-    b.begin(function*(tell) {
+    b.begin(function*() {
       let x = 0
       yield startDisplay(() => {
         return [x]
@@ -354,7 +338,7 @@ describe('Bard', () => {
   it('passes the state to the render function', () => {
     store = Store(isString, state => state + 'x')
     b = Bard(store, v => view = v)
-    b.begin(function*(tell) {
+    b.begin(function*() {
       yield startDisplay(state => {
         return [state]
       })
@@ -362,7 +346,7 @@ describe('Bard', () => {
         return [state + '1234']
       })
       yield wait(1)
-      tell({})
+      yield perform({})
       yield wait(1)
     })
 
@@ -374,7 +358,7 @@ describe('Bard', () => {
   })
 
   it('reverts the display when the stack frame that rendered it pops', () => {
-    b.begin(function*(tell) {
+    b.begin(function*() {
       yield startDisplay(state => {
         return ['outside']
       })
@@ -397,7 +381,7 @@ describe('Bard', () => {
   })
 
   it('renders even if more stack frames have been pushed on top of the one that is rendering', () => {
-    b.begin(function*(tell) {
+    b.begin(function*() {
       yield startDisplay(() => {
         return ['outside']
       })
@@ -412,29 +396,15 @@ describe('Bard', () => {
     expect(view.inputLines).toEqual(['input outside'])
   })
 
-  it('renders when a timer goes off', () => {
-    b.begin(function*(tell) {
-      let count = 0
-      yield startTimer(1, () => {
-        count++
-      })
-      yield startDisplay(() => [count])
-      yield wait(2)
-    })
-    expect(view.displayLines).toEqual([0])
-    jest.runTimersToTime(1001)
-    expect(view.displayLines).toEqual([1])
-  })
-
   it('errors if you yield something weird', () => {
-    b.begin(function*(tell) {
+    b.begin(function*() {
       yield {boo: 'hoo'}
     })
     expect(view.error.message).toEqual('You `yield`ed something weird: {"boo":"hoo"}')
   })
 
   it('halts after an error', () => {
-    b.begin(function*(tell) {
+    b.begin(function*() {
       yield function*() {
         yield 'bork'
       }
@@ -469,7 +439,7 @@ describe('Bard', () => {
   })
 
   it('forces a redraw', () => {
-    b.begin(function*(tell) {
+    b.begin(function*() {
       let redraws = 0
       yield startDisplay(() => [redraws++])
       yield wait(1)

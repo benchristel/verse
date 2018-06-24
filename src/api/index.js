@@ -36,6 +36,8 @@ def(v.isString,  'isString')
 def(v.isNumber,  'isNumber')
 def(v.isGeneratorFunction,
                  'isGeneratorFunction')
+def(v.isIterator,
+                 'isIterator')
 def(v.isObject,  'isObject')
 def(v.isFunction,
                  'isFunction')
@@ -59,6 +61,7 @@ def(v.startInputDisplay,
                  'startInputDisplay')
 def(v.log,       'log')
 def(v.jump,      'jump')
+def(v.perform,   'perform')
 
 function def(x, name) {
   // guard against non-existent functions being added to
