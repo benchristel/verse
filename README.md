@@ -19,7 +19,7 @@ define({
     let name = yield waitForInput("Hello! What's your name?")
     yield log('Nice to meet you, ' + name + '!')
     yield wait(1)
-    yield retry()
+    yield retry(run())
   }
 })
 ```
