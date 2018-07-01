@@ -34,10 +34,10 @@ export default function Environment(onOutput) {
       }
     }
 
-    const getStateType = window.getStateType || {} // (() => ({}))
+    const getStateType = window.getStateType || (() => ({}))
     const reducer = window.reducer
     runningApp = Bard(
-      Store(getStateType, reducer),
+      Store(getStateType(), reducer),
       v => {
         view = {...view, ...v}
         onOutput(view)

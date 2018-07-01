@@ -124,6 +124,7 @@ describe('Environment', () => {
   })
 
   it('runs an app that uses the store', () => {
+    jest.useFakeTimers()
     env.deploy('main.js', `
       define({
         getStateType() {
@@ -136,6 +137,7 @@ describe('Environment', () => {
 
         *run() {
           yield startDisplay(state => [state])
+          yield wait(1)
           yield perform({})
           yield perform({})
           yield perform({})
@@ -144,6 +146,8 @@ describe('Environment', () => {
       })
     `)
     env.run()
+    expect(view.displayLines).toEqual([0])
+    jest.runTimersToTime(1001)
     expect(view.displayLines).toEqual([3])
   })
 
@@ -156,7 +160,6 @@ describe('Environment', () => {
 
         *hey() {
           blargh()
-
         }
       })
     `)
