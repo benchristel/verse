@@ -1,4 +1,4 @@
-import Definer from '../Definer'
+import Definer from './Definer'
 import { Bard, Store, has } from './index'
 import init from './init'
 

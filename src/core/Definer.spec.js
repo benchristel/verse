@@ -1,5 +1,5 @@
 import Definer from './Definer'
-import { action } from './verse'
+import { action } from '.'
 
 describe('Definer', () => {
   let global, definer

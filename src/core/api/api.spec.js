@@ -1,4 +1,4 @@
-import './api'
+import '.'
 
 describe('isIterator', () => {
   it('is false for a function', () => {

@@ -1,5 +1,5 @@
 import Environment from './Environment'
-import '../api'
+import './api'
 
 describe('Environment', () => {
   let env, view

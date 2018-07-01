@@ -1,5 +1,5 @@
-import { has, isGeneratorFunction } from './verse'
-import { renameFunction } from './verse/functionalUtils'
+import { has, isGeneratorFunction } from '.'
+import { renameFunction } from './functionalUtils'
 
 export default function Definer(global) {
   let definitions = {}

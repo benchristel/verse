@@ -1,5 +1,5 @@
 import { action } from './action'
-import  '../api'
+import  './api'
 
 describe('action', () => {
   it('returns a function', () => {

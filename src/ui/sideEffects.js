@@ -1,5 +1,5 @@
 import nextTurn from './nextTurn'
-import Environment from './verse/Environment'
+import Environment from '../core/Environment'
 import debounce from 'debounce'
 import store from './store'
 import { display } from './actions'

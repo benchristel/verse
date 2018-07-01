@@ -1,5 +1,5 @@
 import sideEffects from '../sideEffects'
-import { has } from '../verse'
+import { has } from '../../core'
 
 export function loadFiles(objectThatMapsFileNamesToContents, actions) {
   if (has('main.js', objectThatMapsFileNamesToContents)) {

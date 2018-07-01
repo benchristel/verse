@@ -1,5 +1,5 @@
-import { action } from '../verse/action'
-import * as v from '../verse'
+import { action } from '../action'
+import * as v from '..'
 
 /*
  * Functional utilities

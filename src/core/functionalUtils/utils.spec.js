@@ -10,7 +10,7 @@ import {
   count
 } from '.'
 
-import '../../api'
+import '../api'
 
 describe('uppercase', () => {
   it('does nothing to the empty string', () => {
