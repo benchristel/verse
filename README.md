@@ -44,7 +44,7 @@ You can find the [**Verse Documentation** here](https://benchristel.github.io/ve
   useful software. Verse is designed to scale seamlessly
   from 10 lines of code to 10,000.
 - **Open Source.** The code powering Verse is free for
-  anyone to inspect, use and remix, and its history is
+  anyone to inspect, use, and remix, and its history is
   saved on Github. Verse will always remain free for anyone
   to use. It will grow and change, but you'll always be able
   to use an older version of it if you really want to.
