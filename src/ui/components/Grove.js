@@ -24,6 +24,7 @@ export default connectProps(class extends React.Component {
       <div className="Grove">
         <Backdrop>
           <CenteredContainer height="650px" width="1034px">
+            <Links/>
             <LeftPane/>
             <RightPane/>
           </CenteredContainer>
@@ -32,6 +33,23 @@ export default connectProps(class extends React.Component {
     )
   }
 })
+
+let Links = () => {
+  return (
+    <div className="links">
+      <a href="https://benchristel.github.io/verse">
+        Read the Docs
+      </a> |&nbsp;
+      <a href="https://facebook.com/VerseCode">
+        Get help on Facebook
+      </a> |
+      By using Verse you agree to the&nbsp;
+      <a href="https://benchristel.github.io/verse/tos">
+        Terms of Service
+      </a>
+    </div>
+  )
+}
 
 let LeftPane = connectProps(props => {
   return (
