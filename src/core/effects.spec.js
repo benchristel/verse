@@ -1,13 +1,14 @@
-import { Bard, waitForInput } from './index'
+import { waitForInput } from './index'
+import { Process } from './Process'
 
 describe('waitForInput', () => {
-  let store, view, b
+  let store, view, p
   beforeEach(() => {
     store = {
       emit: jest.fn(),
       getState: jest.fn()
     }
-    b = Bard(store, v => view = v)
+    p = Process(store, v => view = v)
   })
 
   afterEach(() => {
@@ -15,7 +16,7 @@ describe('waitForInput', () => {
   })
 
   it('prints the prompt', () => {
-    b.begin(function *() {
+    p.begin(function *() {
       yield waitForInput('Your message here')
     })
 
@@ -28,7 +29,7 @@ describe('waitForInput', () => {
   })
 
   it('defaults the prompt to blank', () => {
-    b.begin(function *() {
+    p.begin(function *() {
       yield waitForInput()
     })
 
@@ -40,34 +41,34 @@ describe('waitForInput', () => {
 
   it('lets you enter a blank line', () => {
     let line
-    b.begin(function *() {
+    p.begin(function *() {
       line = yield waitForInput()
     })
-    b.receiveKeydown({key: 'Enter'})
+    p.receiveKeydown({key: 'Enter'})
     expect(line).toBe('')
   })
 
   it('returns entered text', () => {
     let line
-    b.begin(function *() {
+    p.begin(function *() {
       line = yield waitForInput()
     })
-    b.receiveKeydown({key: 'h'})
-    b.receiveKeydown({key: 'i'})
-    b.receiveKeydown({key: 'Enter'})
+    p.receiveKeydown({key: 'h'})
+    p.receiveKeydown({key: 'i'})
+    p.receiveKeydown({key: 'Enter'})
     expect(line).toBe('hi')
   })
 
   it('echoes text as you type', () => {
-    b.begin(function *() {
+    p.begin(function *() {
       yield waitForInput()
     })
-    b.receiveKeydown({key: 'h'})
+    p.receiveKeydown({key: 'h'})
     expect(view.inputLines).toEqual([
       '',
       '> h_'
     ])
-    b.receiveKeydown({key: 'i'})
+    p.receiveKeydown({key: 'i'})
     expect(view.inputLines).toEqual([
       '',
       '> hi_'
@@ -75,15 +76,15 @@ describe('waitForInput', () => {
   })
 
   it('backspaces', () => {
-    b.begin(function *() {
+    p.begin(function *() {
       yield waitForInput()
     })
-    b.receiveKeydown({key: 'h'})
+    p.receiveKeydown({key: 'h'})
     expect(view.inputLines).toEqual([
       '',
       '> h_'
     ])
-    b.receiveKeydown({key: 'Backspace'})
+    p.receiveKeydown({key: 'Backspace'})
     expect(view.inputLines).toEqual([
       '',
       '> _'
@@ -91,10 +92,10 @@ describe('waitForInput', () => {
   })
 
   it('does nothing if you backspace when there is no input', () => {
-    b.begin(function *() {
+    p.begin(function *() {
       yield waitForInput()
     })
-    b.receiveKeydown({key: 'Backspace'})
+    p.receiveKeydown({key: 'Backspace'})
     expect(view.inputLines).toEqual([
       '',
       '> _'
@@ -102,10 +103,10 @@ describe('waitForInput', () => {
   })
 
   it('clears the input display when it\'s done', () => {
-    b.begin(function *() {
+    p.begin(function *() {
       yield waitForInput()
     })
-    b.receiveKeydown({key: 'Enter'})
+    p.receiveKeydown({key: 'Enter'})
     expect(view.inputLines).toEqual([])
   })
 })

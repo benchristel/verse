@@ -1,5 +1,6 @@
 import Definer from './Definer'
-import { Bard, Store, has } from './index'
+import { Store, has } from './index'
+import { Process } from './Process'
 import init from './init'
 
 export default function Environment(onOutput) {
@@ -36,7 +37,7 @@ export default function Environment(onOutput) {
 
     const getStateType = window.getStateType || (() => ({}))
     const reducer = window.reducer
-    runningApp = Bard(
+    runningApp = Process(
       Store(getStateType(), reducer),
       v => {
         view = {...view, ...v}
