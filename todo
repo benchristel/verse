@@ -1,4 +1,3 @@
-- license
 - code of conduct
 
 // deployment status
@@ -38,8 +37,6 @@
 
 - provide a better means of hiding the display pane. startDisplay(() => [])
   should show the display but print nothing.
-- Errors thrown from app code shouldn't crash the editor. Wrap
-  all calls to user-defined functions in try/catch
 - display an error when the user creates one effect object
   but yields a different one (the most likely scenario is
   that they forgot to yield the first effect).
@@ -48,28 +45,12 @@
 - change "Run" to "Restart" while the program is running.
 - clear the display and log when a program exits. Currently,
   it's hard to tell whether the program is still running.
-- highlight locations of syntax errors with
-  ```
-  .myMarker {
-      background: #fcc;
-      position: absolute;
-      border-radius: 1em;
-  }
-
-  import Ace from 'brace'
-  const AceRange = Ace.acequire('ace/range').Range
-  session.addMarker(new AceRange(1, 4, 2, 10), "myMarker");
-  ```
 
 
 # LOW-RISK FEATURES
 
-- test framework
-  define({
-    "test something blah blah": () => {
-      check(1 + 1, isNumber)
-    },
-  })
+- Timer wait()s should return a list of key events that
+  happened while the program was waiting.
 - button and API to clear log
 - save/load
 - create a `debug()` function that prints to the log and
@@ -80,26 +61,3 @@
 # BREAKING CHANGES
 
 - rename reducer to updater
-
-# ICEBOX
-
-- add a "Cancel" button that cancels the current I/O wait,
-  and causes it to return a special sentinel value.
-- some way to implement waitForCharOrTimeout - maybe an effect
-  that simulates a keypress? Maybe a startSkippableAnimation effect?
-  ```
-  let animation = skippableAnimation(function*() => {
-
-  })
-
-  yield start(animation)
-  yield waitForChar()
-  yield skipToEnd(animation)
-  ```
-- prevent the eval'd script from accessing `window` or any
-  properties on `window`. Always bind `this` when calling
-  app functions (strict mode defaults `this` to undefined).
-  Eval'd code can access `window` anyway, by doing this:
-  (x => x('this'))(eval)
-- Minimize the security risk of evaling code from localStorage
-  when the page loads.
