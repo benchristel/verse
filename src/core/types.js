@@ -1,5 +1,5 @@
 import { partialApply } from './functionalUtils'
-import { has, isIn, mapObject, objectsHaveSameKeys } from './objects'
+import { has, mapObject, objectsHaveSameKeys } from './objects'
 import { _expect } from '.'
 
 export function satisfies(type, value) {

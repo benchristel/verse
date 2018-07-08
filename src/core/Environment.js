@@ -1,5 +1,6 @@
 import Definer from './Definer'
-import { Store, has } from './index'
+import { has } from './objects'
+import { Store } from './Store'
 import { Process } from './Process'
 import init from './init'
 
