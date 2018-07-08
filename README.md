@@ -93,3 +93,8 @@ Copyright © 2018, Ben Christel
 
 Verse is distributed under the
 [GNU General Public License, Version 3](./LICENSE.md).
+
+This goes without saying, but to clarify: you may distribute
+code you write *using* Verse under any license you choose.
+Verse imposes no restrictions on what you can do with code
+that you write.
