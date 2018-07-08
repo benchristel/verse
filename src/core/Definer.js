@@ -1,4 +1,5 @@
-import { has, isGeneratorFunction } from '.'
+import { has } from './objects'
+import { isGeneratorFunction } from './types'
 import { renameFunction } from './functionalUtils'
 
 export default function Definer(global) {

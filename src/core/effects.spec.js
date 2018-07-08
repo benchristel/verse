@@ -1,4 +1,4 @@
-import { waitForInput } from './index'
+import { waitForInput } from './effects'
 import { Process } from './Process'
 
 describe('waitForInput', () => {

@@ -61,6 +61,7 @@ def(v.startInputDisplay,
                  'startInputDisplay')
 def(v.log,       'log')
 def(v.jump,      'jump')
+def(v.retry,     'retry')
 def(v.perform,   'perform')
 
 function def(x, name) {
