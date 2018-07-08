@@ -86,3 +86,10 @@ To work on the code for **Verse itself**, do the following:
 1. In another terminal window, `yarn run test` to start the
   tests (they'll re-run automatically when you change code).
 1. Commit your changes and submit a pull request.
+
+## License
+
+Copyright © 2018, Ben Christel
+
+Verse is distributed under the
+[GNU General Public License, Version 3](./LICENSE.md).
