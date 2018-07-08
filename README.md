@@ -76,6 +76,20 @@ And, perhaps most importantly...
 
 ## Contributing
 
+### What to work on
+
+Here are some areas where Verse could be improved:
+
+- Refactoring, especially in the UI code
+- Handling/reporting of errors
+- Documentation
+
+Changes to the API aren't likely to be accepted, even if
+they're backwards-compatible. This is because I'm trying to
+keep the API minimal.
+
+### How
+
 To work on the code for **Verse itself**, do the following:
 
 1. Fork and clone this repo.
