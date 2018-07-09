@@ -159,7 +159,13 @@ If this process doesn't make sense for the software you're trying to build, **do
 
 ## Feedback
 
-> The first consideration is to get integration to be continuous and to make deployments to test and production environments trivial. Defects hide and fester in the speculative world between written code and the environment in which it will eventually be run. If, on the other hand, developers see the effects their code will have on production immediately, the defect count will plummet.
+> The first consideration is to get integration to be
+> continuous and to make deployments to test and production
+> environments trivial. Defects hide and fester in the
+> speculative world between written code and the environment
+> in which it will eventually be run. If, on the other hand,
+> developers see the effects their code will have on
+> production immediately, the defect count will plummet.
 > -- https://daedtech.com/how-to-actually-reduce-software-defects/
 
 - Others have described the benefits of fast feedback
