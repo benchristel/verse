@@ -23,7 +23,6 @@
 - disable Cmd+L "go to line number" hotkey - it's very
   surprising if you're expecting Cmd+L to focus the URL bar.
 - disable "run" button when "can't run" is shown
-- rewrite pico-fermi-bagel to work with the new API
 - latent bug: once multiple files are supported, what will happen
   if some files have syntax errors when Verse first starts?
   How will those errors be reported to the user? One way of
