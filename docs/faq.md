@@ -40,12 +40,12 @@ complex return values, convoluted semantics—all these are
 roadblocks for the novice who just wants to do a very basic
 thing.
 
-However, Verse is also designed with professionals in mind,
+However, Verse is also designed with experts in mind,
 which means that the programming interface must not cause
 maintenance problems as applications grow in complexity,
 *even if the interface is used naïvely*. It's always
-possible for a professional programmer to build better
-interfaces on top of a deficient one, but the
+possible for a skilled programmer to build a better
+interface on top of a clunky one, but the
 purpose of Verse is to make it so they don't have to.
 Or, to put it another way—the interface should
 make good design easy, and maybe even inevitable.
