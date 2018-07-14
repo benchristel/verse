@@ -47,7 +47,7 @@ programming experience.
 By using Verse, you agree to our [Terms of Service](./tos).
 We know you won't read them, so here's the TL;DR:
 
-- Don't be evil.
+- Be kind.
 - Don't sue us.
 
 Have fun!
