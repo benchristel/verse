@@ -5,7 +5,7 @@ import { editorText } from '../selectors'
 import { findSyntaxErrorLocations } from '../findSyntaxErrorLocations'
 
 function* checkSyntax() {
-  yield delay(700)
+  yield delay(300)
   let code = yield select(editorText)
   yield put(markSyntaxErrors(findSyntaxErrorLocations(code)))
 }
