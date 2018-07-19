@@ -17,6 +17,7 @@ export function Process(store, view) {
     receiveKeydown,
     stop,
     redraw,
+    perform,
   }
 
   function begin(generator) {
@@ -41,6 +42,11 @@ export function Process(store, view) {
 
   function redraw() {
     handleErrors(updateScreen)
+  }
+
+  function perform(action) {
+    store.emit(action)
+    updateScreen()
   }
 
   function run(returnFromYield) {

@@ -167,6 +167,64 @@ describe('Environment', () => {
     expect(view.error.verseStack).toEqual(['hey', 'run'])
   })
 
+  const cheaterRoutine = `
+    define({
+      *run() {
+        yield waitForever()
+      },
+
+      *cheater(arg) {
+        // this function is not reachable except by cheating
+        yield log('it works: ' + arg)
+      }
+    })
+  `
+
+  it('runs a user-specified routine', () => {
+    env.deploy('main.js', cheaterRoutine)
+    env.run('cheater("wow")')
+    expect(view.logLines).toEqual(['it works: wow'])
+  })
+
+  it('crashes if the user-specified routine does not eval', () => {
+    env.deploy('main.js', cheaterRoutine)
+    env.run('not javascript')
+    expect(view.error.message).toEqual('Unexpected identifier')
+  })
+
+  const cheaterAction = `
+    define({
+      getStateType() {
+        return {score: isNumber}
+      },
+
+      reducer({score}, action) {
+        return {score: score + action.points}
+      },
+
+      score: action('points'),
+
+      *run() {
+        yield startDisplay(state => ['score: ' + state.score])
+        yield waitForever()
+      }
+    })
+  `
+
+  it('performs a user-specified action', () => {
+    env.deploy('main.js', cheaterAction)
+    env.run()
+    env.perform('score(10**6)')
+    expect(view.displayLines).toEqual(['score: 1000000'])
+  })
+
+  it('crashes if the user-specified action does not eval', () => {
+    env.deploy('main.js', cheaterAction)
+    env.run()
+    env.perform('score(10***6)')
+    expect(view.error.message).toEqual('Unexpected token *')
+  })
+
   function typeKeys(text) {
     for (let ch of text) env.receiveKeydown({key: ch})
   }

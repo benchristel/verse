@@ -23,6 +23,10 @@ export default connectProps(props => {
       onChange={text => {props.changeEditorText(text, props.currentlyEditingFile)}}
       onLoad={configure}
       onBlur={save}
+      onSelectionChange={a => {
+        let selectedText = a.session.getTextRange(a.session.selection.getRange())
+        props.changeEditorSelection(selectedText)
+      }}
       name="AceEditor"
       editorProps={{$blockScrolling: Infinity}} // prevent stupid warning
       style={{width: '100%', height: '608px', top: '32px', position: 'absolute'}}

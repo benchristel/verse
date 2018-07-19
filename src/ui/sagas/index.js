@@ -1,7 +1,7 @@
 import { delay } from 'redux-saga'
-import { put, takeLatest, select } from 'redux-saga/effects'
+import { put, takeLatest, takeEvery, select } from 'redux-saga/effects'
 import { markSyntaxErrors } from '../actions'
-import { editorText } from '../selectors'
+import { editorText, selectedEditorText } from '../selectors'
 import { findSyntaxErrorLocations } from '../findSyntaxErrorLocations'
 import { core } from '../core'
 
@@ -28,11 +28,28 @@ function *deployAllFiles({files}) {
   }
 }
 
+function *cheat({method}) {
+  let selected = yield select(selectedEditorText)
+  console.log('cheat')
+  switch (method) {
+    case 'jump':
+    console.log('jump!', selected)
+    core.run(selected)
+    return
+
+    case 'perform':
+    console.log('perform!')
+    core.perform(selected)
+    return
+  }
+}
+
 export function* main() {
   yield takeLatest('runApp', runApp)
   yield takeLatest('changeEditorText', checkSyntax)
   yield takeLatest('changeEditorText', deployFile)
   yield takeLatest('loadFiles', deployAllFiles)
+  yield takeEvery('cheat', cheat)
 
   yield *checkSyntax()
 }

@@ -11,6 +11,7 @@ export default combineReducers({
   isErrorPanelShown,
   syntaxErrorLocations,
   crash,
+  editorSelection,
 })
 
 function logs(curr=[], action) {
@@ -114,6 +115,16 @@ function crash(curr=null, action) {
   switch (action.type) {
     case 'display':
     return action.error
+
+    default:
+    return curr
+  }
+}
+
+function editorSelection(curr='', action) {
+  switch (action.type) {
+    case 'changeEditorSelection':
+    return action.selectedText
 
     default:
     return curr

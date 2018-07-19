@@ -1,4 +1,6 @@
+export * from './changeEditorSelection'
 export * from './changeEditorText'
+export * from './cheat'
 export * from './display'
 export * from './hideErrorPanel'
 export * from './loadFiles'

@@ -14,7 +14,8 @@ export default function Environment(onOutput) {
     deploy,
     run,
     clean,
-    receiveKeydown
+    receiveKeydown,
+    perform
   }
 
   function deploy(filename, code) {
@@ -27,7 +28,7 @@ export default function Environment(onOutput) {
     }
   }
 
-  function run() {
+  function run(routineCallExpression) {
     if (runningApp) runningApp.stop()
     view = blankView()
     for (let name in stagedModules) {
@@ -36,16 +37,29 @@ export default function Environment(onOutput) {
       }
     }
 
-    const getStateType = window.getStateType || (() => ({}))
-    const reducer = window.reducer
-    runningApp = Process(
-      Store(getStateType(), reducer),
-      v => {
-        view = {...view, ...v}
-        onOutput(view)
-      })
+    { /* start the process with a fresh store */
+      const getStateType = window.getStateType || (() => ({}))
+      const reducer = window.reducer
+      runningApp = Process(
+        Store(getStateType(), reducer),
+        v => {
+          view = {...view, ...v}
+          onOutput(view)
+        })
+    }
+
     stagedModules = {}
-    runningApp.begin(init)
+    if (routineCallExpression) {
+      try {
+        const routine = (e => e(routineCallExpression))(eval)
+        runningApp.begin(routine)
+      } catch (error) {
+        view = {...view, error}
+        onOutput(view)
+      }
+    } else {
+      runningApp.begin(init)
+    }
   }
 
   /**
@@ -59,6 +73,18 @@ export default function Environment(onOutput) {
     if (runningApp) {
       runningApp.receiveKeydown(event)
       onOutput(view)
+    }
+  }
+
+  function perform(actionExpression) {
+    if (runningApp) {
+      try {
+        const action = (e => e(actionExpression))(eval)
+        runningApp.perform(action)
+      } catch (error) {
+        view = {...view, error}
+        onOutput(view)
+      }
     }
   }
 
