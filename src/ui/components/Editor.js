@@ -2,7 +2,6 @@ import React from 'react'
 import connectProps from './connectProps'
 import AceEditor from 'react-ace'
 import { editorText } from '../selectors'
-import storage from '../storage'
 import { getLineInfo } from 'acorn'
 import { findEndOfToken } from '../findEndOfToken'
 
@@ -22,19 +21,12 @@ export default connectProps(props => {
       value={text}
       onChange={text => {props.changeEditorText(text, props.currentlyEditingFile)}}
       onLoad={configure}
-      onBlur={save}
       name="AceEditor"
       editorProps={{$blockScrolling: Infinity}} // prevent stupid warning
       style={{width: '100%', height: '608px', top: '32px', position: 'absolute'}}
       markers={props.syntaxErrorLocations.map(toMarker(text))}
     />
   )
-
-  function save() {
-    storage.storeFile(
-      props.currentlyEditingFile,
-      editorText(props))
-  }
 })
 
 function configure(editor) {

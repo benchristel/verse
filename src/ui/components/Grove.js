@@ -10,7 +10,7 @@ import Pane from './Pane'
 import Terminal from './Terminal'
 import storage from '../storage'
 import stackParser from '../stackParser'
-import { getSyntaxErrors } from '../selectors'
+import { anySyntaxErrors, getSyntaxErrors } from '../selectors'
 
 export default connectProps(class extends React.Component {
   componentWillMount() {
@@ -68,7 +68,7 @@ const RightPane = connectProps(props => {
       <Pane style={{height: '32px', top: 0, backgroundColor: '#888', zIndex: 10, padding: '4px 6px'}}>
         <Button onClick={props.runApp}>Run</Button>
       </Pane>
-      <Hide If={!props.isErrorPanelShown || getSyntaxErrors(props).length === 0}>
+      <Hide If={!props.isErrorPanelShown || !anySyntaxErrors(props)}>
         <Pane style={{backgroundColor: '#db6', zIndex: 30, padding: '12px'}}>
           <ErrorPanel />
         </Pane>
@@ -97,7 +97,7 @@ const EditorHeaderBar = connectProps(props => {
 const StatusBadge = connectProps(props => {
   let message = 'OK'
   let className = 'StatusBadge'
-  if (getSyntaxErrors(props).length) {
+  if (anySyntaxErrors(props)) {
     message = "Can't run"
     className += ' error'
   }

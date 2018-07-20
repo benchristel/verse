@@ -1,9 +1,10 @@
 import { delay } from 'redux-saga'
 import { put, takeLatest, select } from 'redux-saga/effects'
 import { markSyntaxErrors } from '../actions'
-import { editorText } from '../selectors'
+import { anySyntaxErrors, editorText } from '../selectors'
 import { findSyntaxErrorLocations } from '../findSyntaxErrorLocations'
 import { core } from '../core'
+import storage from '../storage'
 
 function* checkSyntax() {
   yield delay(300)
@@ -21,6 +22,18 @@ function *deployFile({text, file}) {
   core.deploy(file, text)
 }
 
+function *save({text, file}) {
+  yield delay(1000)
+  if (yield select(anySyntaxErrors)) {
+    console.log('not saving; there are errors')
+    // don't save
+  } else {
+    console.log('saving')
+    // TODO: what about other files that may be unsaved?
+    yield storage.storeFile(file, text)
+  }
+}
+
 function *deployAllFiles({files}) {
   yield delay(0) // make the compiler happy
   if (files['main.js'] !== undefined) {
@@ -32,6 +45,7 @@ export function* main() {
   yield takeLatest('runApp', runApp)
   yield takeLatest('changeEditorText', checkSyntax)
   yield takeLatest('changeEditorText', deployFile)
+  yield takeLatest('changeEditorText', save)
   yield takeLatest('loadFiles', deployAllFiles)
 
   yield *checkSyntax()
