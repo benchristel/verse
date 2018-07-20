@@ -1,9 +1,12 @@
+import { display } from './actions'
 import { core } from './core'
+import store from './store'
 
 document.body.addEventListener('keydown', event => {
   if (event.target !== document.body) return
   if (!isNonPrintingKey(event) && !modifierKeysPressed(event)) {
-    core.receiveKeydown(event)
+    let view = core.receiveKeydown(event)
+    store.dispatch(display(view))
     event.preventDefault()
   }
 })

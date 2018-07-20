@@ -4,7 +4,7 @@ import './api'
 describe('Environment', () => {
   let env, view
   beforeEach(() => {
-    env = Environment(v => view = v)
+    env = Environment()
   })
 
   afterEach(() => {
@@ -21,13 +21,13 @@ describe('Environment', () => {
 
   it('can define a "hello world" program', () => {
     env.run()
-    env.deploy('main.js', helloWorld)
+    view = env.deploy('main.js', helloWorld)
     expect(view.displayLines).toEqual(['hello world'])
   })
 
   it('outputs all the display components', () => {
     env.run()
-    env.deploy('main.js', helloWorld)
+    let view = env.deploy('main.js', helloWorld)
     expect(view).toEqual({
       logLines: [],
       displayLines: ['hello world'],
@@ -58,14 +58,14 @@ describe('Environment', () => {
 
   it('reports an error if one of the modules fails to eval', () => {
     env.deploy('main.js', helloWorld + '}') // syntax error!
-    env.run()
+    let view = env.run()
     expect(view.syntaxErrors['main.js'].toString()).toContain('SyntaxError')
   })
 
   it('hot-swaps code', () => {
     env.run()
     env.deploy('main.js', helloWorld)
-    env.deploy('main.js', helloWorld.replace('hello world', 'changed'))
+    let view = env.deploy('main.js', helloWorld.replace('hello world', 'changed'))
     expect(view.displayLines).toEqual(['changed'])
   })
 
@@ -73,7 +73,7 @@ describe('Environment', () => {
     env.deploy('main.js', helloWorld)
     env.run()
     env.deploy('main.js', helloWorld.replace('hello world', 'changed'))
-    env.run()
+    view = env.run()
     expect(view.displayLines).toEqual(['changed'])
   })
 
@@ -88,17 +88,17 @@ describe('Environment', () => {
 
   it('runs an interactive app', () => {
     env.deploy('main.js', echo)
-    env.run()
+    view = env.run()
     expect(view.inputLines).toEqual([
       '',
       '> _'
     ])
-    typeKeys('abc')
+    view = typeKeys('abc')
     expect(view.inputLines).toEqual([
       '',
       '> abc_'
     ])
-    env.receiveKeydown({key: 'Enter'})
+    view = env.receiveKeydown({key: 'Enter'})
     expect(view.logLines).toEqual(['abc'])
     expect(view.inputLines).toEqual([])
   })
@@ -119,12 +119,11 @@ describe('Environment', () => {
     env.run()
     env.deploy('main.js', munge.replace('return input', 'return reverse(input)'))
     typeKeys('abc')
-    env.receiveKeydown({key: 'Enter'})
+    view = env.receiveKeydown({key: 'Enter'})
     expect(view.logLines).toEqual(['cba'])
   })
 
   it('runs an app that uses the store', () => {
-    jest.useFakeTimers()
     env.deploy('main.js', `
       define({
         getStateType() {
@@ -145,9 +144,9 @@ describe('Environment', () => {
         }
       })
     `)
-    env.run()
+    view = env.run()
     expect(view.displayLines).toEqual([0])
-    jest.runTimersToTime(1001)
+    view = env.tickFrames(60)
     expect(view.displayLines).toEqual([3])
   })
 
@@ -163,11 +162,13 @@ describe('Environment', () => {
         }
       })
     `)
-    env.run()
+    view = env.run()
     expect(view.error.verseStack).toEqual(['hey', 'run'])
   })
 
   function typeKeys(text) {
-    for (let ch of text) env.receiveKeydown({key: ch})
+    let v = view
+    for (let ch of text) v = env.receiveKeydown({key: ch})
+    return v
   }
 })

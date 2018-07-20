@@ -1,4 +1,9 @@
+import { isNumber } from './types'
+
 export function wait(seconds) {
+  if (!isNumber(seconds)) {
+    throw new Error('wait(...) must be passed the number of seconds to wait, but you passed ' + seconds)
+  }
   return {
     effectType: 'wait',
     seconds

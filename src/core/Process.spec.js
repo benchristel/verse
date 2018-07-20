@@ -2,8 +2,6 @@ import { Store, perform } from './index'
 import { Process } from './Process'
 import './api'
 
-jest.useFakeTimers()
-
 describe('Process', () => {
   const blankView = {
     error: null,
@@ -12,17 +10,17 @@ describe('Process', () => {
     inputLines: [],
   }
 
-  let store, view, p
+  let store, p
   beforeEach(() => {
     store = {
       emit: jest.fn(),
       getState: jest.fn()
     }
-    p = Process(store, v => view = v)
+    p = Process(store, v => v) // TODO delete callback
   })
 
   it('runs a simple routine', () => {
-    p.begin(function*() {
+    let view = p.begin(function*() {
       yield perform('once upon a time')
     })
     expect(view.error).toBeNull()
@@ -34,8 +32,32 @@ describe('Process', () => {
       yield wait(1)
       yield perform('once upon a time')
     })
+    p.tickFrames(59)
     expect(store.emit).not.toBeCalled()
-    jest.runTimersToTime(1001)
+    p.tickFrames(1)
+    expect(store.emit).toBeCalledWith('once upon a time')
+  })
+
+  it('execute multiple waits in a single turn if many frames have passed', () => {
+    p.begin(function*() {
+      yield wait(0.1)
+      yield wait(0.1)
+      yield wait(0.1)
+      yield perform('once upon a time')
+      yield wait(1)
+      yield perform('not called')
+    })
+    p.tickFrames(60)
+    expect(store.emit).toBeCalledWith('once upon a time')
+    expect(store.emit).not.toBeCalledWith('not called')
+  })
+
+  it('ignores waits for zero or negative amounts of time', () => {
+    p.begin(function*() {
+      yield wait(0)
+      yield wait(-1)
+      yield perform('once upon a time')
+    })
     expect(store.emit).toBeCalledWith('once upon a time')
   })
 
@@ -47,34 +69,22 @@ describe('Process', () => {
       yield perform('there was a dog')
     })
     expect(store.emit).not.toBeCalled()
-    jest.runTimersToTime(1001)
+    p.tickFrames(60)
     expect(store.emit).toBeCalledWith('once upon a time')
     expect(store.emit).not.toBeCalledWith('there was a dog')
-    jest.runTimersToTime(1000)
+    p.tickFrames(60)
     expect(store.emit).toBeCalledWith('there was a dog')
   })
 
   it('waits forever', () => {
-    p.begin(function*() {
+    let view = p.begin(function*() {
       yield waitForever()
       yield perform('should never happen')
     })
 
     expect(view.error).toBeNull()
-    jest.runTimersToTime(2 << 32)
+    p.tickFrames(0xffffffff)
     expect(store.emit).not.toBeCalled()
-  })
-
-  it('cancels the wait when it is stopped', () => {
-    let sideEffect = false
-    p.begin(function*() {
-      yield wait(1)
-      sideEffect = true
-    })
-    jest.runTimersToTime(500)
-    p.stop()
-    jest.runTimersToTime(2000)
-    expect(sideEffect).toBe(false)
   })
 
   it('ignores keypresses while pausing', () => {
@@ -203,7 +213,7 @@ describe('Process', () => {
 
   it('loops', () => {
     let iterations = 0
-    p.begin(function*() {
+    let view = p.begin(function*() {
       yield function* retryable() {
         yield perform(iterations++)
         if (iterations < 3) yield retryable()
@@ -216,7 +226,7 @@ describe('Process', () => {
   })
 
   it('aborts if it senses an infinite loop of retries', () => {
-    p.begin(function* main() {
+    let view = p.begin(function* main() {
       yield retry(main)
     })
     expect(view).toEqual({
@@ -228,7 +238,7 @@ describe('Process', () => {
   })
 
   it('aborts if it senses infinite recursion', () => {
-    p.begin(function* main() {
+    let view = p.begin(function* main() {
       yield main
     })
     expect(view).toEqual({
@@ -240,7 +250,7 @@ describe('Process', () => {
   })
 
   it('logs a message', () => {
-    p.begin(function*() {
+    let view = p.begin(function*() {
       yield log('hello, world!')
     })
 
@@ -251,7 +261,7 @@ describe('Process', () => {
   })
 
   it('logs multiple messages', () => {
-    p.begin(function*() {
+    let view = p.begin(function*() {
       yield log('hello!')
       yield log('goodbye!')
     })
@@ -263,7 +273,7 @@ describe('Process', () => {
   })
 
   it('plugs the display into a render function', () => {
-    p.begin(function*() {
+    let view = p.begin(function*() {
       yield startDisplay(() => {
         return ['whoa']
       })
@@ -279,7 +289,7 @@ describe('Process', () => {
   })
 
   it('re-renders when a stack frame pops', () => {
-    p.begin(function*() {
+    let view = p.begin(function*() {
       let x = 0
       yield startDisplay(() => {
         return [x]
@@ -291,8 +301,8 @@ describe('Process', () => {
 
   it('passes the state to the render function', () => {
     store = Store(isString, state => state + 'x')
-    p = Process(store, v => view = v)
-    p.begin(function*() {
+    p = Process(store)
+    let view = p.begin(function*() {
       yield startDisplay(state => {
         return [state]
       })
@@ -306,13 +316,13 @@ describe('Process', () => {
 
     expect(view.displayLines).toEqual([''])
     expect(view.inputLines).toEqual(['1234'])
-    jest.runTimersToTime(1000)
+    view = p.tickFrames(60)
     expect(view.displayLines).toEqual(['x'])
     expect(view.inputLines).toEqual(['x1234'])
   })
 
   it('reverts the display when the stack frame that rendered it pops', () => {
-    p.begin(function*() {
+    let view = p.begin(function*() {
       yield startDisplay(state => {
         return ['outside']
       })
@@ -326,16 +336,16 @@ describe('Process', () => {
       yield wait(1)
     })
     expect(view.displayLines).toEqual(['outside'])
-    jest.runTimersToTime(1001)
+    view = p.tickFrames(60)
     // now we're in the inner function*()
     expect(view.displayLines).toEqual(['inside'])
-    jest.runTimersToTime(1000)
+    view = p.tickFrames(60)
     // now we're back out
     expect(view.displayLines).toEqual(['outside'])
   })
 
   it('renders even if more stack frames have been pushed on top of the one that is rendering', () => {
-    p.begin(function*() {
+    let view = p.begin(function*() {
       yield startDisplay(() => {
         return ['outside']
       })
@@ -343,7 +353,7 @@ describe('Process', () => {
         return ['input outside']
       })
       yield function*() {
-        yield wait(1)
+        yield waitForever()
       }
     })
     expect(view.displayLines).toEqual(['outside'])
@@ -351,14 +361,14 @@ describe('Process', () => {
   })
 
   it('errors if you yield something weird', () => {
-    p.begin(function*() {
+    let view = p.begin(function*() {
       yield {boo: 'hoo'}
     })
     expect(view.error.message).toEqual('You `yield`ed something weird: {"boo":"hoo"}')
   })
 
   it('halts after an error', () => {
-    p.begin(function*() {
+    let view = p.begin(function*() {
       yield function*() {
         yield 'bork'
       }
@@ -366,12 +376,12 @@ describe('Process', () => {
     })
     expect(view.error.message).toBe('You `yield`ed something weird: "bork"')
     expect(view.logLines).toEqual([])
-    p.redraw() // should do nothing
+    view = p.redraw() // should do nothing
     expect(view.error.message).toBe('You `yield`ed something weird: "bork"')
   })
 
   it('renders an error thrown by the display function', () => {
-    p.begin(function*() {
+    let view = p.begin(function*() {
       yield startDisplay(() => {
         throw new Error('yikes')
       })
@@ -381,25 +391,25 @@ describe('Process', () => {
 
   it('renders an error thrown during a redraw', () => {
     let fail = false
-    p.begin(function*() {
+    let view = p.begin(function*() {
       yield startDisplay(() => {
         if (fail) throw new Error('yikes')
       })
       yield wait(1)
     })
     fail = true
-    p.redraw() // should not throw
+    view = p.redraw() // should not throw
     expect(view.error.message).toBe('yikes')
   })
 
   it('forces a redraw', () => {
-    p.begin(function*() {
+    let view = p.begin(function*() {
       let redraws = 0
       yield startDisplay(() => [redraws++])
       yield wait(1)
     })
     expect(view.displayLines).toEqual([1])
-    p.redraw()
+    view = p.redraw()
     expect(view.displayLines).toEqual([2])
   })
 })

@@ -4,7 +4,7 @@ import { Store } from './Store'
 import { Process } from './Process'
 import init from './init'
 
-export default function Environment(onOutput) {
+export default function Environment() {
   const definer = Definer(window)
   let runningApp = null
   let stagedModules = {}
@@ -14,21 +14,21 @@ export default function Environment(onOutput) {
     deploy,
     run,
     clean,
-    receiveKeydown
+    receiveKeydown,
+    tickFrames,
   }
 
   function deploy(filename, code) {
     if (runningApp) {
       evalModule(filename, code)
-      runningApp.redraw()
-      onOutput(view)
+      view = {...view, ...runningApp.redraw()}
     } else {
       stagedModules[filename] = code
     }
+    return view
   }
 
   function run() {
-    if (runningApp) runningApp.stop()
     view = blankView()
     for (let name in stagedModules) {
       if (has(name, stagedModules)) {
@@ -38,14 +38,10 @@ export default function Environment(onOutput) {
 
     const getStateType = window.getStateType || (() => ({}))
     const reducer = window.reducer
-    runningApp = Process(
-      Store(getStateType(), reducer),
-      v => {
-        view = {...view, ...v}
-        onOutput(view)
-      })
+    runningApp = Process(Store(getStateType(), reducer))
     stagedModules = {}
-    runningApp.begin(init)
+    view = {...view, ...runningApp.begin(init)}
+    return view
   }
 
   /**
@@ -57,9 +53,16 @@ export default function Environment(onOutput) {
 
   function receiveKeydown(event) {
     if (runningApp) {
-      runningApp.receiveKeydown(event)
-      onOutput(view)
+      view = {...view, ...runningApp.receiveKeydown(event)}
     }
+    return view
+  }
+
+  function tickFrames(frames) {
+    if (runningApp) {
+      view = {...view, ...runningApp.tickFrames(frames)}
+    }
+    return view
   }
 
   /* PRIVATE METHODS */

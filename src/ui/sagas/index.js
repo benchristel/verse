@@ -1,10 +1,22 @@
 import { delay } from 'redux-saga'
-import { put, takeLatest, select } from 'redux-saga/effects'
-import { markSyntaxErrors } from '../actions'
+import { fork, put, take, takeLatest, select } from 'redux-saga/effects'
+import { AnimationFrameTicker } from './AnimationFrameTicker'
+import { display, markSyntaxErrors } from '../actions'
 import { anySyntaxErrors, editorText } from '../selectors'
 import { findSyntaxErrorLocations } from '../findSyntaxErrorLocations'
 import { core } from '../core'
 import storage from '../storage'
+
+export function* main() {
+  yield takeLatest('runApp', runApp)
+  yield takeLatest('changeEditorText', checkSyntax)
+  yield takeLatest('changeEditorText', deployFile)
+  yield takeLatest('changeEditorText', save)
+  yield takeLatest('loadFiles', deployAllFiles)
+  yield fork(animationFrameThread)
+
+  yield *checkSyntax()
+}
 
 function* checkSyntax() {
   yield delay(300)
@@ -14,12 +26,14 @@ function* checkSyntax() {
 
 function *runApp() {
   yield delay(1)
-  core.run()
+  let view = core.run()
+  yield put(display(view))
 }
 
 function *deployFile({text, file}) {
   yield delay(15)
-  core.deploy(file, text)
+  let view = core.deploy(file, text)
+  yield put(display(view))
 }
 
 function *save({text, file}) {
@@ -37,16 +51,16 @@ function *save({text, file}) {
 function *deployAllFiles({files}) {
   yield delay(0) // make the compiler happy
   if (files['main.js'] !== undefined) {
-    core.deploy('main.js', files['main.js'])
+    let view = core.deploy('main.js', files['main.js'])
+    yield put(display(view))
   }
 }
 
-export function* main() {
-  yield takeLatest('runApp', runApp)
-  yield takeLatest('changeEditorText', checkSyntax)
-  yield takeLatest('changeEditorText', deployFile)
-  yield takeLatest('changeEditorText', save)
-  yield takeLatest('loadFiles', deployAllFiles)
-
-  yield *checkSyntax()
+function *animationFrameThread() {
+  const frameChannel = AnimationFrameTicker()
+  while (1) {
+    let elapsedFrames = yield take(frameChannel)
+    let view = core.tickFrames(elapsedFrames)
+    yield put(display(view))
+  }
 }

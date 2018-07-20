@@ -1,4 +1,4 @@
-import { waitForInput } from './effects'
+import { wait, waitForInput } from './effects'
 import { Process } from './Process'
 
 describe('waitForInput', () => {
@@ -8,7 +8,7 @@ describe('waitForInput', () => {
       emit: jest.fn(),
       getState: jest.fn()
     }
-    p = Process(store, v => view = v)
+    p = Process(store)
   })
 
   afterEach(() => {
@@ -16,7 +16,7 @@ describe('waitForInput', () => {
   })
 
   it('prints the prompt', () => {
-    p.begin(function *() {
+    view = p.begin(function *() {
       yield waitForInput('Your message here')
     })
 
@@ -29,7 +29,7 @@ describe('waitForInput', () => {
   })
 
   it('defaults the prompt to blank', () => {
-    p.begin(function *() {
+    let view = p.begin(function *() {
       yield waitForInput()
     })
 
@@ -63,12 +63,12 @@ describe('waitForInput', () => {
     p.begin(function *() {
       yield waitForInput()
     })
-    p.receiveKeydown({key: 'h'})
+    view = p.receiveKeydown({key: 'h'})
     expect(view.inputLines).toEqual([
       '',
       '> h_'
     ])
-    p.receiveKeydown({key: 'i'})
+    view = p.receiveKeydown({key: 'i'})
     expect(view.inputLines).toEqual([
       '',
       '> hi_'
@@ -79,12 +79,12 @@ describe('waitForInput', () => {
     p.begin(function *() {
       yield waitForInput()
     })
-    p.receiveKeydown({key: 'h'})
+    view = p.receiveKeydown({key: 'h'})
     expect(view.inputLines).toEqual([
       '',
       '> h_'
     ])
-    p.receiveKeydown({key: 'Backspace'})
+    view = p.receiveKeydown({key: 'Backspace'})
     expect(view.inputLines).toEqual([
       '',
       '> _'
@@ -106,7 +106,17 @@ describe('waitForInput', () => {
     p.begin(function *() {
       yield waitForInput()
     })
-    p.receiveKeydown({key: 'Enter'})
+    view = p.receiveKeydown({key: 'Enter'})
     expect(view.inputLines).toEqual([])
+  })
+})
+
+describe('wait', () => {
+  it('throws an error if you pass undefined', () => {
+    expect(() => wait()).toThrow(new Error('wait(...) must be passed the number of seconds to wait, but you passed undefined'))
+  })
+
+  it('throws an error if you pass a string', () => {
+    expect(() => wait('hi')).toThrow(new Error('wait(...) must be passed the number of seconds to wait, but you passed hi'))
   })
 })

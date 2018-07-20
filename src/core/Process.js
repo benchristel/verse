@@ -1,46 +1,54 @@
 import { isIterator, isGeneratorFunction, lastOf } from '.'
 
-export function Process(store, view) {
+export function Process(store) {
   let stack = []
   let waitingForChar = false
-  let waitTimeout = null
+  let framesLeftToWait = 0
+  let gotosThisTurn = 0
 
   /* view caches */
   let error = null
   let logLines = []
   let displayLines = []
   let inputLines = []
-  let gotosThisTurn = 0
 
   return {
     begin,
     receiveKeydown,
-    stop,
+    tickFrames,
     redraw,
   }
 
   function begin(generator) {
     push(generator)
     run()
+    return view()
   }
 
   function receiveKeydown({key}) {
-    if (!waitingForChar) return
-    run(key)
+    if (waitingForChar) run(key)
+    return view()
   }
 
-  function stop() {
-    while (stack.length) pop()
-    /* Clearing the timeout does not affect behavior--
-     * once all stack frames are popped, the timer callback
-     * is a no-op. However, clearing it removes a reference
-     * to this Process that would otherwise prevent it from
-     * being garbage-collected. */
-    clearTimeout(waitTimeout)
+  function tickFrames(frames) {
+    let unconsumedFrames = frames
+    while (unconsumedFrames > 0 && framesLeftToWait > 0) {
+      if (unconsumedFrames < framesLeftToWait) {
+        framesLeftToWait -= unconsumedFrames
+        unconsumedFrames = 0
+      } else {
+        // elapsed frames exceed the wait
+        unconsumedFrames -= framesLeftToWait
+        framesLeftToWait = 0
+        run()
+      }
+    }
+    return view()
   }
 
   function redraw() {
     handleErrors(updateScreen)
+    return view()
   }
 
   function run(returnFromYield) {
@@ -48,22 +56,17 @@ export function Process(store, view) {
   }
 
   function handleErrors(mightFail) {
-    if (error) {
-      outputView()
-      return
-    }
+    if (error) return
     try {
       error = null
       mightFail()
     } catch (e) {
       error = e
-      outputView()
     }
   }
 
   function runOrThrow(returnFromYield) {
     waitingForChar = false
-    waitTimeout = null
     let saga
 
     // TODO: a limit of 100 is really small. Optimize
@@ -107,8 +110,12 @@ export function Process(store, view) {
 
       case 'wait':
       gotosThisTurn = 0
-      updateScreen()
-      waitTimeout = setTimeout(run, effect.seconds * 1000)
+      if (effect.seconds > 0) {
+        framesLeftToWait = effect.seconds * 60
+        updateScreen()
+      } else {
+        run()
+      }
       return
 
       case 'waitForever':
@@ -132,7 +139,6 @@ export function Process(store, view) {
 
       case 'log':
       logLines.push(effect.message)
-      outputView()
       run()
       return
 
@@ -152,7 +158,6 @@ export function Process(store, view) {
 
       default:
       error = new Error('You `yield`ed something weird: ' + JSON.stringify(effect))
-      outputView()
       return
     }
   }
@@ -185,15 +190,14 @@ export function Process(store, view) {
 
     displayLines = render ? render(store.getState()) : []
     inputLines = inputRender ? inputRender(store.getState()) : []
-    outputView()
   }
 
-  function outputView() {
-    view({
+  function view() {
+    return {
       logLines,
       displayLines,
       inputLines,
       error,
-    })
+    }
   }
 }
