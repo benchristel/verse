@@ -34,9 +34,9 @@ There are several tutorials available for Verse, linked
 below. Pick the one that best suits your level of
 programming experience.
 
-- [Learn to Code with Verse](./beginner/) _—for complete beginners_
-- [Rapid App Development with JavaScript and Verse](./intermediate/) _—for programmers who don't yet know JavaScript_
-- [The Tao of Verse](./advanced/) _—for JavaScript experts_
+- [Learn to Code with Verse](./tutorials/beginner/) _—for complete beginners_
+- [Rapid App Development with JavaScript and Verse](./tutorials/intermediate/) _—for programmers who don't yet know JavaScript_
+- [The Tao of Verse](./tutorials/advanced/) _—for JavaScript experts_
 
 ## Inside Verse
 
