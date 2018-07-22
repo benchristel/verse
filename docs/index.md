@@ -38,6 +38,7 @@ programming experience.
 - [Rapid App Development with JavaScript and Verse](./tutorials/intermediate/) _—for programmers who don't yet know JavaScript_
 - [The Tao of Verse](./tutorials/advanced/) _—for JavaScript experts_
 
+<!--
 ## Inside Verse
 
 Verse's unorthodox design deserves some explanation. In
@@ -49,6 +50,7 @@ current design.
 - [The Verse Design Diary](./articles/design-diary) _—Mistakes were made (probably)_
 - [Verse Is Worse Than Useless](./articles/worse) _—All the criticisms in one place. Instead of writing your own scathing review, you can just link here_
 - [Frequently-answered questions](./faq)
+-->
 
 ## Reference
 
