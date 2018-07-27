@@ -23,3 +23,15 @@
   /* the "Verse" link to the homepage should not be blue */
   color: #fff
 }
+
+/**
+ * Allow code in headings to be big and green
+ */
+.main-content {
+  h1, h2, h3, h4, h5, h6 {
+    code {
+      color: inherit;
+      font-size: inherit;
+    }
+  }
+}
