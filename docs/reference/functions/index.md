@@ -31,7 +31,7 @@ were not there.
 You can `yield wait(Infinity)` to cause the program to pause
 forever.
 
-#### Example
+#### Example: Wait for 2 seconds
 
 ```js
 define({
@@ -39,6 +39,18 @@ define({
     yield log('This gets output immediately')
     yield wait(2)
     yield log('This gets output after 2 seconds')
+  }
+})
+```
+
+#### Example: Wait forever
+
+```js
+define({
+  *run() {
+    yield log('This gets output immediately')
+    yield wait(Infinity)
+    yield log('This is never output')
   }
 })
 ```
@@ -67,7 +79,7 @@ Possible return values include:
 define({
   *run() {
     let key = yield waitForChar()
-    yield log("You pressed " + key)
+    yield log('You pressed ' + key)
   }
 })
 ```
@@ -75,3 +87,58 @@ define({
 ## Data Processing
 
 ## Magic Definitions
+
+### `displayText()`
+
+If you define a function named `displayText`, its return
+value (converted to a string) will be continuously displayed
+on the screen. Whenever you change your code, the output
+will update.
+
+If `displayText` throws an error instead of returning a
+value, the error will be displayed instead of crashing the
+program.
+
+#### Example: Messing with math
+
+```js
+define({
+  displayText() {
+    return 1 + 2 + 3 + 4 + 5
+  }
+})
+```
+
+### `*run()`
+
+If you define a routine named `run`, it becomes the "entry
+point" to your program. In other words, it's the routine
+that Verse will call to run your program.
+
+If you define both `*run()` and `displayText()`, the
+return value of `displayText()` is shown first. When
+you press a key, the `run` routine starts.
+
+#### Example: A one-line program
+
+```js
+define({
+  *run() {
+    yield log('Hello from *run()')
+  }
+})
+```
+
+#### Example: Defining both `displayText()` and `*run()`
+
+```js
+define({
+  displayText() {
+    return 'This is shown until a key is pressed...'
+  },
+
+  *run() {
+    yield log('...then this is output.')
+  }
+})
+```
