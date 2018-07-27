@@ -20,6 +20,9 @@
 
 # BUGS
 
+- deleting all the code does not make the output of displayText()
+  go away—the function doesn't get undefined if there's no
+  define() call.
 - disable Cmd+L "go to line number" hotkey - it's very
   surprising if you're expecting Cmd+L to focus the URL bar.
 - disable "run" button when "can't run" is shown
