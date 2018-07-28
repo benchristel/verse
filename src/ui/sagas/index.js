@@ -46,7 +46,7 @@ function *save({text, file}) {
     // don't save
   } else {
     // TODO: what about other files that may be unsaved?
-    yield storage.storeFile(file, text)
+    storage.storeFile(file, text)
   }
 }
 
