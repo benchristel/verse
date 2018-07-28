@@ -4,9 +4,7 @@ const FPS = 60
 const msPerFrame = 1000 / FPS
 
 export function AnimationFrameTicker() {
-  console.log('creating new ticker')
   const channel = eventChannel(listener => {
-    console.log('someone subscribed to ticker')
     let lastFrameAt = +new Date()
     function tickFrame() {
       let now = +new Date()

@@ -39,10 +39,8 @@ function *deployFile({text, file}) {
 function *save({text, file}) {
   yield delay(1000)
   if (yield select(anySyntaxErrors)) {
-    console.log('not saving; there are errors')
     // don't save
   } else {
-    console.log('saving')
     // TODO: what about other files that may be unsaved?
     yield storage.storeFile(file, text)
   }
