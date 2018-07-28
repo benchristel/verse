@@ -1,6 +1,7 @@
 import { log, waitForInput, retry } from './effects'
 import { has } from './objects'
 import { isFunction } from './types'
+import { isTruthy, startsWith } from './functionalUtils'
 
 export * from './action'
 export * from './assert'
@@ -10,18 +11,7 @@ export * from './objects'
 export * from './sequences'
 export * from './Store'
 export * from './types'
-
-export function isTruthy(a) {
-  return !!a
-}
-
-export function isExactly(a, b) {
-  return a === b
-}
-
-export function startsWith(prefix, s) {
-  return s.indexOf(prefix) === 0
-}
+export * from './Core.js'
 
 export function runTests(tests) {
   let failures = tests

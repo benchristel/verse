@@ -1,14 +1,14 @@
-import Environment from './Environment'
+import { Core } from './Core'
 import './api'
 
-describe('Environment', () => {
-  let env, view
+describe('Core', () => {
+  let core, view
   beforeEach(() => {
-    env = Environment()
+    core = Core()
   })
 
   afterEach(() => {
-    env.clean()
+    core.clean()
   })
 
   const helloWorld = `
@@ -20,14 +20,14 @@ describe('Environment', () => {
   `
 
   it('can define a "hello world" program', () => {
-    env.run()
-    view = env.deploy('main.js', helloWorld)
+    core.run()
+    view = core.deploy('main.js', helloWorld)
     expect(view.displayLines).toEqual(['hello world'])
   })
 
   it('outputs all the display components', () => {
-    env.run()
-    let view = env.deploy('main.js', helloWorld)
+    core.run()
+    let view = core.deploy('main.js', helloWorld)
     expect(view).toEqual({
       logLines: [],
       displayLines: ['hello world'],
@@ -38,42 +38,42 @@ describe('Environment', () => {
   })
 
   it('cleans up', () => {
-    env.run()
-    env.deploy('main.js', helloWorld)
+    core.run()
+    core.deploy('main.js', helloWorld)
     expect(window.displayText).toBeDefined()
-    env.clean()
+    core.clean()
     expect(window.displayText).not.toBeDefined()
   })
 
   it('does not run code if not explicitly requested to run', () => {
-    env.deploy('main.js', 'window.sideEffect = true')
+    core.deploy('main.js', 'window.sideEffect = true')
     expect(window.sideEffect).not.toBeDefined()
   })
 
   it('DOES run code if requested after the code is deployed', () => {
-    env.deploy('main.js', helloWorld)
-    env.run()
+    core.deploy('main.js', helloWorld)
+    core.run()
     expect(view.displayLines).toEqual(['hello world'])
   })
 
   it('reports an error if one of the modules fails to eval', () => {
-    env.deploy('main.js', helloWorld + '}') // syntax error!
-    let view = env.run()
+    core.deploy('main.js', helloWorld + '}') // syntax error!
+    let view = core.run()
     expect(view.syntaxErrors['main.js'].toString()).toContain('SyntaxError')
   })
 
   it('hot-swaps code', () => {
-    env.run()
-    env.deploy('main.js', helloWorld)
-    let view = env.deploy('main.js', helloWorld.replace('hello world', 'changed'))
+    core.run()
+    core.deploy('main.js', helloWorld)
+    let view = core.deploy('main.js', helloWorld.replace('hello world', 'changed'))
     expect(view.displayLines).toEqual(['changed'])
   })
 
   it('does not reinstate the old version of a function after hot-swap and restart', () => {
-    env.deploy('main.js', helloWorld)
-    env.run()
-    env.deploy('main.js', helloWorld.replace('hello world', 'changed'))
-    view = env.run()
+    core.deploy('main.js', helloWorld)
+    core.run()
+    core.deploy('main.js', helloWorld.replace('hello world', 'changed'))
+    view = core.run()
     expect(view.displayLines).toEqual(['changed'])
   })
 
@@ -87,8 +87,8 @@ describe('Environment', () => {
   `
 
   it('runs an interactive app', () => {
-    env.deploy('main.js', echo)
-    view = env.run()
+    core.deploy('main.js', echo)
+    view = core.run()
     expect(view.inputLines).toEqual([
       '',
       '> _'
@@ -98,7 +98,7 @@ describe('Environment', () => {
       '',
       '> abc_'
     ])
-    view = env.receiveKeydown({key: 'Enter'})
+    view = core.receiveKeydown({key: 'Enter'})
     expect(view.logLines).toEqual(['abc'])
     expect(view.inputLines).toEqual([])
   })
@@ -115,16 +115,16 @@ describe('Environment', () => {
       })
     `
 
-    env.deploy('main.js', munge)
-    env.run()
-    env.deploy('main.js', munge.replace('return input', 'return reverse(input)'))
+    core.deploy('main.js', munge)
+    core.run()
+    core.deploy('main.js', munge.replace('return input', 'return reverse(input)'))
     typeKeys('abc')
-    view = env.receiveKeydown({key: 'Enter'})
+    view = core.receiveKeydown({key: 'Enter'})
     expect(view.logLines).toEqual(['cba'])
   })
 
   it('runs an app that uses the store', () => {
-    env.deploy('main.js', `
+    core.deploy('main.js', `
       define({
         getStateType() {
           return isNumber
@@ -144,14 +144,14 @@ describe('Environment', () => {
         }
       })
     `)
-    view = env.run()
+    view = core.run()
     expect(view.displayLines).toEqual([0])
-    view = env.tickFrames(60)
+    view = core.tickFrames(60)
     expect(view.displayLines).toEqual([3])
   })
 
   it('outputs the stack trace on a crash', () => {
-    env.deploy('main.js', `
+    core.deploy('main.js', `
       define({
         *run() {
           yield *hey()
@@ -162,13 +162,13 @@ describe('Environment', () => {
         }
       })
     `)
-    view = env.run()
+    view = core.run()
     expect(view.error.verseStack).toEqual(['hey', 'run'])
   })
 
   function typeKeys(text) {
     let v = view
-    for (let ch of text) v = env.receiveKeydown({key: ch})
+    for (let ch of text) v = core.receiveKeydown({key: ch})
     return v
   }
 })

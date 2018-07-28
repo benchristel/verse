@@ -81,3 +81,16 @@ export function range(start, end) {
 export function count(collection) {
   return collection.length
 }
+
+
+export function isTruthy(a) {
+  return !!a
+}
+
+export function isExactly(a, b) {
+  return a === b
+}
+
+export function startsWith(prefix, s) {
+  return s.indexOf(prefix) === 0
+}

@@ -4,7 +4,7 @@ import { Store } from './Store'
 import { Process } from './Process'
 import init from './init'
 
-export default function Environment() {
+export function Core() {
   const definer = Definer(window)
   let runningApp = null
   let stagedModules = {}
