@@ -6,7 +6,6 @@ import './index.css'
 import Grove from './ui/components/Grove'
 import registerServiceWorker from './registerServiceWorker'
 import './core/api'
-import './ui/keyboard'
 
 ReactDOM.render(
   <Provider store={store}>

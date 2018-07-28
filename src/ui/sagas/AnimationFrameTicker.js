@@ -1,4 +1,4 @@
-import {eventChannel, buffers} from 'redux-saga';
+import { eventChannel, buffers } from 'redux-saga'
 
 const FPS = 60
 const msPerFrame = 1000 / FPS
