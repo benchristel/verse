@@ -86,6 +86,74 @@ define({
 
 ## Data Processing
 
+### `reverse(text)`
+
+The `reverse()` function returns a backwards copy of the
+string it is passed.
+
+#### Example: Backwards "hello world"
+
+```js
+define({
+  displayText() {
+    return reverse('Hello world!')
+  }
+})
+```
+
+### `uppercase(text)`
+
+The `uppercase()` function returns a copy of the given
+string with each of the characters converted to its
+uppercase equivalent.
+
+Characters in the input `text` that have no uppercase
+variant (such as numbers and punctuation) are not affected.
+Uppercase letters in the input are also left as-is.
+
+#### Example: Uppercasing in Spanish
+
+```js
+define({
+  displayText() {
+    return uppercase('¿Cómo estás?')
+  }
+})
+```
+
+#### Caveats
+
+You might expect that the `uppercase`d version of a string
+would have the same number of characters as the original,
+but this is not always true. For instance, the German
+letter `ß` becomes `SS` when uppercased, so a string
+consisting entirely of `ß` characters will double in length
+when uppercased.
+
+#### See also
+
+- `lowercase`
+
+### `lowercase(text)`
+
+The `lowercase()` function returns a copy of the given
+string with each of the characters converted to its
+lowercase equivalent.
+
+Characters in the input `text` that have no lowercase
+variant (such as numbers and punctuation) are not affected.
+Lowercase letters in the input are also left as-is.
+
+#### Example: Converting a string to lower case
+
+```js
+define({
+  displayText() {
+    return lowercase('i Am sO aNnOyInG')
+  }
+})
+```
+
 ## Magic Definitions
 
 ### `displayText()`
