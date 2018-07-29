@@ -1,8 +1,10 @@
 import React from 'react'
-import connectProps from './connectProps'
 import AceEditor from 'react-ace'
-import { editorText } from '../selectors'
 import { getLineInfo } from 'acorn'
+import debounce from 'lodash.debounce'
+
+import connectProps from './connectProps'
+import { editorText } from '../selectors'
 import { findEndOfToken } from '../findEndOfToken'
 
 import 'brace/mode/javascript'
@@ -19,7 +21,9 @@ export default connectProps(props => {
       theme="xcode"
       focus={true}
       value={text}
-      onChange={text => {props.changeEditorText(text, props.currentlyEditingFile)}}
+      onChange={debounce(text => {
+        props.changeEditorText(text, props.currentlyEditingFile)
+      }, 1)}
       onLoad={configure}
       name="AceEditor"
       editorProps={{$blockScrolling: Infinity}} // prevent stupid warning
