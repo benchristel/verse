@@ -1,3 +1,29 @@
+export function equals(a, b) {
+  if (a instanceof Array) {
+    if (!(b instanceof Array)) {
+      return false
+    }
+
+    if (a.length !== b.length) {
+      return false
+    }
+
+    return a.every((elem, i) => equals(elem, b[i]))
+  }
+
+  if (a instanceof Object) {
+    let aKeys = Object.keys(a)
+
+    if (aKeys.length !== Object.keys(b).length) {
+      return false
+    }
+
+    return aKeys.every(key => equals(a[key], b[key]))
+  }
+
+  return a === b
+}
+
 export function doWith(subject, ...fns) {
   return fns.reduce((value, f) => f(value), subject)
 }

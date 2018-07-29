@@ -1,4 +1,5 @@
 import {
+  equals,
   doWith,
   lowercase,
   replace,
@@ -11,6 +12,76 @@ import {
 } from '.'
 
 import '../api'
+
+describe('equals', () => {
+  it('compares equal primitives', () => {
+    expect(equals(1, 1)).toBe(true)
+  })
+
+  it('compares unequal primitives', () => {
+    expect(equals(1, 2)).toBe(false)
+  })
+
+  it('compares empty arrays', () => {
+    expect(equals([], [])).toBe(true)
+  })
+
+  it('compares an array to a number', () => {
+    expect(equals([], 1)).toBe(false)
+  })
+
+  it('compares a number to an array', () => {
+    expect(equals(1, [])).toBe(false)
+  })
+
+  it('compares arrays of different lengths', () => {
+    expect(equals([], [1])).toBe(false)
+  })
+
+  it('compares arrays whose elements are the same', () => {
+    expect(equals([1, 2, 3], [1, 2, 3])).toBe(true)
+  })
+
+  it('compares different arrays with the same length', () => {
+    expect(equals([1, 2, 3], [1, 2, 5])).toBe(false)
+  })
+
+  it('compares arrays with the same elements in a different order', () => {
+    expect(equals([1, 2, 3], [1, 3, 2])).toBe(false)
+  })
+
+  it('compares empty objects', () => {
+    expect(equals({}, {})).toBe(true)
+  })
+
+  it('compares objects of different sizes', () => {
+    expect(equals({}, {a: 1})).toBe(false)
+  })
+
+  it('compares objects with properties that are equal', () => {
+    expect(equals({a: 1}, {a: 1})).toBe(true)
+  })
+
+  it('compares objects with different property names', () => {
+    expect(equals({a: 1}, {b: 1})).toBe(false)
+  })
+
+  it('compares objects with different property values', () => {
+    expect(equals({a: 1}, {a: 2})).toBe(false)
+  })
+
+  it('compares objects with the same properties in a different order', () => {
+    expect(equals({a: 1, b: 2}, {b: 2, a: 1})).toBe(true)
+  })
+
+  it('compares equal nested objects', () => {
+    expect(equals({a: [{b: 1}]}, {a: [{b: 1}]})).toBe(true)
+  })
+
+  it('compares different nested objects', () => {
+    expect(equals({a: [{b: 1}]}, {a: [{b: 3}]})).toBe(false)
+  })
+})
 
 describe('uppercase', () => {
   it('does nothing to the empty string', () => {

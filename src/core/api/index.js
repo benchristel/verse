@@ -20,6 +20,7 @@ def(v.startsWith,
                  'startsWith')
 def(v.has,       'has')
 def(v.isIn,      'isIn')
+def(v.equals,    'equals')
 def(v.isExactly, 'is')
 def(v.isTruthy,  'isTruthy')
 def(v.isEmpty,   'isEmpty')
