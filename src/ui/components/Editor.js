@@ -1,7 +1,6 @@
 import React from 'react'
 import AceEditor from 'react-ace'
 import { getLineInfo } from 'acorn'
-import debounce from 'lodash.debounce'
 
 import connectProps from './connectProps'
 import { editorText } from '../selectors'
@@ -12,25 +11,37 @@ import 'brace/theme/xcode'
 
 import './Editor.css'
 
-export default connectProps(props => {
-  let text = editorText(props)
-  return (
-    <AceEditor
-      className="Editor"
-      mode="javascript"
-      theme="xcode"
-      focus={true}
-      value={text}
-      onChange={debounce(text => {
-        props.changeEditorText(text, props.currentlyEditingFile)
-      }, 1)}
-      onLoad={configure}
-      name="AceEditor"
-      editorProps={{$blockScrolling: Infinity}} // prevent stupid warning
-      style={{width: '100%', height: '608px', top: '32px', position: 'absolute'}}
-      markers={props.syntaxErrorLocations.map(toMarker(text))}
-    />
-  )
+export default connectProps(class extends React.Component {
+  shouldComponentUpdate() {
+    return !this.debounceTimeout
+  }
+
+  render() {
+    let text = editorText(this.props)
+    return (
+      <AceEditor
+        className="Editor"
+        mode="javascript"
+        theme="xcode"
+        focus={true}
+        value={text}
+        onChange={text => {
+          if (this.debounceTimeout) {
+            clearTimeout(this.debounceTimeout)
+          }
+          this.debounceTimeout = setTimeout(() => {
+            this.debounceTimeout = null
+            this.props.changeEditorText(text, this.props.currentlyEditingFile)
+          }, 1)
+        }}
+        onLoad={configure}
+        name="AceEditor"
+        editorProps={{$blockScrolling: Infinity}} // prevent stupid warning
+        style={{width: '100%', height: '608px', top: '32px', position: 'absolute'}}
+        markers={this.props.syntaxErrorLocations.map(toMarker(text))}
+      />
+    )
+  }
 })
 
 function configure(editor) {
