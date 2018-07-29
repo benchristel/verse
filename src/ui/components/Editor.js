@@ -6,7 +6,7 @@ import connectProps from './connectProps'
 import { editorText } from '../selectors'
 import { findEndOfToken } from '../findEndOfToken'
 
-import 'brace/mode/javascript'
+import '../javascriptEditorMode'
 import 'brace/theme/xcode'
 
 import './Editor.css'
