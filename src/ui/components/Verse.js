@@ -1,5 +1,5 @@
 import React from 'react'
-import './Grove.css'
+import './Verse.css'
 import connectProps from './connectProps'
 import Backdrop from './Backdrop'
 import CenteredContainer from './CenteredContainer'
@@ -20,7 +20,7 @@ export default connectProps(class extends React.Component {
 
   render() {
     return (
-      <div className="Grove">
+      <div className="Verse">
         <Backdrop>
           <CenteredContainer height="650px" width="1034px">
             <Links/>
