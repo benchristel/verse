@@ -166,6 +166,14 @@ describe('Core', () => {
     expect(view.error.verseStack).toEqual(['hey', 'run'])
   })
 
+  it('does not clear syntax errors when a restart of the app is requested', () => {
+    core.run()
+    view = core.deploy('main.js', 'syntax error')
+    expect(view.syntaxErrors['main.js']).toBeDefined()
+    view = core.run()
+    expect(view.syntaxErrors['main.js']).toBeDefined()
+  })
+
   function typeKeys(text) {
     let v = view
     for (let ch of text) v = core.receiveKeydown({key: ch})

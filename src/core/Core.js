@@ -29,7 +29,7 @@ export function Core() {
   }
 
   function run() {
-    view = blankView()
+    view = clearAppView(view)
     for (let name in stagedModules) {
       if (has(name, stagedModules)) {
         evalModule(name, stagedModules[name])
@@ -102,6 +102,13 @@ export function Core() {
       inputLines: [],
       error: null,
       syntaxErrors: {}, // maps filenames to Errors
+    }
+  }
+
+  function clearAppView(view) {
+    return {
+      ...blankView(),
+      syntaxErrors: view.syntaxErrors
     }
   }
 }
