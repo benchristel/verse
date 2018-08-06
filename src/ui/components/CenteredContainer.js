@@ -1,8 +1,7 @@
 import React from 'react'
-import connectProps from './connectProps'
 import './CenteredContainer.css'
 
-export default connectProps(props => {
+export default props => {
   let style = {
     width: props.width,
     height: props.height,
@@ -14,4 +13,4 @@ export default connectProps(props => {
       {props.children}
     </div>
   )
-})
+}

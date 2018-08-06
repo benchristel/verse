@@ -1,17 +1,18 @@
 .Button {
-  background-color: rgba(255, 255, 255, 0.7);
-  font-size: 14px;
+  background-color: rgba(255, 255, 255, 0.1);
+  font-size: 12px;
   padding: 3px 6px;
   height: 24px;
   box-sizing: border-box;
-  color: #444;
-  border: 1px solid;
+  color: #000;
+  border: 2px solid #000;
   cursor: pointer;
   display: inline-block;
   text-transform: uppercase;
+  user-select: none;
 }
 
 .Button:hover {
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: rgba(255, 255, 255, 0.2);
   color: #222;
 }

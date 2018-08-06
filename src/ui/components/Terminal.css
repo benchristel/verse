@@ -1,27 +1,36 @@
 .Terminal {
-  height: 608px;
+  height: 582px;
 
   overflow: hidden;
   white-space: pre-wrap;
 
   color: gold;
-  background: #004;
+  background: black;
+  border: 1px solid #55a;
 
-  font-family: precision, monospace;
-  font-size: 20px;
-  line-height: 24px;
+  padding: 12px;
+
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
+  font-size: 16px;
+  line-height: 20px;
   -webkit-font-smoothing: antialiased;
+}
+
+.Terminal > div {
+  box-sizing: border-box;
+  border: 1px solid goldenrod;
+  background: #004;
+  margin-bottom: 12px;
+  padding: 12px;
 }
 
 .Terminal .logs {
   overflow-y: auto;
-  height: 536px;
-  background-color: #004;
+  height: 582px;
 }
 
 .Terminal .screen {
-  height: 0;
-  background-color: #000;
+  display: none;
 }
 
 .Terminal.showScreen .logs {
@@ -29,15 +38,6 @@
 }
 
 .Terminal.showScreen .screen {
-  height: 464px;
-}
-
-.Terminal .input {
-  height: 72px;
-  background-color: #303038;
-  overflow-y: hidden;
-}
-
-.Terminal .line {
-  padding-left: 2px;
+  display: block;
+  height: 498px;
 }

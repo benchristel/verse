@@ -1,10 +1,5 @@
-@font-face {
-  font-family: 'precision';
-  src: url('./ui/fonts/precision.ttf');
-}
-
 body {
   margin: 0;
   padding: 0;
-  font-family: precision, monospace;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
 }

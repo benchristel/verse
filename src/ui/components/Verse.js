@@ -3,6 +3,7 @@ import './Verse.css'
 import connectProps from './connectProps'
 import Backdrop from './Backdrop'
 import CenteredContainer from './CenteredContainer'
+import Frame from './Frame'
 import Button from './Button'
 import Editor from './Editor'
 import Hide from './Hide'
@@ -22,10 +23,14 @@ export default connectProps(class extends React.Component {
     return (
       <div className="Verse">
         <Backdrop>
-          <CenteredContainer height="650px" width="1034px">
+          <CenteredContainer height="654px" width="1038px">
             <Links/>
-            <LeftPane/>
-            <RightPane/>
+            <Frame>
+              <div style={{position: 'absolute', height: '640px', border: '1px solid #a42', width: '1024px'}}>
+                <LeftPane/>
+                <RightPane/>
+              </div>
+            </Frame>
           </CenteredContainer>
         </Backdrop>
       </div>
@@ -52,8 +57,7 @@ let Links = () => {
 
 let LeftPane = connectProps(props => {
   return (
-    <Pane style={{width: '50%'}}>
-      <EditorHeaderBar/>
+    <Pane style={{width: '512px'}}>
       <Editor/>
     </Pane>
   )
@@ -61,15 +65,21 @@ let LeftPane = connectProps(props => {
 
 const RightPane = connectProps(props => {
   return (
-    <Pane style={{width: '50%', left: '50%', backgroundColor: '#020'}}>
-      <Pane style={{top: '32px'}}>
-        <Terminal/>
-      </Pane>
-      <Pane style={{height: '32px', top: 0, backgroundColor: '#888', zIndex: 10, padding: '4px 6px'}}>
-        <Button onClick={props.runApp}>Run</Button>
+    <Pane style={{width: '512px', left: '512px', backgroundColor: '#020', height: '100%'}}>
+      <Terminal/>
+      <Pane style={{height: '32px', top: 0, backgroundColor: '#444', zIndex: 10, padding: '4px 6px'}}>
+        <Button color={loadButtonColor(props)} onClick={props.showErrorPanel}>
+          Load
+        </Button>
+        <Button color={'#aaa'} onClick={props.runApp}>
+          Test
+        </Button>
+        <Button color={runButtonColor(props)} onClick={props.runApp}>
+          Run
+        </Button>
       </Pane>
       <Hide If={!props.isErrorPanelShown || !anySyntaxErrors(props)}>
-        <Pane style={{backgroundColor: '#db6', zIndex: 30, padding: '12px'}}>
+        <Pane style={{backgroundColor: '#db6', zIndex: 30, padding: '12px', top: '32px'}}>
           <ErrorPanel />
         </Pane>
       </Hide>
@@ -82,34 +92,13 @@ const RightPane = connectProps(props => {
   )
 })
 
-const EditorHeaderBar = connectProps(props => {
-  return (
-    <div className="EditorHeaderBar" style={props.style}>
-      <div className="filename">
-      </div>
-      <StatusBadge
-        onClick={() => props.showErrorPanel()}
-        style={{position: 'absolute', top: '4px', right: '6px'}}/>
-    </div>
-  )
-})
+function loadButtonColor(state) {
+  return anySyntaxErrors(state) ? '#db6' : '#0c9'
+}
 
-const StatusBadge = connectProps(props => {
-  let message = 'OK'
-  let className = 'StatusBadge'
-  if (anySyntaxErrors(props)) {
-    message = "Can't run"
-    className += ' error'
-  }
-  return (
-    <div
-      onClick={props.onClick}
-      className={className}
-      style={props.style}>
-      {message}
-    </div>
-  )
-})
+function runButtonColor(state) {
+  return state.crash ? '#000' : '#0c9'
+}
 
 const ErrorPanel = connectProps(props => (
   <div className="ErrorPanel">{

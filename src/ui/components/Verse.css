@@ -1,58 +1,19 @@
-.CenteredContainer {
-  border-top: 5px solid #aaa;
-  border-left: 5px solid #888;
-  border-bottom: 5px solid #444;
-  border-right: 5px solid #666;
-  box-sizing: border-box;
-}
-
-.EditorHeaderBar {
-  position: absolute;
-  height: 5%;
-  width: 100%;
-  background-color: #2a6;
-}
-
-.EditorHeaderBar .filename {
-  color: #ddd;
-  text-shadow: 0 -1px 0 #444;
-  line-height: 32px;
-  padding-left: 12px;
-  font-size: 20px;
-}
-
-.StatusBadge {
-  box-sizing: border-box;
-  height: 24px;
-  line-height: 26px;
-  width: 120px;
-  background-color: #afa;
-  border-radius: 6px;
-  padding: 0 6px;
-  font-size: 15px;
-  cursor: pointer;
-}
-
-.StatusBadge.error {
-  background-color: #db6;
-}
-
 .ErrorPanel {
   font-family: Monaco, Menlo, "Ubuntu Mono", Consolas, source-code-pro, monospace;
   font-size: 16px;
   white-space: pre-wrap;
+  height: 584px;
 }
 
 .links {
   position: absolute;
-  color: goldenrod;
-  top: -30px;
+  color: #555;
+  top: -20px;
   font-size: 10px;
-  background: rgba(0, 0, 0, 0.8);
 }
 
 .links a,
 .links a:visited {
-  color: #fda;
-  text-decoration: none;
+  color: #226;
+  text-decoration: underline;
 }

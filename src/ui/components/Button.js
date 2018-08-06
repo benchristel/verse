@@ -3,7 +3,10 @@ import './Button.css'
 
 export default props => (
   <div className="Button"
-    style={props.style}
+    style={{
+      border: '2px solid ' + props.color,
+      color: props.color
+    }}
     onClick={props.onClick}>
 
     {props.children}

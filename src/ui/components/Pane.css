@@ -1,7 +1,5 @@
 .Pane {
   position: absolute;
-  bottom: 0px;
-  top: 0px;
   width: 100%;
   box-sizing: border-box;
 }

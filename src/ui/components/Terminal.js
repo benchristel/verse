@@ -24,7 +24,7 @@ export default connectProps(class extends React.Component {
     let classNames = "Terminal"
     if (this.props.appUi.screenLines.length) classNames += ' showScreen'
     return (
-      <Pane style={{height: '600px', width: '100%', zIndex: 10}}>
+      <Pane style={{height: '608px', width: '100%', top: '32px'}}>
         <div className={classNames}>
           <div className="logs">
             {
@@ -36,12 +36,6 @@ export default connectProps(class extends React.Component {
           <div className="screen">
             {
               this.props.appUi.screenLines.map((line, i) =>
-                <div className="line" key={i}>{line}</div>)
-            }
-          </div>
-          <div className="input">
-            {
-              this.props.appUi.inputLines.map((line, i) =>
                 <div className="line" key={i}>{line}</div>)
             }
           </div>

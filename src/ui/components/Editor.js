@@ -37,7 +37,7 @@ export default connectProps(class extends React.Component {
         onLoad={configure}
         name="AceEditor"
         editorProps={{$blockScrolling: Infinity}} // prevent stupid warning
-        style={{width: '100%', height: '608px', top: '32px', position: 'absolute'}}
+        style={{width: '100%', height: '640px', position: 'absolute'}}
         markers={this.props.syntaxErrorLocations.map(toMarker(text))}
       />
     )
