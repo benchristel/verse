@@ -94,3 +94,10 @@ export function perform(action) {
     action
   }
 }
+
+export function lineInput() {
+  return {
+    effectType: 'lineInput',
+    definesInputElement: true
+  }
+}

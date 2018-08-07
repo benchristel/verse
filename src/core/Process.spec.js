@@ -8,6 +8,7 @@ describe('Process', () => {
     logLines: [],
     displayLines: [],
     inputLines: [],
+    form: null,
   }
 
   let store, p
@@ -151,6 +152,38 @@ describe('Process', () => {
     p.receiveKeydown({key: '3'})
     p.receiveKeydown({key: '\n'})
     expect(store.emit).toBeCalledWith('123')
+  })
+
+  it('waits for a form submission', () => {
+    let view = p.begin(function*() {
+      let dog = yield {
+        name: lineInput()
+      }
+      yield perform('Once there was a dog named ' + dog.name)
+    })
+
+    expect(view.form).toEqual({
+      name: {
+        effectType: 'lineInput',
+        definesInputElement: true
+      }
+    })
+    view = p.submitForm({name: 'Jim'})
+    expect(view.form).toBeNull()
+    expect(view.error).toBeNull()
+    expect(store.emit).toBeCalledWith('Once there was a dog named Jim')
+  })
+
+  it('ignores keypresses while waiting for a form submission', () => {
+    let view = p.begin(function*() {
+      yield {
+        name: lineInput()
+      }
+      yield perform('never called')
+    })
+    p.receiveKeydown({key: 'a'})
+    expect(view.error).toBeNull()
+    expect(store.emit).not.toBeCalled()
   })
 
   it('waits for a line of input', () => {

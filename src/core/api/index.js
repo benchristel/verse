@@ -64,6 +64,7 @@ def(v.log,       'log')
 def(v.jump,      'jump')
 def(v.retry,     'retry')
 def(v.perform,   'perform')
+def(v.lineInput, 'lineInput')
 
 function def(x, name) {
   // guard against non-existent functions being added to

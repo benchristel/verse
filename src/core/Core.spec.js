@@ -34,6 +34,7 @@ describe('Core', () => {
       inputLines: [],
       error: null,
       syntaxErrors: {},
+      form: null,
     })
   })
 

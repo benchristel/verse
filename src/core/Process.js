@@ -11,10 +11,12 @@ export function Process(store) {
   let logLines = []
   let displayLines = []
   let inputLines = []
+  let form = null
 
   return {
     begin,
     receiveKeydown,
+    submitForm,
     tickFrames,
     redraw,
   }
@@ -27,6 +29,12 @@ export function Process(store) {
 
   function receiveKeydown({key}) {
     if (waitingForChar) run(key)
+    return view()
+  }
+
+  function submitForm(data) {
+    form = null
+    run(data)
     return view()
   }
 
@@ -93,6 +101,11 @@ export function Process(store) {
       gotosThisTurn++
       push(effect)
       run()
+      return
+    }
+
+    if (Object.values(effect).every(v => /*v &&*/ v.definesInputElement)) {
+      form = effect
       return
     }
 
@@ -198,6 +211,7 @@ export function Process(store) {
       displayLines,
       inputLines,
       error,
+      form,
     }
   }
 }
