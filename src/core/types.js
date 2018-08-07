@@ -22,7 +22,7 @@ export function getDefaultValue(type) {
 
   let likelyDefaults = [null, [], 0, '']
   let value = likelyDefaults.find(type)
-  if (value === undefined) throw 'No default value for type'
+  if (value === undefined) throw new Error('No default value for type')
   return value
 }
 
@@ -85,8 +85,8 @@ export function or(p, q) {
 
 
 export function defaultingTo(defaultValue, predicate) {
-  if (defaultValue === undefined) throw 'Type must have a default value'
-  if (!predicate(defaultValue)) throw 'Given default value does not satisfy the type'
+  if (defaultValue === undefined) throw new Error('Type must have a default value')
+  if (!predicate(defaultValue)) throw new Error('Given default value does not satisfy the type')
 
   let theType = (...args) => predicate(...args)
 

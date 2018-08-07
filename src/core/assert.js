@@ -12,11 +12,13 @@ export function _expect(subject, predicate, ...params) {
     throw new Error('expect() requires a function as the second argument')
   }
   if (!predicate(...params, subject)) {
-    throw {
+    let error = {
       subject, predicate, params,
       toString() {
         return 'Expected that ' + subject + ' ' + predicate.name + ' ' + params.join(', ')
       }
     }
+
+    throw error
   }
 }
