@@ -4,6 +4,7 @@ import { Store } from './Store'
 import { Process } from './Process'
 import { get, tuple, isTruthy, startsWith } from './functionalUtils'
 import { blankView } from './view'
+import { animationFrame } from './events'
 import init from './init'
 
 export function Core() {
@@ -75,7 +76,10 @@ export function Core() {
 
   function tickFrames(frames) {
     if (runningApp) {
-      view = {...view, ...runningApp.tickFrames(frames)}
+      view = {
+        ...view,
+        ...runningApp.receive(animationFrame(frames))
+      }
     }
     return view
   }

@@ -50,6 +50,8 @@ def(v.isNullOr,  'isNullOr')
  * Procedural utilities
  */
 def(action,      'action')
+def(v.waitForEvent,
+                 'waitForEvent')
 def(v.wait,      'wait')
 def(v.waitForever,
                  'waitForever')

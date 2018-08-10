@@ -1,5 +1,7 @@
 import { Store, perform } from './index'
 import { Process } from './Process'
+import { animationFrame } from './events'
+import { wait } from './effects'
 import './api'
 
 describe('Process', () => {
@@ -28,14 +30,25 @@ describe('Process', () => {
     expect(store.emit).toBeCalledWith('once upon a time')
   })
 
+  it('waits for an event from the outside world', () => {
+    let view = p.begin(function*() {
+      let event = yield waitForEvent()
+      yield perform('got ' + event)
+    })
+    expect(store.emit).not.toBeCalled()
+    expect(view.error).toBeNull()
+    p.receive('plot twist')
+    expect(store.emit).toBeCalledWith('got plot twist')
+  })
+
   it('pauses for a specified time', () => {
     p.begin(function*() {
       yield wait(1)
       yield perform('once upon a time')
     })
-    p.tickFrames(59)
+    p.receive(animationFrame(59))
     expect(store.emit).not.toBeCalled()
-    p.tickFrames(1)
+    p.receive(animationFrame(1))
     expect(store.emit).toBeCalledWith('once upon a time')
   })
 
@@ -48,7 +61,7 @@ describe('Process', () => {
       yield wait(1)
       yield perform('not called')
     })
-    p.tickFrames(60)
+    p.receive(animationFrame(60))
     expect(store.emit).toBeCalledWith('once upon a time')
     expect(store.emit).not.toBeCalledWith('not called')
   })
@@ -70,21 +83,21 @@ describe('Process', () => {
       yield perform('there was a dog')
     })
     expect(store.emit).not.toBeCalled()
-    p.tickFrames(60)
+    p.receive(animationFrame(60))
     expect(store.emit).toBeCalledWith('once upon a time')
     expect(store.emit).not.toBeCalledWith('there was a dog')
-    p.tickFrames(60)
+    p.receive(animationFrame(60))
     expect(store.emit).toBeCalledWith('there was a dog')
   })
 
   it('waits forever', () => {
     let view = p.begin(function*() {
-      yield waitForever()
+      yield wait(Infinity)
       yield perform('should never happen')
     })
 
     expect(view.error).toBeNull()
-    p.tickFrames(0xffffffff)
+    p.receive(animationFrame(0xffffffff))
     expect(store.emit).not.toBeCalled()
   })
 
@@ -349,7 +362,7 @@ describe('Process', () => {
 
     expect(view.displayLines).toEqual([''])
     expect(view.inputLines).toEqual(['1234'])
-    view = p.tickFrames(60)
+    view = p.receive(animationFrame(60))
     expect(view.displayLines).toEqual(['x'])
     expect(view.inputLines).toEqual(['x1234'])
   })
@@ -369,10 +382,10 @@ describe('Process', () => {
       yield wait(1)
     })
     expect(view.displayLines).toEqual(['outside'])
-    view = p.tickFrames(60)
+    view = p.receive(animationFrame(60))
     // now we're in the inner function*()
     expect(view.displayLines).toEqual(['inside'])
-    view = p.tickFrames(60)
+    view = p.receive(animationFrame(60))
     // now we're back out
     expect(view.displayLines).toEqual(['outside'])
   })
@@ -441,8 +454,8 @@ describe('Process', () => {
       yield startDisplay(() => [redraws++])
       yield wait(1)
     })
-    expect(view.displayLines).toEqual([1])
+    expect(view.displayLines).toEqual([0])
     view = p.redraw()
-    expect(view.displayLines).toEqual([2])
+    expect(view.displayLines).toEqual([1])
   })
 })

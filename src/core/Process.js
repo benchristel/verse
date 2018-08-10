@@ -3,7 +3,7 @@ import { isIterator, isGeneratorFunction, lastOf } from '.'
 export function Process(store) {
   let stack = []
   let waitingForChar = false
-  let framesLeftToWait = 0
+  let waitingForEvent = false
   let gotosThisTurn = 0
 
   /* view caches */
@@ -15,15 +15,26 @@ export function Process(store) {
 
   return {
     begin,
+    receive,
     receiveKeydown,
     submitForm,
-    tickFrames,
     redraw,
   }
 
   function begin(generator) {
     push(generator)
     run()
+    return view()
+  }
+
+  function receive(event) {
+    // TODO: this check will ultimately become unnecessary.
+    // Remove it when done refactoring to use events
+    // consistently
+    if (waitingForEvent) {
+      waitingForEvent = false
+      run(event)
+    }
     return view()
   }
 
@@ -35,22 +46,6 @@ export function Process(store) {
   function submitForm(data) {
     form = null
     run(data)
-    return view()
-  }
-
-  function tickFrames(frames) {
-    let unconsumedFrames = frames
-    while (unconsumedFrames > 0 && framesLeftToWait > 0) {
-      if (unconsumedFrames < framesLeftToWait) {
-        framesLeftToWait -= unconsumedFrames
-        unconsumedFrames = 0
-      } else {
-        // elapsed frames exceed the wait
-        unconsumedFrames -= framesLeftToWait
-        framesLeftToWait = 0
-        run()
-      }
-    }
     return view()
   }
 
@@ -115,20 +110,20 @@ export function Process(store) {
       run()
       return
 
+      case 'waitForEvent':
+      gotosThisTurn = 0
+      waitingForEvent = true
+      return
+
+      case 'putBackEvent':
+      run()
+      receive(effect.event)
+      return
+
       case 'waitForChar':
       gotosThisTurn = 0
       updateScreen()
       waitingForChar = true
-      return
-
-      case 'wait':
-      gotosThisTurn = 0
-      if (effect.seconds > 0) {
-        framesLeftToWait = effect.seconds * 60
-        updateScreen()
-      } else {
-        run()
-      }
       return
 
       case 'waitForever':

@@ -1,12 +1,39 @@
 import { isNumber } from './types'
+import { animationFrame, isAnimationFrame } from './events'
 
-export function wait(seconds) {
+export function waitForEvent() {
+  return {
+    effectType: 'waitForEvent'
+  }
+}
+
+const epsilon = 1e-6
+
+export function *wait(seconds) {
   if (!isNumber(seconds)) {
     throw new Error('wait(...) must be passed the number of seconds to wait, but you passed ' + seconds)
   }
+  if (seconds <= 0) return
+
+  let secsLeftToWait = seconds
+
+  let event = yield waitForEvent()
+  if (isAnimationFrame(event)) {
+    let elapsedSeconds = event.elapsedFrames / 60
+    secsLeftToWait -= elapsedSeconds
+  }
+  if (secsLeftToWait < epsilon) {
+    let consumedFrames = seconds * 60
+    yield putBackEvent(animationFrame(event.elapsedFrames - consumedFrames))
+  } else {
+    yield retry(wait(secsLeftToWait))
+  }
+}
+
+export function putBackEvent(event) {
   return {
-    effectType: 'wait',
-    seconds
+    effectType: 'putBackEvent',
+    event
   }
 }
 
