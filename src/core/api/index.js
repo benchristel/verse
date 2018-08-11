@@ -1,5 +1,6 @@
 import { action } from '../action'
 import * as v from '..'
+import '../../ensureWindowGlobal'
 
 /*
  * Functional utilities

@@ -1,6 +1,4 @@
-import { log, waitForInput, retry } from './effects'
 import { has } from './objects'
-import { isFunction } from './types'
 import { isTruthy, startsWith } from './functionalUtils'
 
 export * from './action'
@@ -35,16 +33,4 @@ export function getTestFunctions(global) {
     .filter(isTruthy)
     .filter(has('name'))
     .filter(({name}) => startsWith('test_', name))
-}
-
-window.echo = echo
-export function echo(inputProcessorName) {
-  return function* loop() {
-    let input = yield waitForInput()
-    if (!isFunction(window[inputProcessorName])) {
-      throw new Error('' + inputProcessorName + ' is not a function')
-    }
-    yield log(window[inputProcessorName](input))
-    yield retry(loop)
-  }
 }

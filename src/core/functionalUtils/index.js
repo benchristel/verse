@@ -66,7 +66,6 @@ export function curryable(nArgs, fn) {
   return curryableFn
 }
 
-window.partialApply = partialApply
 export function partialApply(fn, firstArgs, name) {
   return {[name]: (...remainingArgs) =>
     fn(...firstArgs, ...remainingArgs)
