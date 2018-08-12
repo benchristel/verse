@@ -31,15 +31,19 @@ c.f. 36 views of mt. fuji
     - david nolan
     - jim coplien
     - bob martin
+    - gary bernhardt
+    - dhh
+    - liz keogh
     - zed shaw
+    - evan czaplicki
   - this is not entirely unexpected
   - they're all operating from different backgrounds, and in
     different contexts
   - what unites us?
   - context includes the needs of the users, the development
-    process, the tools used for development, and the
+    practices, the tools used for development, and the
     backgrounds of the people designing and writing the code.
-  - of these, I believe that the processes and tools used
+  - of these, I believe that the practices and tools used
     to develop code are key.
   - context is notably absent from a lot of the writing
     about software production--especially the element of
