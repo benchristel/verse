@@ -67,7 +67,7 @@ const RightPane = connectProps(props => {
   return (
     <Pane style={{width: '512px', left: '512px', backgroundColor: '#020', height: '100%'}}>
       <Terminal/>
-      <Pane style={{height: '32px', top: 0, backgroundColor: '#444', zIndex: 10, padding: '4px 6px'}}>
+      <Pane style={{height: '32px', top: 0, backgroundColor: '#444', zIndex: 10, padding: '4px 0 4px 13px'}}>
         <Button color={loadButtonColor(props)} onClick={props.showErrorPanel}>
           Load
         </Button>

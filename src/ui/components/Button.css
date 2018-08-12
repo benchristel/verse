@@ -1,7 +1,7 @@
 .Button {
   background-color: rgba(255, 255, 255, 0.1);
   font-size: 12px;
-  padding: 3px 6px;
+  padding: 2px 6px;
   height: 24px;
   box-sizing: border-box;
   color: #000;
@@ -10,6 +10,9 @@
   display: inline-block;
   text-transform: uppercase;
   user-select: none;
+  min-width: 54px;
+  margin-right: 3px;
+  text-align: center;
 }
 
 .Button:hover {
