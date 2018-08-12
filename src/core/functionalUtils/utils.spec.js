@@ -8,7 +8,9 @@ import {
   curryable,
   get,
   range,
-  count
+  count,
+  tuple,
+  identity
 } from '.'
 
 import '../api'
@@ -341,5 +343,30 @@ describe('get', () => {
 
   it('is on the window object', () => {
     expect(window.get).toBe(get)
+  })
+
+  it('curries', () => {
+    expect(get('z')({z: 2})).toBe(2)
+  })
+})
+
+describe('tuple', () => {
+  let add1 = x => x + 1
+  let double = x => x * 2
+
+  it('transforms a value by each given function, returning a tuple of the results', () => {
+    expect(tuple([add1, double], 3)).toEqual([4, 6])
+  })
+
+  it('returns an empty tuple given an empty array of transformers', () => {
+    expect(tuple([], 1)).toEqual([])
+  })
+
+  it('creates a single-element tuple', () => {
+    expect(tuple([identity], 1)).toEqual([1])
+  })
+
+  it('curries', () => {
+    expect(tuple([double, add1])(-1)).toEqual([-2, 0])
   })
 })

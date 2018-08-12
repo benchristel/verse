@@ -2,6 +2,8 @@ import Definer from './Definer'
 import { has } from './objects'
 import { Store } from './Store'
 import { Process } from './Process'
+import { get, tuple, isTruthy, startsWith } from './functionalUtils'
+import { blankView } from './view'
 import init from './init'
 
 export function Core() {
@@ -21,7 +23,12 @@ export function Core() {
   function deploy(filename, code) {
     if (runningApp) {
       evalModule(filename, code)
-      view = {...view, ...runningApp.redraw()}
+      let testResults = runTests(getTestFunctions(window))
+      view = {
+        ...view,
+        testResults,
+        ...runningApp.redraw()
+      }
     } else {
       stagedModules[filename] = code
     }
@@ -33,6 +40,14 @@ export function Core() {
     for (let name in stagedModules) {
       if (has(name, stagedModules)) {
         evalModule(name, stagedModules[name])
+      }
+    }
+
+    if (!runningApp) {
+      let testResults = runTests(getTestFunctions(window))
+      view = {
+        ...view,
+        testResults
       }
     }
 
@@ -95,16 +110,6 @@ export function Core() {
     }
   }
 
-  function blankView() {
-    return {
-      logLines: [],
-      displayLines: [],
-      inputLines: [],
-      error: null,
-      syntaxErrors: {}, // maps filenames to Errors
-    }
-  }
-
   function clearAppView(view) {
     return {
       ...blankView(),
@@ -117,4 +122,29 @@ function exclude(name, object) {
   let copy = {...object}
   delete copy[name]
   return copy
+}
+
+function runTests(tests) {
+  return tests
+    .map(tuple([get('name'), getFailure]))
+    .reduce((results, [name, error]) => {
+      results[name] = error
+      return results
+    }, {})
+
+  function getFailure(test) {
+    try {
+      test()
+    } catch (failure) {
+      return failure
+    }
+    return null
+  }
+}
+
+function getTestFunctions(global) {
+  return Object.values(global)
+    .filter(isTruthy)
+    .filter(has('name'))
+    .filter(({name}) => startsWith('test ', name))
 }

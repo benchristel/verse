@@ -1,5 +1,6 @@
 import { anySyntaxErrors } from './anySyntaxErrors'
 import { loadFiles, display } from '../actions'
+import { blankView } from '../../core/view'
 import reducer from '../reducers'
 
 describe('anySyntaxErrors', () => {
@@ -21,13 +22,11 @@ describe('anySyntaxErrors', () => {
       'foo.js': 'hi',
       'bar.js': 'whoa'
     }))
-    state = reducer(state, display({
-      logLines: [],
-      displayLines: [],
-      inputLines: [],
-      error: null,
+    let view = {
+      ...blankView(),
       syntaxErrors: {'foo.js': new Error('uh oh')}
-    }))
+    }
+    state = reducer(state, display(view))
     expect(anySyntaxErrors(state)).toBe(true)
   })
 })

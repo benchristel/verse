@@ -10,6 +10,7 @@ export default combineReducers({
   currentlyEditingFile,
   isErrorPanelShown,
   syntaxErrorLocations,
+  testResults,
   crash,
 })
 
@@ -104,6 +105,16 @@ function syntaxErrorLocations(curr=[], action) {
 
     case 'markSyntaxErrors':
     return action.syntaxErrorLocations
+
+    default:
+    return curr
+  }
+}
+
+function testResults(curr={}, action) {
+  switch (action.type) {
+    case 'display':
+    return action.testResults
 
     default:
     return curr

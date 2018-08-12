@@ -11,7 +11,7 @@ import Pane from './Pane'
 import Terminal from './Terminal'
 import storage from '../storage'
 import stackParser from '../stackParser'
-import { anySyntaxErrors, getSyntaxErrors } from '../selectors'
+import { anySyntaxErrors, getSyntaxErrors, anyTestFailures } from '../selectors'
 
 export default connectProps(class extends React.Component {
   componentWillMount() {
@@ -71,7 +71,7 @@ const RightPane = connectProps(props => {
         <Button color={loadButtonColor(props)} onClick={props.showErrorPanel}>
           Load
         </Button>
-        <Button color={'#aaa'} onClick={props.runApp}>
+        <Button color={testButtonColor(props)}>
           Test
         </Button>
         <Button color={runButtonColor(props)} onClick={props.runApp}>
@@ -94,6 +94,10 @@ const RightPane = connectProps(props => {
 
 function loadButtonColor(state) {
   return anySyntaxErrors(state) ? '#db6' : '#0c9'
+}
+
+function testButtonColor(state) {
+  return anyTestFailures(state) ? '#f30' : '#0c9'
 }
 
 function runButtonColor(state) {

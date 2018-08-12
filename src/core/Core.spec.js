@@ -34,6 +34,7 @@ describe('Core', () => {
       inputLines: [],
       error: null,
       syntaxErrors: {},
+      testResults: {},
       form: null,
     })
   })
@@ -173,6 +174,47 @@ describe('Core', () => {
     expect(view.syntaxErrors['main.js']).toBeDefined()
     view = core.run()
     expect(view.syntaxErrors['main.js']).toBeDefined()
+  })
+
+  it('runs tests when the code starts running', () => {
+    core.deploy('main.js', `
+      define({
+        testMe() {
+          return 'broken'
+        },
+
+        'test testMe'() {
+          assert(testMe(), is, 'it works')
+        }
+      })
+    `)
+    view = core.run()
+    expect(view.testResults).toEqual({
+      'test testMe': new Error('Tried to assert that\n  broken\nisExactly\n  it works')
+    })
+  })
+
+  it('runs tests when new code is deployed', () => {
+    core.run()
+    let main = `
+      define({
+        testMe() {
+          return 'broken'
+        },
+
+        'test testMe'() {
+          assert(testMe(), is, 'it works')
+        }
+      })
+    `
+    view = core.deploy('main.js', main)
+    expect(view.testResults).toEqual({
+      'test testMe': new Error('Tried to assert that\n  broken\nisExactly\n  it works')
+    })
+    view = core.deploy('main.js', replace('broken', 'it works', main))
+    expect(view.testResults).toEqual({
+      'test testMe': null
+    })
   })
 
   function typeKeys(text) {

@@ -85,6 +85,9 @@ export function renameFunction(fn, nameCreator) {
 }
 
 export function get(key, collection) {
+  if (arguments.length < 2) {
+    return partialApply(get, arguments, 'get')
+  }
   return collection[key]
 }
 
@@ -118,4 +121,15 @@ export function isExactly(a, b) {
 
 export function startsWith(prefix, s) {
   return s.indexOf(prefix) === 0
+}
+
+export function tuple(transformers, value) {
+  if (arguments.length < 2) {
+    return partialApply(tuple, arguments, 'tuple')
+  }
+  return transformers.map(t => t(value))
+}
+
+export function identity(a) {
+  return a
 }

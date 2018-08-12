@@ -1,5 +1,6 @@
 import reducer from '../reducers'
 import { display } from '../actions'
+import { blankView } from '../../core/view'
 
 describe('display', () => {
   let state
@@ -13,13 +14,7 @@ describe('display', () => {
 
   it('hides the error panel if there are no errors', () => {
     state.isErrorPanelShown = true
-    dispatch(display({
-      syntaxErrors: {},
-      error: null,
-      logLines: [],
-      displayLines: [],
-      inputLines: []
-    }))
+    dispatch(display(blankView()))
 
     expect(state.isErrorPanelShown).toBe(false)
   })
@@ -31,7 +26,8 @@ describe('display', () => {
       error: 'bloop',
       logLines: [],
       displayLines: [],
-      inputLines: []
+      inputLines: [],
+      testResults: {},
     }))
 
     expect(state.isErrorPanelShown).toBe(true)
@@ -44,7 +40,8 @@ describe('display', () => {
       error: null,
       logLines: [],
       displayLines: [],
-      inputLines: []
+      inputLines: [],
+      testResults: {},
     }))
 
     expect(state.isErrorPanelShown).toBe(true)
