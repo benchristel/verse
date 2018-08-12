@@ -20,6 +20,9 @@ c.f. 36 views of mt. fuji
 - the practices of software development are at the core of
   all of this. We will build the future. But...
 - we do not know what we are doing
+- we are not like other engineering fields
+- we understand how computers work
+- what we don't understand is ourselves
 
 - Context-free
   - lots of experts think they have programming figured out
