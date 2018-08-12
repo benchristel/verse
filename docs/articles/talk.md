@@ -1,7 +1,8 @@
-# 9 views of human-scale software
+# 8 views of human-scale software
 
 c.f. 36 views of mt. fuji
 
+- what is human-scale software?
 - software should be created with the involvement of the
   people who use it and are affected by it
 - software should be simple. Complexity destroys reliability,
@@ -10,16 +11,21 @@ c.f. 36 views of mt. fuji
   civilization to hugely complex distributed systems and AIs
   that are often optimizing for things that don't
   really benefit us. We risk losing the ability to understand
-  how these systems work, predict their behavior, or
-  explain failures.
-- we want more people to program. Ideally, users should be
-  able to make useful things for themselves.
-- but how can we bring those other people inside, when
-- we ourselves do not know what we are doing
+  how these systems work, predict their behavior, explain
+  failures, or even identify when the systems aren't working
+  as they should.
+- It is our responsibility, as software developers, to
+  create software that works well for its users and is free
+  of errors.
+- the practices of software development are at the core of
+  all of this. We will build the future. But...
+- we do not know what we are doing
+
+- Context-free
   - lots of experts think they have programming figured out
   - "follow these ten steps and you can create more reliable
     software in less time"
-  - unfortunately they all disagree
+  - unfortunately they all disagree about the specifics
     - kent beck
     - sandi metz
     - david nolan
@@ -29,46 +35,126 @@ c.f. 36 views of mt. fuji
   - this is not entirely unexpected
   - they're all operating from different backgrounds, and in
     different contexts
+  - what unites us?
+  - context includes the needs of the users, the development
+    process, the tools used for development, and the
+    backgrounds of the people designing and writing the code.
+  - of these, I believe that the processes and tools used
+    to develop code are key.
   - context is notably absent from a lot of the writing
-    about software production
-    - are we talking about libraries, applications,
-      operating systems?
-    - what application are we building?
-    - who are the users? what types of needs do they have?
-    - writers seem to assume that all software and all
-      users are "the same"
-    - it's just not true
+    about software production--especially the element of
+    *tooling*. We talk a lot about big picture philosophies,
+    and principles, and values, and architectures, but not
+    much about concrete specifics: the ecosystems of tools
+    and practices we use to achieve those higher-level
+    goals. We talk about individual tools and practices,
+    some, but that's not enough. Tools and practices are
+    deeply interdependent.
+  - tools, processes, code form a self-reinforcing ecosystem
+    - in an ecosystem, you can't remove or change one part
+      without disrupting the whole.
+  - a very small-scale example of how tooling affects code:
+    - A coworker suggested marking C++ instance member
+      variables with a trailing underscore.
+    - I thought this unnecessary because our IDE highlights
+      member variables and the underscores made reading the
+      code less pleasant
+    - He pointed out that not everyone who works on this
+      code is going to use the same editor we use.
+  - larger-scale examples:
+    - TDD makes debuggers less useful.
+    - pull requests and code review, or pairing and push to master?
+    - continuous deployment, or gating QA process?
+    - primarily black-box integrated testing,
+      or primarily white-box unit testing?
+    - all of these are process/tooling decisions that affect
+      the shape of the code and the nature of the product.
+      - shape of code: TDD vs integrated testing changes how
+        concerns are united or separated in code modules,
+        which in turn reinforces the testing strategy
+      - nature of product: CI/CD leads to frequent, small
+        releases, prioritizing MTTR over MTBF. QA does the
+        opposite.
+  - We can imagine future tools that would change our
+    practices
+    - We often say "don't do trivial refactorings like
+      whitespace changes or reordering methods in a class
+      as part of a big feature PR, because they just make
+      the diff harder to read". What if we had diff tools
+      that understood the semantics of our language?
   - if we are to say anything falsifiable about software
     development, the context of those statements needs to be
     understood
   - tech changes so fast that no two applications,
     libraries, systems, are really developed in the same
     context
-  - the search is for a "timeless way" of programming
-    in Christopher Alexander's sense
-    - a pattern language that, once learned, allows one to
-      construct useful, ergonomic software within a
-      particular context without having
-      to think everything out from scratch every time.
-    - this means that even "laypeople" can build things that
-      are useful and pleasing to them.
-    - important to Alexander because he wants to improve the
-      built environment on a scale that's infeasible if only
-      architects are doing it
-    - architects love to be "creative"
-    - but constraints actually allow greater creativity by
-      allowing us to focus our attention on what makes our
-      current project unique, rather than being
-      distracted by details that are really invariant across
-      projects
-    - would the creative power of language be improved if
-      we had to restrict ourselves to the most common 800
-      words? Is the creative power of programming improved
-      by only writing assembly language?
-    - the power of language comes from its ability to
-      innovate and leverage higher-level concepts
-    - each pattern in a language specifies a context in
-      which it's appropriate
+  - what we need is a set of reference environments for
+    writing and running code that can be critiqued, as
+    wholes, from various angles. That way we can finally
+    have something knowable to talk about.
+  - Verse is one such environment--designed as a statement
+    about my own views on software development.
+  - Attributes of such an environment
+    - Must be complete and self-contained (as far as
+      possible): one set
+      of tools, one standard library, one way of testing
+      and delivering applications
+    - constrain the development process in some
+      interesting way (with the intention of benefitting
+      developers and/or users). If there are no constraints,
+      the system simply enables "programming" and we're
+      back where we started
+    - Must be minimal - only necessary tools are included.
+      Otherwise, we'll get into arguments (as we do now)
+      about which tools we like better. Our view of the
+      whole system of interacting tools will be impaired--
+      no one will have the whole view
+
+- we need pattern languages for software
+  - like gang of four patterns?
+  - well no.
+  - something like Kathy Sierra's idea of "lots and lots of
+    very high-quality examples"
+  - a pattern language that, once learned, allows one to
+    construct useful, ergonomic software within a
+    particular context without having
+    to think everything out from scratch every time.
+  - Brian Marick on why patterns failed "design patterns
+    started out with not enough building blocks, that were at
+    too low of a level" (https://www.deconstructconf.com/2017/brian-marick-patterns-failed-why-should-we-care)
+  - at a very high level, computers do two things: they
+    perform transformations of data, and they communicate
+    between systems.
+    - Computation and Communication
+    - The tools and techniques we use to
+      accomplish and coordinate these two classes of tasks,
+      I believe, can be largely invariant between systems.
+      These tools and techniques together form patterns.
+      Each tool/technique cannot be considered in isolation;
+      it is related to others by a network of connections.
+    - Examples:
+      - TDD and testing frameworks
+      - type systems, IDEs, refactoring tools, and compilers
+      -
+  - this means that even "laypeople" can build things that
+    are useful and pleasing to them.
+  - important to Alexander because he wants to improve the
+    built environment on a scale that's infeasible if only
+    architects are doing it
+  - architects love to be "creative"
+  - but constraints actually allow greater creativity by
+    allowing us to focus our attention on what makes our
+    current project unique, rather than being
+    distracted by details that are really invariant across
+    projects
+  - would the creative power of language be improved if
+    we had to restrict ourselves to the most common 800
+    words? Is the creative power of programming improved
+    by only writing assembly language?
+  - the power of language comes from its ability to
+    innovate and leverage higher-level concepts
+  - each pattern in a language specifies a context in
+    which it's appropriate
 
 - the context of the rest of this talk is applications
   programming--that's where I have the most experience.
@@ -76,8 +162,7 @@ c.f. 36 views of mt. fuji
   is on the client side, and the network is used just to
   transfer data to a storage medium
 
-
-- is there really such a "timeless way"?
+- do pattern languages for software already exist?
   - Visual Basic applications
   - yes, they're ugly
   - yes, the code is most likely buggy, slow crap
@@ -336,6 +421,9 @@ c.f. 36 views of mt. fuji
 - it will be easy to optimize the parts that are slow
 - storage technology will enable us to push applications
   toward being all-in-memory
+- https://blog.cleancoder.com/uncle-bob/2017/12/09/Dbtails.html
+  Uncle Bob thinks relational databases will go extinct
+  because of SSDs...
 
 - So... let's talk about functional programming.
   - immutable data structures
@@ -470,12 +558,11 @@ touch the *real* UI at all.
   to be locked into those mistakes. I also don't want to
   break people's code with my changes.
 
-- experts disagree
-- pattern languages
-- visual basic
-- fast tests
-- functional programming
-- interfaces are monolithic
-- acceptance testing
-- permanence
-- learning
+- experts disagree (Climbing on Mt. Fuji)
+- pattern languages (Great Wave off Kanagawa)
+- ecosystems (Mount Fuji from the mountains of Totomi)
+- fast tests (watermill at Onden)
+- functions and routines (Lightning below the Summit)
+- interfaces are monolithic (Mishima Pass in Kai Province)
+- acceptance testing (Under Mannen Bridge)
+- permanence (Mount Fuji reflects in Lake Kawaguchi)
