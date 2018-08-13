@@ -3,5 +3,5 @@
   width: 100vw;
   overflow: hidden;
   position: absolute;
-  background: #db8;
+  background: linear-gradient(to bottom, #fda 15px, #ca7 100%);
 }

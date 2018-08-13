@@ -4,7 +4,7 @@
   overflow: hidden;
   white-space: pre-wrap;
 
-  color: gold;
+  color: #fd4;
   background: black;
   border: 1px solid #55a;
 
@@ -18,7 +18,7 @@
 
 .Terminal > div {
   box-sizing: border-box;
-  border: 1px solid goldenrod;
+  border: 1px solid #db8;
   background: #004;
   margin-bottom: 12px;
   padding: 12px;
