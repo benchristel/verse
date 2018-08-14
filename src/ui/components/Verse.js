@@ -9,34 +9,23 @@ import Editor from './Editor'
 import Hide from './Hide'
 import Pane from './Pane'
 import Terminal from './Terminal'
-import storage from '../storage'
 import stackParser from '../stackParser'
 import { anySyntaxErrors, getSyntaxErrors, anyTestFailures } from '../selectors'
 
-export default connectProps(class extends React.Component {
-  componentWillMount() {
-    storage.onLoad(files =>
-      this.props.loadFiles(files, this.props))
-  }
-
-  render() {
-    return (
-      <div className="Verse">
-        <Backdrop>
-          <CenteredContainer height="654px" width="1038px">
-            <Links/>
-            <Frame>
-              <div style={{position: 'absolute', height: '640px', border: '1px solid #a42', width: '1024px'}}>
-                <LeftPane/>
-                <RightPane/>
-              </div>
-            </Frame>
-          </CenteredContainer>
-        </Backdrop>
-      </div>
-    )
-  }
-})
+export default () =>
+  (<div className="Verse">
+    <Backdrop>
+      <CenteredContainer height="654px" width="1038px">
+        <Links/>
+        <Frame>
+          <div style={{position: 'absolute', height: '640px', border: '1px solid #a42', width: '1024px'}}>
+            <LeftPane/>
+            <RightPane/>
+          </div>
+        </Frame>
+      </CenteredContainer>
+    </Backdrop>
+  </div>)
 
 let Links = () => {
   return (

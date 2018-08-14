@@ -2,7 +2,7 @@ import { delay } from 'redux-saga'
 import { fork, put, take, takeLatest, select } from 'redux-saga/effects'
 import { AnimationFrameTicker } from './AnimationFrameTicker'
 import { KeyEventStream } from './KeyEventStream'
-import { display, markSyntaxErrors } from '../actions'
+import { display, markSyntaxErrors, loadFiles } from '../actions'
 import { anySyntaxErrors, editorText } from '../selectors'
 import { findSyntaxErrorLocations } from '../findSyntaxErrorLocations'
 import { Core } from '../../core'
@@ -19,7 +19,12 @@ export function* main() {
   yield fork(animationFrameThread)
   yield fork(keyEventThread)
 
+  yield *readCodeFromStorage()
   yield *checkSyntax()
+}
+
+function *readCodeFromStorage() {
+  yield put(loadFiles(storage.load()))
 }
 
 function* checkSyntax() {
