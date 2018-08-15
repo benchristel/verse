@@ -17,5 +17,9 @@
 
 .Button:hover {
   background-color: rgba(255, 255, 255, 0.2);
-  color: #222;
+}
+
+.Button.selected,
+.Button.selected:hover {
+  background-color: rgba(255, 255, 255, 0.3);
 }

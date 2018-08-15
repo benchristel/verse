@@ -22,10 +22,10 @@
   background: #004;
   margin-bottom: 12px;
   padding: 12px;
+  overflow-y: auto;
 }
 
 .Terminal .logs {
-  overflow-y: auto;
   height: 582px;
 }
 

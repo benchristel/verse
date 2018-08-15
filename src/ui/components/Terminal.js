@@ -24,7 +24,7 @@ export default connectProps(class extends React.Component {
     let classNames = "Terminal"
     if (this.props.appUi.screenLines.length) classNames += ' showScreen'
     return (
-      <Pane style={{height: '608px', width: '100%', top: '32px'}}>
+      <Pane style={{height: '608px', width: '100%'}}>
         <div className={classNames}>
           <div className="logs">
             {

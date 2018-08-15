@@ -1,4 +1,4 @@
-.ErrorPanel {
+.ErrorPanel, .TestResultsPanel {
   font-family: Monaco, Menlo, "Ubuntu Mono", Consolas, source-code-pro, monospace;
   font-size: 16px;
   white-space: pre-wrap;

@@ -12,6 +12,7 @@ export default combineReducers({
   syntaxErrorLocations,
   testResults,
   crash,
+  currentlyInspectingStage,
 })
 
 function logs(curr=[], action) {
@@ -125,6 +126,16 @@ function crash(curr=null, action) {
   switch (action.type) {
     case 'display':
     return action.error
+
+    default:
+    return curr
+  }
+}
+
+function currentlyInspectingStage(curr='run', action) {
+  switch (action.type) {
+    case 'inspectStage':
+    return action.stage
 
     default:
     return curr

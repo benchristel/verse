@@ -11,6 +11,7 @@ import Pane from './Pane'
 import Terminal from './Terminal'
 import stackParser from '../stackParser'
 import { anySyntaxErrors, getSyntaxErrors, anyTestFailures } from '../selectors'
+import { isTruthy } from '../../core'
 
 export default () =>
   (<div className="Verse">
@@ -55,28 +56,48 @@ let LeftPane = connectProps(props => {
 const RightPane = connectProps(props => {
   return (
     <Pane style={{width: '512px', left: '512px', backgroundColor: '#020', height: '100%'}}>
-      <Terminal/>
       <Pane style={{height: '32px', top: 0, backgroundColor: '#444', zIndex: 10, padding: '4px 0 4px 13px'}}>
-        <Button color={loadButtonColor(props)} onClick={props.showErrorPanel}>
+        <Button
+          color={loadButtonColor(props)}
+          onClick={() => props.inspectStage('load')}
+          className={isInspectingStage('load', props) ? 'selected' : ''}>
           Load
         </Button>
-        <Button color={testButtonColor(props)}>
+        <Button
+          color={testButtonColor(props)}
+          onClick={() => props.inspectStage('test')}
+          className={isInspectingStage('test', props) ? 'selected' : ''}>
           Test
         </Button>
-        <Button color={runButtonColor(props)} onClick={props.runApp}>
+        <Button
+          color={runButtonColor(props)}
+          onClick={() => { props.runApp(); props.inspectStage('run') }}
+          className={isInspectingStage('run', props) ? 'selected' : ''}>
           Run
         </Button>
       </Pane>
-      <Hide If={!props.isErrorPanelShown || !anySyntaxErrors(props)}>
-        <Pane style={{backgroundColor: '#db6', zIndex: 30, padding: '12px', top: '32px'}}>
-          <ErrorPanel />
-        </Pane>
-      </Hide>
-      <Hide If={!props.crash}>
-        <Pane style={{top: '32px', backgroundColor: '#000', color: '#fff', zIndex: 20, padding: '12px'}}>
-          <CrashPanel />
-        </Pane>
-      </Hide>
+
+      <Pane style={{top: '32px'}}>
+        <Terminal/>
+
+        <Hide If={!isInspectingStage('load', props)}>
+          <Pane style={{backgroundColor: '#db6', zIndex: 20, padding: '12px'}}>
+            <ErrorPanel />
+          </Pane>
+        </Hide>
+
+        <Hide If={!isInspectingStage('test', props)}>
+          <Pane style={{backgroundColor: '#088', zIndex: 20, padding: '12px'}}>
+            <TestResultsPanel />
+          </Pane>
+        </Hide>
+
+        <Hide If={!isInspectingStage('run', props) || !props.crash}>
+          <Pane style={{backgroundColor: '#000', color: '#fff', zIndex: 20, padding: '12px'}}>
+            <CrashPanel />
+          </Pane>
+        </Hide>
+      </Pane>
     </Pane>
   )
 })
@@ -93,14 +114,36 @@ function runButtonColor(state) {
   return state.crash ? '#000' : '#0c9'
 }
 
-const ErrorPanel = connectProps(props => (
-  <div className="ErrorPanel">{
-    getSyntaxErrors(props).map(e =>
-      `${e.error.toString()}\n\n`
-      + renderStackInfo(e.error))
-      .join('\n\n')
-  }</div>
-))
+const ErrorPanel = connectProps(props => {
+  let syntaxErrors = getSyntaxErrors(props)
+
+  if (syntaxErrors.length > 0) {
+    return (
+      <div className="ErrorPanel">{
+        getSyntaxErrors(props).map(e =>
+          `${e.error.toString()}\n\n`
+          + renderStackInfo(e.error))
+          .join('\n\n')
+      }</div>
+    )
+  } else {
+    return (
+      <div className="ErrorPanel">
+        All code loaded successfully.
+      </div>
+    )
+  }
+})
+
+const TestResultsPanel = connectProps(props => {
+  let testResults = props.testResults
+
+  if (Object.values(testResults).filter(isTruthy).length) {
+    return (<div className="TestResultsPanel">One or more tests failed</div>)
+  } else {
+    return (<div className="TestResultsPanel">All tests passed</div>)
+  }
+})
 
 const CrashPanel = connectProps(props => (
   <div className="ErrorPanel">{
@@ -121,6 +164,10 @@ function renderStackInfo(error) {
       + '()'
   }
   return renderLineNumber(error.stack)
+}
+
+function isInspectingStage(stage, state) {
+  return state.currentlyInspectingStage === stage
 }
 
 function renderLineNumber(stack) {
