@@ -1,8 +1,96 @@
 # 8 views of human-scale software
 
+"Perhaps too, a knowledge more widespread in our culture, so that people outside the field, lay people like me, could also begin to grasp the beauty of programs, could have some idea of what it might mean . . . and would above all, feel helped in their lives, on the same level that they are helped by horses, and roses, and a crackling fire" —Christopher Alexander, foreword to Richard Gabriel's _Patterns of Software_.
+
 c.f. 36 views of mt. fuji
 
 - what is human-scale software?
+
+- HUMAN
+  - end-users of the software. People who are (perhaps indirectly)
+    affected by it. Customers of end-users? People who *don't*
+    use the software.
+  - programmers
+  - ideally these people should work closely together. Perhaps
+    they should even be the same person.
+- SCALE
+  - architectural analogy: cathedrals, pyramids, stonehenge
+    fulfill a human need, but aren't human-scale. They're
+    intentionally meant to evoke the divine, something
+    greater than humans. They do this by *not accommodating us*.
+  - software can impress, awe, terrify, and shock us. I have
+    not seen much end-user software that can inspire a religious
+    experience (though certain programming languages can).
+    IME grandiose software is wielded by the powerful as an
+    instrument of control. Not what I want to create.
+- SOFTWARE
+  - we have these "general-purpose" machines called computers
+  - computers can do anything!
+  - really? anything?
+    - well, sort of, yeah...
+    - it's hard to pin down
+    - as a consultant friend once reminded me, "we can do anything,
+      it's just a question of how much it will cost"
+    - computers are good at:
+      - remembering things we don't want to memorize
+      - doing tedious clerical work really really fast
+        - processing data (map)
+        - selecting subsets of data (filter)
+        - summarizing (reduce)
+      - we understand really really well, by now, how to
+        make computers do these things efficiently.
+    - computers are okay at:
+      - peripherals
+        - visual, textual, motor, paper/ink, other computers,
+          audio, 3D printers, robots...
+        - we can make computers do all these things, but it's
+          a bit awkward... in particular, we need to handle
+          not-normal (exceptional/error) cases. It's hard to
+          come up with good abstractions: logic gets intertwined
+          with the hardware.
+    - computers are bad at:
+      - knowing when to stop
+        - I say this facetiously and informally but I think
+          it's oddly fitting.
+        - the halting problem
+        - AI risk
+        - old code that makes outdated assumptions but lives
+          forever b/c everyone is stuck using it
+      - adapting to change
+      - explaining their behavior
+      - more generally: self-reflection
+        - yeah, we can make neural nets that learn. So?
+        - slime mold can learn to solve a maze. Learning !=
+          self-reflection.
+      - I contend that if we want code to satisfy the following
+        properties, it must be simplified, not made more
+        complex:
+        - adaptability
+        - explicability
+        - expirability
+        The problem with AI is that it tries to give code
+        these properties *independent of* the humans that
+        interact with it. I.e. the code should be able to adapt,
+        explain itself, judge its own actions, etc. rather
+        than making it easy for a human to change, explain,
+        judge it. Depriving humans of the power/responsibility
+        to direct it.
+  - truth to materials
+    - let's be honest about what computers can actually do,
+      not hide their true nature
+
+- The people affected must control the means of software
+  production.
+- Open source is not open enough. In order to hack on
+  OSS, you need fancy tools, special knowledge.
+- Excel exists. My friend's writer/actor brother learned
+  enough JavaScript to create a text adventure game in
+  a framework we wrote. Programming is not just for
+  "extraordinary" people.
+- this sounds revolutionary but I believe it is possible
+  because it has already happened, once.
+- BASIC
+
 - software should be created with the involvement of the
   people who use it and are affected by it
 - software should be simple. Complexity destroys reliability,
@@ -60,6 +148,11 @@ c.f. 36 views of mt. fuji
   - tools, processes, code form a self-reinforcing ecosystem
     - in an ecosystem, you can't remove or change one part
       without disrupting the whole.
+    - we often talk about productivity differences between
+      languages. then we say "to a good programmer, the language
+      doesn't matter. it's easy to learn languages".
+      The missing piece? The environment is more important
+      than the language.
   - a very small-scale example of how tooling affects code:
     - A coworker suggested marking C++ instance member
       variables with a trailing underscore.
