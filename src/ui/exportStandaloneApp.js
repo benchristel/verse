@@ -1,4 +1,4 @@
-import { doWith, replace } from '../core'
+import { doWith } from '../core'
 import storage from './storage'
 import { saveAs } from 'file-saver'
 
