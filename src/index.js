@@ -7,6 +7,9 @@ import Verse from './ui/components/Verse'
 import registerServiceWorker from './registerServiceWorker'
 import './core/api'
 
+import { exportStandaloneApp } from './ui/exportStandaloneApp'
+window.exportStandaloneApp = exportStandaloneApp
+
 ReactDOM.render(
   <Provider store={store}>
     <Verse />
