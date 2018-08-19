@@ -3,3 +3,7 @@
   width: 100%;
   box-sizing: border-box;
 }
+
+.Pane.scroll {
+  overflow-y: auto;
+}

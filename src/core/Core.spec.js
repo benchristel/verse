@@ -217,6 +217,26 @@ describe('Core', () => {
     })
   })
 
+  it('keeps the test results when the app is restarted', () => {
+    core.run()
+    let main = `
+      define({
+        testMe() {
+          return 'broken'
+        },
+
+        'test testMe'() {
+          assert(testMe(), is, 'it works')
+        }
+      })
+    `
+    core.deploy('main.js', main)
+    view = core.run()
+    expect(view.testResults).toEqual({
+      'test testMe': new Error('Tried to assert that\n  broken\nisExactly\n  it works')
+    })
+  })
+
   function typeKeys(text) {
     let v = view
     for (let ch of text) v = core.receiveKeydown({key: ch})

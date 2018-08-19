@@ -117,7 +117,8 @@ export function Core() {
   function clearAppView(view) {
     return {
       ...blankView(),
-      syntaxErrors: view.syntaxErrors
+      syntaxErrors: view.syntaxErrors,
+      testResults: view.testResults
     }
   }
 }

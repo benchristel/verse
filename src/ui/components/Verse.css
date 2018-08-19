@@ -3,6 +3,15 @@
   font-size: 16px;
   white-space: pre-wrap;
   height: 584px;
+
+}
+
+.TestResultsPanel.passed {
+  color: #0a0;
+}
+
+.TestResultsPanel.failed {
+  color: #fc4;
 }
 
 .links {

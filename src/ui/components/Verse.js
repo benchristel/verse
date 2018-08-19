@@ -11,7 +11,7 @@ import Pane from './Pane'
 import Terminal from './Terminal'
 import stackParser from '../stackParser'
 import { anySyntaxErrors, getSyntaxErrors, anyTestFailures } from '../selectors'
-import { isTruthy } from '../../core'
+import { get, isTruthy } from '../../core'
 
 export default () =>
   (<div className="Verse">
@@ -81,13 +81,13 @@ const RightPane = connectProps(props => {
         <Terminal/>
 
         <Hide If={!isInspectingStage('load', props)}>
-          <Pane style={{backgroundColor: '#db6', zIndex: 20, padding: '12px'}}>
+          <Pane className="scroll" style={{backgroundColor: '#db6', zIndex: 20, padding: '12px'}}>
             <ErrorPanel />
           </Pane>
         </Hide>
 
         <Hide If={!isInspectingStage('test', props)}>
-          <Pane style={{backgroundColor: '#088', zIndex: 20, padding: '12px'}}>
+          <Pane className="scroll" style={{backgroundColor: '#022', zIndex: 20, padding: '12px'}}>
             <TestResultsPanel />
           </Pane>
         </Hide>
@@ -136,12 +136,24 @@ const ErrorPanel = connectProps(props => {
 })
 
 const TestResultsPanel = connectProps(props => {
-  let testResults = props.testResults
+  let testResults = Object.keys(props.testResults)
+    .map(k => [k, props.testResults[k]])
 
-  if (Object.values(testResults).filter(isTruthy).length) {
-    return (<div className="TestResultsPanel">One or more tests failed</div>)
+  let totalTests = testResults.length
+  let failures = testResults.filter(_(get(1), isTruthy))
+
+  if (failures.length) {
+    return (<div className="TestResultsPanel failed">
+      {failures.length} TESTS FAILED
+      {failures.map(([name, error]) => `
+-------------------------------------------------
+${name}
+
+${error}
+`).join('\n')}
+    </div>)
   } else {
-    return (<div className="TestResultsPanel">All tests passed</div>)
+    return (<div className="TestResultsPanel passed">All {totalTests} tests passed</div>)
   }
 })
 
@@ -176,4 +188,10 @@ function renderLineNumber(stack) {
     return 'at line ' + line
   }
   return ''
+}
+
+function _(...fns) {
+  return function(input) {
+    return fns.reduce((v, f) => f(v), input)
+  }
 }
