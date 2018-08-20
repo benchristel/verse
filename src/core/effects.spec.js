@@ -1,4 +1,5 @@
 import { wait, waitForInput } from './effects'
+import { keyDown } from './events'
 import { Process } from './Process'
 
 describe('waitForInput', () => {
@@ -44,7 +45,7 @@ describe('waitForInput', () => {
     p.begin(function *() {
       line = yield waitForInput()
     })
-    p.receiveKeydown({key: 'Enter'})
+    p.receive(keyDown('Enter'))
     expect(line).toBe('')
   })
 
@@ -53,9 +54,9 @@ describe('waitForInput', () => {
     p.begin(function *() {
       line = yield waitForInput()
     })
-    p.receiveKeydown({key: 'h'})
-    p.receiveKeydown({key: 'i'})
-    p.receiveKeydown({key: 'Enter'})
+    p.receive(keyDown('h'))
+    p.receive(keyDown('i'))
+    p.receive(keyDown('Enter'))
     expect(line).toBe('hi')
   })
 
@@ -63,12 +64,12 @@ describe('waitForInput', () => {
     p.begin(function *() {
       yield waitForInput()
     })
-    view = p.receiveKeydown({key: 'h'})
+    view = p.receive(keyDown('h'))
     expect(view.inputLines).toEqual([
       '',
       '> h_'
     ])
-    view = p.receiveKeydown({key: 'i'})
+    view = p.receive(keyDown('i'))
     expect(view.inputLines).toEqual([
       '',
       '> hi_'
@@ -79,12 +80,12 @@ describe('waitForInput', () => {
     p.begin(function *() {
       yield waitForInput()
     })
-    view = p.receiveKeydown({key: 'h'})
+    view = p.receive(keyDown('h'))
     expect(view.inputLines).toEqual([
       '',
       '> h_'
     ])
-    view = p.receiveKeydown({key: 'Backspace'})
+    view = p.receive(keyDown('Backspace'))
     expect(view.inputLines).toEqual([
       '',
       '> _'
@@ -95,7 +96,7 @@ describe('waitForInput', () => {
     p.begin(function *() {
       yield waitForInput()
     })
-    p.receiveKeydown({key: 'Backspace'})
+    view = p.receive(keyDown('Backspace'))
     expect(view.inputLines).toEqual([
       '',
       '> _'
@@ -106,7 +107,7 @@ describe('waitForInput', () => {
     p.begin(function *() {
       yield waitForInput()
     })
-    view = p.receiveKeydown({key: 'Enter'})
+    view = p.receive(keyDown('Enter'))
     expect(view.inputLines).toEqual([])
   })
 })

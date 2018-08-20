@@ -1,6 +1,6 @@
 import { Store, perform } from './index'
 import { Process } from './Process'
-import { animationFrame } from './events'
+import { animationFrame, keyDown } from './events'
 import { wait } from './effects'
 import './api'
 
@@ -107,7 +107,7 @@ describe('Process', () => {
       yield perform('done')
     })
 
-    p.receiveKeydown({key: 'a'})
+    p.receive(keyDown('a'))
     expect(store.emit).not.toBeCalled()
   })
 
@@ -146,7 +146,7 @@ describe('Process', () => {
       yield perform(number + '!')
     })
 
-    p.receiveKeydown({key: '3'})
+    p.receive(keyDown('3'))
     expect(store.emit).toBeCalledWith(
       'once there was a dog, and his favorite number was...')
     expect(store.emit).toBeCalledWith('3!')
@@ -155,15 +155,15 @@ describe('Process', () => {
   it('receives multiple keypresses', () => {
     p.begin(function*() {
       let result = '', a
-      while((a = yield waitForChar()) !== '\n')
+      while((a = yield waitForChar()) !== 'Enter')
         result += a
       yield perform(result)
     })
 
-    p.receiveKeydown({key: '1'})
-    p.receiveKeydown({key: '2'})
-    p.receiveKeydown({key: '3'})
-    p.receiveKeydown({key: '\n'})
+    p.receive(keyDown('1'))
+    p.receive(keyDown('2'))
+    p.receive(keyDown('3'))
+    p.receive(keyDown('Enter'))
     expect(store.emit).toBeCalledWith('123')
   })
 
@@ -194,34 +194,9 @@ describe('Process', () => {
       }
       yield perform('never called')
     })
-    p.receiveKeydown({key: 'a'})
+    p.receive(keyDown('a'))
     expect(view.error).toBeNull()
     expect(store.emit).not.toBeCalled()
-  })
-
-  it('waits for a line of input', () => {
-    function waitForInput() {
-      return function*() {
-        let result = '', a
-        while((a = yield waitForChar()) !== 'Enter')
-          result += a
-        return result
-      }
-    }
-
-    p.begin(function*() {
-      yield perform('once there was a dog, and his name was...')
-      let name = yield waitForInput()
-      yield perform(name + '!')
-    })
-
-    p.receiveKeydown({key: 'j'})
-    p.receiveKeydown({key: 'i'})
-    p.receiveKeydown({key: 'm'})
-    p.receiveKeydown({key: 'Enter'})
-    expect(store.emit).toBeCalledWith(
-      'once there was a dog, and his name was...')
-    expect(store.emit).toBeCalledWith('jim!')
   })
 
   it('jumps to another routine', () => {

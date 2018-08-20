@@ -1,5 +1,5 @@
 import { isNumber } from './types'
-import { animationFrame, isAnimationFrame } from './events'
+import { animationFrame, isAnimationFrame, isKeyDown } from './events'
 
 export function waitForEvent() {
   return {
@@ -43,10 +43,12 @@ export function waitForever() {
   }
 }
 
-export function waitForChar() {
-  return {
-    effectType: 'waitForChar'
+export function *waitForChar() {
+  let event = yield waitForEvent()
+  if (isKeyDown(event)) {
+    return event.key
   }
+  yield retry(waitForChar())
 }
 
 export function waitForInput(prompt='') {

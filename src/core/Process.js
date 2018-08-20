@@ -16,7 +16,6 @@ export function Process(store) {
   return {
     begin,
     receive,
-    receiveKeydown,
     submitForm,
     redraw,
   }
@@ -35,11 +34,6 @@ export function Process(store) {
       waitingForEvent = false
       run(event)
     }
-    return view()
-  }
-
-  function receiveKeydown({key}) {
-    if (waitingForChar) run(key)
     return view()
   }
 

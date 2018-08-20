@@ -4,7 +4,7 @@ import { Store } from './Store'
 import { Process } from './Process'
 import { get, tuple, isTruthy, startsWith } from './functionalUtils'
 import { blankView } from './view'
-import { animationFrame } from './events'
+import { animationFrame, keyDown } from './events'
 import init from './init'
 
 export function Core() {
@@ -69,7 +69,7 @@ export function Core() {
 
   function receiveKeydown(event) {
     if (runningApp) {
-      view = {...view, ...runningApp.receiveKeydown(event)}
+      view = {...view, ...runningApp.receive(keyDown(event.key))}
     }
     return view
   }
