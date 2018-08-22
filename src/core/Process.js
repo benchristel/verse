@@ -2,7 +2,6 @@ import { isIterator, isGeneratorFunction, lastOf } from '.'
 
 export function Process(store) {
   let stack = []
-  let waitingForChar = false
   let waitingForEvent = false
   let gotosThisTurn = 0
 
@@ -63,7 +62,6 @@ export function Process(store) {
   }
 
   function runOrThrow(returnFromYield) {
-    waitingForChar = false
     let saga
 
     // TODO: a limit of 100 is really small. Optimize
@@ -112,12 +110,6 @@ export function Process(store) {
       case 'putBackEvent':
       run()
       receive(effect.event)
-      return
-
-      case 'waitForChar':
-      gotosThisTurn = 0
-      updateScreen()
-      waitingForChar = true
       return
 
       case 'waitForever':
