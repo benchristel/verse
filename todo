@@ -1,18 +1,3 @@
-- code of conduct
-
-// deployment status
-//  (-_-)   - not checking (grey)
-// 「(°ヘ°)? - syntax error, early runtime error (red)
-//  \(^_^)/ - syntax, runtime, tests ok (blue-green)
-//  /(.__.) - test failure (yellow)
-
-// app status
-// grey - not running     _/_ (open switch)    [RUN]
-// blue-green - running   ___ (closed switch)  [RESTART]
-// blue-green - running   •__ ("unsaved" dot)  [RESTART]
-// black - crashed         X                   [RESTART]
-
-
 # User feedback
 
 - s/new tab/new window — instruct the user to right click
@@ -25,35 +10,21 @@
   define() call.
 - disable Cmd+L "go to line number" hotkey - it's very
   surprising if you're expecting Cmd+L to focus the URL bar.
-- disable "run" button when "can't run" is shown
 - latent bug: once multiple files are supported, what will happen
   if some files have syntax errors when Verse first starts?
   How will those errors be reported to the user? One way of
   avoiding this is to only save files that eval successfully.
 
-# HIGH-RISK FEATURES
-
-- make buttons created by `yield options()` clickable
-
 # UX CONCERNS
 
-- allow scrolling when window is not big enough to show the whole editor
 - provide a better means of hiding the display pane. startDisplay(() => [])
   should show the display but print nothing.
-- display an error when the user creates one effect object
-  but yields a different one (the most likely scenario is
-  that they forgot to yield the first effect).
-- display a warning when the user edits code with MemoryStorage
-  active, telling them their changes won't be saved
-- change "Run" to "Restart" while the program is running.
 - clear the display and log when a program exits. Currently,
   it's hard to tell whether the program is still running.
-
+- add restart button
 
 # LOW-RISK FEATURES
 
-- Timer wait()s should return a list of key events that
-  happened while the program was waiting.
 - button and API to clear log
 - save/load
 - create a `debug()` function that prints to the log and
@@ -64,3 +35,9 @@
 # BREAKING CHANGES
 
 - rename reducer to updater
+- remove waitForever
+
+# REFACTORING
+
+- move defaulting of reducer, getStateType to Store to
+  fix duplication between Core and Simulator

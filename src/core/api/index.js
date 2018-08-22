@@ -69,6 +69,15 @@ def(v.retry,     'retry')
 def(v.perform,   'perform')
 def(v.lineInput, 'lineInput')
 
+/*
+ * Test Framework
+ */
+def(v.Simulator(window),
+                 'simulate')
+def(v.keyDown,   'keyDown')
+def(v.animationFrame,
+                 'animationFrame')
+
 function def(x, name) {
   // guard against non-existent functions being added to
   // the window object
