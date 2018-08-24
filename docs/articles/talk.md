@@ -658,6 +658,39 @@ touch the *real* UI at all.
   to be locked into those mistakes. I also don't want to
   break people's code with my changes.
 
+- buckets
+  - I was recently talking to a programmer about some code he wrote
+  - "I'm writing lots of static methods, is that OK?"
+  - well, it's not OO, but maybe that's fine. Do your static
+    methods have side effects?
+  - side effects?
+  - yeah, like
+    - interacting with the filesystem
+    - or the network
+    - getting the current time
+    - generating random numbers
+    - sleeping
+    - anything other than pure computation of a value?
+  - and he thought for a few moments and said "maybe."
+  - and I realized then that the way I see code is very unusual.
+  - When I look at code, I see two categories
+    - bucket A
+      - things that only interact with the outside world via
+        their parameters and return value
+    - bucket B is everything else
+  - it's strange that I see code this way because no language
+    I know of really does.
+    - functional languages put everything in bucket A. There
+      is no bucket B.
+    - OO and procedural languages put most things in bucket B,
+      and if something goes in bucket A it's probably an accident.
+  - but there are *ways* of programming that act like this.
+    One is Gary Bernhardt's functional core, imperative shell idea.
+  - his talk Boundaries really changed how I think at a fundamental
+    level. It made it so I no longer see programming languages
+    the way programming languages see themselves, even.
+  - I wanted an environment that "saw" code the way I see it.
+
 - experts disagree (Climbing on Mt. Fuji)
 - pattern languages (Great Wave off Kanagawa)
 - ecosystems (Mount Fuji from the mountains of Totomi)
@@ -666,3 +699,4 @@ touch the *real* UI at all.
 - interfaces are monolithic (Mishima Pass in Kai Province)
 - acceptance testing (Under Mannen Bridge)
 - permanence (Mount Fuji reflects in Lake Kawaguchi)
+- buckets (Lake Suwa)
