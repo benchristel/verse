@@ -84,5 +84,5 @@ function def(x, name) {
   if (typeof x === 'undefined') {
     throw new Error('Tried to add undefined value ' + name + ' to the API')
   }
-  window[name] = x
+  window[name] = v.renameFunction(x, () => name)
 }
