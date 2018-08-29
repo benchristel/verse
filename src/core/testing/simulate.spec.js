@@ -2,9 +2,9 @@ import { Simulator } from './simulate'
 import { isNumber } from '../types'
 import * as utils from '../functionalUtils'
 import { startDisplay, wait, waitForChar, perform, retry } from '../effects'
-import { keyDown } from '../events'
+import { keyDown, animationFrame } from '../events'
 
-const {isExactly: is} = utils
+const {isExactly: is, contains} = utils
 
 describe('simulate', () => {
   let fakeWindow
@@ -17,13 +17,13 @@ describe('simulate', () => {
   it('asserts that text is displayed', () => {
     function *run() {
       yield startDisplay(() => [
-        'hello'
+        'hello, world'
       ])
       yield wait(Infinity)
     }
 
     simulate(run)
-      .assertDisplay(is, 'hello')
+      .assertDisplay(contains, 'hello')
   })
 
   it('fails the test when the displayed text does not match the expectation', () => {
@@ -83,5 +83,22 @@ describe('simulate', () => {
       .receive(keyDown('+'))
       .receive(keyDown('+'))
       .assertDisplay(is, 'Current value: 2')
+  })
+
+  it('passes itself to the callback of do()', () => {
+    function *run() {
+      yield wait(1)
+      yield startDisplay(() => ['got here'])
+      yield wait(Infinity)
+    }
+
+    simulate(run)
+      .assertDisplay(is, '')
+      .do(waitOneSecond)
+      .assertDisplay(is, 'got here')
+
+    function waitOneSecond(simulator) {
+      simulator.receive(animationFrame(60))
+    }
   })
 })

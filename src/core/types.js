@@ -1,4 +1,4 @@
-import { partialApply } from './functionalUtils'
+import { partialApply, renameFunction } from './functionalUtils'
 import { has, mapObject, objectsHaveSameKeys } from './objects'
 import { _expect } from '.'
 
@@ -42,8 +42,8 @@ export function oneOf(...values) {
 }
 
 export function not(predicate) {
-  let name = 'not(' + predicate.name + ')'
-  return {[name]: (...args) => !predicate(...args)}[name]
+  let negated = (...args) => !predicate(...args)
+  return renameFunction(negated, () => 'not(' + predicate.name + ')')
 }
 
 export function isEmpty(a) {

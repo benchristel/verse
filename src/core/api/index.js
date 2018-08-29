@@ -28,6 +28,7 @@ def(v.isEmpty,   'isEmpty')
 def(v.not,       'not')
 def(v.or,        'or')
 def(v.mapObject, 'mapObject')
+def(v.contains,  'contains')
 
 /*
  * Type checkers

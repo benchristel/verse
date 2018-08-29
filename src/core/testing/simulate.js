@@ -14,7 +14,8 @@ export function Simulator(globalObject) {
     let self
     return self = {
       assertDisplay,
-      receive
+      receive,
+      do: _do,
     }
 
     function assertDisplay(predicate, ...args) {
@@ -26,6 +27,11 @@ export function Simulator(globalObject) {
 
     function receive(event) {
       process.receive(event)
+      return self
+    }
+
+    function _do(fn) {
+      fn(self)
       return self
     }
   }

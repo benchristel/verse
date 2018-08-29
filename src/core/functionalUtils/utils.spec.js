@@ -10,7 +10,8 @@ import {
   range,
   count,
   tuple,
-  identity
+  identity,
+  contains,
 } from '.'
 
 import '../api'
@@ -368,5 +369,32 @@ describe('tuple', () => {
 
   it('curries', () => {
     expect(tuple([double, add1])(-1)).toEqual([-2, 0])
+  })
+})
+
+describe('contains', () => {
+  it('is true when searching for an empty string', () => {
+    expect(contains('', '')).toBe(true)
+    expect(contains('', 'a')).toBe(true)
+  })
+
+  it('is false when searching for a nonempty string in an empty string', () => {
+    expect(contains('a', '')).toBe(false)
+  })
+
+  it('is true when needle === haystack', () => {
+    expect(contains('a', 'a')).toBe(true)
+  })
+
+  it('is true when the needle begins the haystack', () => {
+    expect(contains('a', 'abc')).toBe(true)
+  })
+
+  it('is true when the needle ends the haystack', () => {
+    expect(contains('c', 'abc')).toBe(true)
+  })
+
+  it('curries', () => {
+    expect(contains('needle')('hayneedlehay')).toBe(true)
   })
 })

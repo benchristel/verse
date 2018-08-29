@@ -82,6 +82,7 @@ export function renameFunction(fn, nameCreator) {
       return cache
     }
   })
+  return fn
 }
 
 export function get(key, collection) {
@@ -132,4 +133,11 @@ export function tuple(transformers, value) {
 
 export function identity(a) {
   return a
+}
+
+export function contains(needle, haystack) {
+  if (arguments.length < 2) {
+    return partialApply(contains, arguments, 'contains')
+  }
+  return haystack.indexOf(needle) > -1
 }
