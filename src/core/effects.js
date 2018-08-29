@@ -54,7 +54,7 @@ export function *waitForChar() {
 export function waitForInput(prompt='') {
   return function*() {
     let entered = ''
-    yield startInputDisplay(() => {
+    yield startDisplay(() => {
       return [
         prompt,
         '> ' + entered + '_'
@@ -77,7 +77,7 @@ export function waitForInput(prompt='') {
     }
     // TODO: empty string here is a hack to work around
     // the UI's awkward display implementation.
-    yield startInputDisplay(() => [''])
+    yield startDisplay(() => [''])
     return entered
   }
 }

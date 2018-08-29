@@ -22,7 +22,7 @@ describe('waitForInput', () => {
     })
 
     expect(view).toEqual(expect.objectContaining({
-      inputLines: [
+      displayLines: [
         'Your message here',
         '> _'
       ]
@@ -34,7 +34,7 @@ describe('waitForInput', () => {
       yield waitForInput()
     })
 
-    expect(view.inputLines).toEqual([
+    expect(view.displayLines).toEqual([
       '',
       '> _'
     ])
@@ -65,12 +65,12 @@ describe('waitForInput', () => {
       yield waitForInput()
     })
     view = p.receive(keyDown('h'))
-    expect(view.inputLines).toEqual([
+    expect(view.displayLines).toEqual([
       '',
       '> h_'
     ])
     view = p.receive(keyDown('i'))
-    expect(view.inputLines).toEqual([
+    expect(view.displayLines).toEqual([
       '',
       '> hi_'
     ])
@@ -81,12 +81,12 @@ describe('waitForInput', () => {
       yield waitForInput()
     })
     view = p.receive(keyDown('h'))
-    expect(view.inputLines).toEqual([
+    expect(view.displayLines).toEqual([
       '',
       '> h_'
     ])
     view = p.receive(keyDown('Backspace'))
-    expect(view.inputLines).toEqual([
+    expect(view.displayLines).toEqual([
       '',
       '> _'
     ])
@@ -97,7 +97,7 @@ describe('waitForInput', () => {
       yield waitForInput()
     })
     view = p.receive(keyDown('Backspace'))
-    expect(view.inputLines).toEqual([
+    expect(view.displayLines).toEqual([
       '',
       '> _'
     ])
@@ -108,7 +108,7 @@ describe('waitForInput', () => {
       yield waitForInput()
     })
     view = p.receive(keyDown('Enter'))
-    expect(view.inputLines).toEqual([])
+    expect(view.displayLines).toEqual([])
   })
 })
 

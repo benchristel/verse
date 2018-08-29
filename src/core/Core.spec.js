@@ -91,18 +91,18 @@ describe('Core', () => {
   it('runs an interactive app', () => {
     core.deploy('main.js', echo)
     view = core.run()
-    expect(view.inputLines).toEqual([
+    expect(view.displayLines).toEqual([
       '',
       '> _'
     ])
     view = typeKeys('abc')
-    expect(view.inputLines).toEqual([
+    expect(view.displayLines).toEqual([
       '',
       '> abc_'
     ])
     view = core.receiveKeydown({key: 'Enter'})
     expect(view.logLines).toEqual(['abc'])
-    expect(view.inputLines).toEqual([])
+    expect(view.displayLines).toEqual([])
   })
 
   it('hot-swaps interactive code', () => {
@@ -190,7 +190,7 @@ describe('Core', () => {
     `)
     view = core.run()
     expect(view.testResults).toEqual({
-      'test testMe': new Error('Tried to assert that\n  broken\nisExactly\n  it works')
+      'test testMe': new Error('Tried to assert that\n  broken\nis\n  it works')
     })
   })
 
@@ -209,7 +209,7 @@ describe('Core', () => {
     `
     view = core.deploy('main.js', main)
     expect(view.testResults).toEqual({
-      'test testMe': new Error('Tried to assert that\n  broken\nisExactly\n  it works')
+      'test testMe': new Error('Tried to assert that\n  broken\nis\n  it works')
     })
     view = core.deploy('main.js', replace('broken', 'it works', main))
     expect(view.testResults).toEqual({
@@ -233,7 +233,7 @@ describe('Core', () => {
     core.deploy('main.js', main)
     view = core.run()
     expect(view.testResults).toEqual({
-      'test testMe': new Error('Tried to assert that\n  broken\nisExactly\n  it works')
+      'test testMe': new Error('Tried to assert that\n  broken\nis\n  it works')
     })
   })
 
