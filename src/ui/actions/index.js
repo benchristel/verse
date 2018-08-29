@@ -1,3 +1,4 @@
+export * from './allowJsToRun'
 export * from './changeEditorText'
 export * from './display'
 export * from './hideErrorPanel'

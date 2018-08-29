@@ -9,6 +9,7 @@ import Editor from './Editor'
 import Hide from './Hide'
 import Pane from './Pane'
 import Terminal from './Terminal'
+import DustCover from './DustCover'
 import stackParser from '../stackParser'
 import { anySyntaxErrors, getSyntaxErrors, anyTestFailures } from '../selectors'
 import { get, isTruthy } from '../../core'
@@ -98,6 +99,7 @@ const RightPane = connectProps(props => {
           </Pane>
         </Hide>
       </Pane>
+      <DustCover/>
     </Pane>
   )
 })

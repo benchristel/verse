@@ -1,0 +1,23 @@
+.DustCover {
+  z-index: 999;
+  background-color: #222c;
+  padding-top: 300px;
+  padding-left: 12px;
+  padding-right: 12px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.DustCover div {
+  border: 1px solid #0c9;
+  padding: 6px 12px;
+  color: #0c9;
+  display: inline-block;
+  text-align: center;
+  user-select: none;
+  line-height: 20px;
+}
+
+.DustCover:hover div {
+  background-color: #fff2;
+}

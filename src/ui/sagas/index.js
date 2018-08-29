@@ -11,6 +11,7 @@ import storage from '../storage'
 const core = Core()
 
 export function* main() {
+  yield takeLatest('allowJsToRun', allowJsToRun)
   yield takeLatest('runApp', runApp)
   yield takeLatest('changeEditorText', checkSyntax)
   yield takeLatest('changeEditorText', deployFile)
@@ -31,6 +32,11 @@ function* checkSyntax() {
   yield delay(300)
   let code = yield select(editorText)
   yield put(markSyntaxErrors(findSyntaxErrorLocations(code)))
+}
+
+function *allowJsToRun() {
+  let view = core.run()
+  yield put(display(view))
 }
 
 function *runApp() {

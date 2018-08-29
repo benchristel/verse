@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux'
 
 export default combineReducers({
+  evalAllowed,
   appUi: combineReducers({
     logs,
     screenLines,
@@ -14,6 +15,16 @@ export default combineReducers({
   crash,
   currentlyInspectingStage,
 })
+
+function evalAllowed(curr=false, action) {
+  switch (action.type) {
+    case 'allowJsToRun':
+    return true
+
+    default:
+    return curr
+  }
+}
 
 function logs(curr=[], action) {
   switch (action.type) {
