@@ -24,6 +24,8 @@ define({
 })
 ```
 
+![A screenshot of Verse running a simple program](docs/screenshot.png)
+
 ## Downloads
 
 In addition to [accessing Verse online](https://verse.js.org),
