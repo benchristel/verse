@@ -154,6 +154,61 @@ define({
 })
 ```
 
+### `assert(value, compareFunction, ...expected)`
+
+The `assert()` function checks whether the `value` matches
+the `expected` items using the `compareFunction`. If they
+match, `assert()` does nothing. If they
+do not match, it throws an error.
+
+The `compareFunction` may be any function that returns `true`
+or `false`. The arguments will be passed to it in this order:
+
+`compareFunction(...expected, value)`
+
+`assert()` is especially useful in tests. You can also use
+it to check that the arguments passed to a function are
+of the correct type before you try to do things with them.
+
+#### See also
+
+- `'test ...'`
+
+Verse has many built-in functions that are appropriate to
+use as the `compareFunction`. Here are a few of them:
+
+- `isNumber`
+- `isString`
+- `is`
+- `equals`
+- `contains`
+
+#### Example: Checking the arguments to a function
+
+```javascript
+define({
+  displayText() {
+    add('this', 'fails')
+  },
+
+  add(a, b) {
+    assert(a, isNumber)
+    assert(b, isNumber)
+    return a + b
+  }
+})
+```
+
+#### Example: Testing basic arithmetic
+
+```javascript
+define({
+  'test that math works'() {
+    assert(3 * 4 - 5, is, 7)
+  }
+})
+```
+
 ## Magic Definitions
 
 ### `displayText()`
@@ -207,6 +262,64 @@ define({
 
   *run() {
     yield log('...then this is output.')
+  }
+})
+```
+
+### `'test ...'()`
+
+Verse considers functions that begin with the word `test` to
+be *tests* for the main program.
+
+Verse calls all of your test functions whenever you
+change code. If any of the tests throw errors,
+the `TEST` tab will change color. Clicking on the `TEST` tab
+shows all the errors encountered by the tests.
+
+#### See also
+
+- `assert`
+- `is`
+- `equals`
+
+#### Example: Testing a list-formatting function
+
+Here is an example of some tests for a function called
+`listOf`. The `listOf` function takes an array of words and constructs
+an English phrase that lists them all, using commas and
+"and" as needed.
+
+Though the code for `listOf` looks complicated, the tests
+show that it does what it's supposed to, at least for the
+four inputs passed to it in the tests.
+
+```javascript
+define({
+  'test a list of nothing is empty'() {
+    assert(listOf([]), is, '')
+  },
+
+  'test a list of one item is just that item'() {
+    assert(listOf(['cupcakes']), is, 'cupcakes')
+  },
+
+  'test a list of two items uses "and"'() {
+    assert(listOf(['dogs', 'cats']), is, 'dogs and cats')
+  },
+
+  'test a list of three items uses commas'() {
+    let list = listOf(['dogs', 'cats', 'bats'])
+    assert(list, is, 'dogs, cats, and bats')
+  },
+
+  listOf(things) {
+    if (things.length < 3) {
+      return things.join(' and ')
+    } else {
+      return things.slice(0, things.length - 1).join(', ')
+        + ', and '
+        + lastOf(things)
+    }
   }
 })
 ```
