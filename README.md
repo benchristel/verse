@@ -1,16 +1,16 @@
 # Verse
 
-Verse is an online programming tool that makes it easy to
-create simple programs and games. In the future, you'll
-be able to share your programs and remix others' work, too.
+**Verse is a browser-based coding tool** that makes it
+simple to create programs and games and share them with
+others.
 
-Verse is designed with beginners in mind. It's a great way
-to start learning to code. But even professional programmers
-will find it useful for quickly sketching ideas or bringing
-their side projects to life.
+**Verse is designed with beginners in mind.**
+It's a great way to start learning to code. But even
+professional programmers will find it useful for sketching
+ideas, performing [code katas](http://codekata.com/), or
+bringing their side projects to life.
 
-[Try it out!](https://verse.js.org) No need to create
-an account or log in. Just click the link and start coding.
+[Try it out!](https://verse.js.org)
 Here's a simple program you can copy-paste to get started.
 
 ```javascript
@@ -24,11 +24,31 @@ define({
 })
 ```
 
+## Downloads
+
+In addition to [accessing Verse online](https://verse.js.org),
+you can download past versions
+[from the releases page](https://github.com/benchristel/verse/releases).
+Just click the link for the `verse.html` file of the version
+you want.
+
+To use the file, open it in a web browser. On
+most systems, you can double-click the file to open it.
+
+Once you've downloaded a copy of Verse, you can use it
+anywhere—even without an Internet connection!
+
 ## Documentation
 
-You can find the [**Verse Documentation** here](https://benchristel.github.io/verse/).
+You can find the
+[**Verse Documentation**](https://benchristel.github.io/verse/),
+including "getting started" tutorials and a reference manual, [here](https://benchristel.github.io/verse/).
 
 ## Guiding Principles
+
+We value **simplicity, speed, beauty, and openness**.
+The principles Verse uses to support these values are
+described below.
 
 - **Just Code.** Verse apps don't use HTML or CSS,
   so you only have to learn one language: JavaScript.
@@ -52,7 +72,7 @@ You can find the [**Verse Documentation** here](https://benchristel.github.io/ve
   There's no sneaky code in Verse phoning home with data
   about you. Your code is stored only on *your*
   device, until you choose to share it with the world.
-- **Works Offline.** We know not everyone has access to fast
+- **Works Offline.** Not everyone has access to fast
   Internet all the time. Once you've accessed the Verse site,
   it's stored on your device so you can use it even without
   an Internet connection.
@@ -74,6 +94,13 @@ And, perhaps most importantly...
   Verse aims to maximize the joy of programming while
   minimizing its frustrations.
 
+---
+
+# Technical Stuff
+
+The rest of this document is intended for programmers who
+work on the code for Verse itself.
+
 ## Contributing
 
 ### What to work on
@@ -81,12 +108,16 @@ And, perhaps most importantly...
 Here are some areas where Verse could be improved:
 
 - Refactoring, especially in the UI code
-- Handling/reporting of errors
+- Handling/reporting of errors, including
 - Documentation
 
 Changes to the API aren't likely to be accepted, even if
 they're backwards-compatible. This is because I'm trying to
 keep the API minimal.
+
+Please add tests for your code if your change is not purely
+UI-centric. This makes it much more likely that your pull
+request will be accepted.
 
 ### How
 
