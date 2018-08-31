@@ -34,7 +34,7 @@ of:
   - [`log`](#log)
   - [`startDisplay`](#startdisplay)
   - [`wait`](#wait)
-  - [`waitForChar`](#waitForChar)
+  - [`waitForChar`](#waitforchar)
 - [Data Processing](#data-processing)
   - [`assert`](#assert)
   - [`lowercase`](#lowercase)
