@@ -34,7 +34,7 @@ Okay, you've installed an awesome web browser and you're
 ready to code! [Right-click this link and open it in a new
 window to bring up Verse](https://verse.js.org).
 
-![Screenshot of a new Verse project with no code in the editor](./new-project.png)
+![Screenshot of a new Verse project with no code in the editor](./new-project2.png)
 
 The white area—the left half of the screen, basically—is
 the *editor*, the place where we'll type
@@ -129,7 +129,7 @@ When you're done typing, you should once again see the
 green "OK" bubble. If you do, you can click the "Run"
 button just to the right of it to run your program!
 
-![A screenshot of the running Hello World program](./hello-world.png)
+![A screenshot of the running Hello World program](./hello-world2.png)
 
 ## Experiments
 
