@@ -32,7 +32,7 @@ export default () =>
 let Links = () => {
   return (
     <div className="links">
-      <a href="https://benchristel.github.io/verse">
+      <a href="https://benchristel.github.io/verse/docs">
         Read the Docs
       </a> |&nbsp;
       <a href="https://facebook.com/VerseCode">

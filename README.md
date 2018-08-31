@@ -43,8 +43,8 @@ anywhere—even without an Internet connection!
 ## Documentation
 
 You can find the
-[**Verse Documentation**](https://benchristel.github.io/verse/),
-including "getting started" tutorials and a reference manual, [here](https://benchristel.github.io/verse/).
+[**Verse Documentation**](https://benchristel.github.io/verse/docs/),
+including "getting started" tutorials and a reference manual, [here](https://benchristel.github.io/verse/docs/).
 
 ## Guiding Principles
 
@@ -133,6 +133,35 @@ To work on the code for **Verse itself**, do the following:
 1. In another terminal window, `yarn run test` to start the
   tests (they'll re-run automatically when you change code).
 1. Commit your changes and submit a pull request.
+
+## Forking
+
+Verse is monolithic and lacks affordances for plugins.
+That's by design. Verse is intended to provide a
+self-contained programming experience that's consistent
+across time, space, operating systems, and browsers.
+
+Of course, there is no one-size-fits-all approach to
+programming, and you will likely want to add things to Verse
+that reflect your own philosophy. We encourage you to do
+so by forking this repository and making whatever changes
+you want.
+
+Forking follows much the same process as [contributing](#contributing),
+but instead of making a pull request for your changes, you'll
+want to distribute your version of Verse. Here's how to
+do that:
+
+1. Run the `./build-standalone-html` script. This generates
+   a `build/index.html` file.
+1. Open `build/index.html` in a browser to make sure it works.
+1. Share your `build/index.html` with the world. If you want
+   to host it on the web, I recommend [GitHub Pages](https://pages.github.com/).
+
+The [GNU General Public License](./LICENSE.md) requires you
+to make source code available for any copies of Verse
+(modified or unmodified) that you distribute. This can be
+as simple as providing a link to your GitHub repository.
 
 ## License
 
