@@ -15,5 +15,5 @@ fi
 (cd "$DEPLOY_LOCATION" && git pull -r) &&
 ./build-standalone-html &&
 # put everything in the deploy directory
-cp -r build/index.html "$DEPLOY_LOCATION/" &&
+cp build/index.html build/service-worker.js "$DEPLOY_LOCATION/" &&
 echo deployed $(git rev-parse HEAD)
