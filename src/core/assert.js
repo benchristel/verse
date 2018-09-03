@@ -6,19 +6,11 @@ export function assert(subject, predicate, ...args) {
       + '  ' + args.join(', '))
 }
 
-// TODO: remove _expect and use assert consistently
-export function _expect(subject, predicate, ...params) {
-  if (!predicate) {
-    throw new Error('expect() requires a function as the second argument')
-  }
-  if (!predicate(...params, subject)) {
-    let error = {
-      subject, predicate, params,
-      toString() {
-        return 'Expected that ' + subject + ' ' + predicate.name + ' ' + params.join(', ')
-      }
+export function assertArgs(argsMap) {
+  for (let key in argsMap) {
+    let [value, type] = argsMap[key]
+    if (!type(value)) {
+      throw Error(`Tried to assert that argument ${key} ${type.name}, but got\n${value}`)
     }
-
-    throw error
   }
 }

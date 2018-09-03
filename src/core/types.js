@@ -1,12 +1,12 @@
 import { partialApply, renameFunction } from './functionalUtils'
 import { has, mapObject, objectsHaveSameKeys } from './objects'
-import { _expect } from '.'
+import { assert } from '.'
 
 export function satisfies(type, value) {
   if (arguments.length < 2) return partialApply(satisfies, arguments)
   if (value && value._verse_type === type) return true
   if (typeof type === 'function') return type(value)
-  _expect(type, isObject)
+  assert(type, isObject)
   if (!isObject(value)) return false
   if (!objectsHaveSameKeys(type, value)) return false
   for (let key of Object.keys(type)) {
@@ -35,7 +35,7 @@ export function isNullOr(type) {
 }
 
 export function oneOf(...values) {
-  _expect(values, not(isEmpty))
+  assert(values, not(isEmpty))
   let theType = v => values.includes(v)
   theType.defaultValue = values[0]
   return theType

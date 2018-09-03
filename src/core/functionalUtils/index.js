@@ -1,4 +1,5 @@
-import { isString, isObject, isFunction } from '../types'
+import { isString, isObject, isFunction, isArrayOf } from '../types'
+import { assertArgs } from '../assert'
 
 export function equals(a, b) {
   if (a instanceof Array) {
@@ -27,7 +28,13 @@ export function equals(a, b) {
 }
 
 export function doWith(subject, ...fns) {
-  return fns.reduce((value, f) => f(value), subject)
+  assertArgs({
+    '...fns': [fns, isArrayOf(isFunction)]
+  })
+
+  return fns.reduce((value, f) => {
+    return f(value)
+  }, subject)
 }
 
 export function uppercase(s) {

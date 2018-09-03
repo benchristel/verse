@@ -1,6 +1,16 @@
-import { not, or, isEmpty, isObject } from './types'
+import { not, or, isEmpty, isObject, getDefaultValue } from './types'
 import { has } from './objects'
 import { isTruthy, doWith } from './index'
+
+describe('getDefaultValue', () => {
+  it('throws if the type predicate throws', () => {
+    function bad() {
+      throw 'oops'
+    }
+
+    expect(() => getDefaultValue(bad)).toThrow('oops')
+  })
+})
 
 describe('not', () => {
   it('inverts a predicate', () => {

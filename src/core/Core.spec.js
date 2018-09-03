@@ -237,6 +237,35 @@ describe('Core', () => {
     })
   })
 
+  it('records errors thrown from getStateType', () => {
+    let main = `
+      define({
+        getStateType() {
+          throw Error('bork')
+        }
+      })
+
+    `
+    core.deploy('main.js', main)
+    view = core.run()
+    expect(view.error).toEqual(Error('bork'))
+  })
+
+  it('records errors thrown from state type predicates', () => {
+    let main = `
+      define({
+        getStateType() {
+          return () => {
+            throw Error('bork')
+          }
+        }
+      })
+    `
+    core.deploy('main.js', main)
+    view = core.run()
+    expect(view.error).toEqual(Error('bork'))
+  })
+
   function typeKeys(text) {
     let v = view
     for (let ch of text) v = core.receiveKeydown({key: ch})

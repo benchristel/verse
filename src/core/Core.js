@@ -54,7 +54,14 @@ export function Core() {
 
     const getStateType = window.getStateType || (() => ({}))
     const reducer = window.reducer
-    runningApp = Process(Store(getStateType(), reducer))
+    let stateType
+    try {
+      stateType = getStateType()
+      runningApp = Process(Store(stateType, reducer))
+    } catch (error) {
+      view = {...view, error}
+      return view
+    }
     stagedModules = {}
     view = {...view, ...runningApp.begin(init)}
     return view

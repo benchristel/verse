@@ -1,5 +1,5 @@
 import { getDefaultValue, satisfies } from './types'
-import { _expect } from './assert'
+import { assert } from './assert'
 
 export function Store(type, reducer) {
   let state = getDefaultValue(type)
@@ -17,7 +17,7 @@ export function Store(type, reducer) {
 
   function emit(action) {
     let newState = reducer(state, action)
-    _expect(newState, satisfies, type)
+    assert(newState, satisfies, type)
     state = newState
     subscriber_(newState)
     return newState
