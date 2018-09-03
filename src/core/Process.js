@@ -160,13 +160,14 @@ export function Process(store) {
   function updateScreen() {
     let render, i
     for (i = stack.length - 1; i >= 0; i--) {
-      if (!render && stack[i].render) {
+      if (stack[i].render) {
         render = stack[i].render
         break;
       }
     }
 
-    displayLines = render ? render(store.getState()) : []  }
+    displayLines = render ? render(store.getState()) : []
+  }
 
   function view() {
     return {
