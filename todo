@@ -35,7 +35,6 @@
 # BREAKING CHANGES
 
 - rename reducer to updater
-- remove waitForever
 
 # REFACTORING
 

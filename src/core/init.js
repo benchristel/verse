@@ -2,7 +2,7 @@ import {
   startInputDisplay,
   startDisplay,
   waitForChar,
-  waitForever
+  wait,
 } from './effects'
 
 /*
@@ -29,7 +29,7 @@ export default function *init() {
     yield startDisplay(() => [])
     yield window.run
   } else {
-    yield waitForever()
+    yield wait(Infinity)
   }
 }
 

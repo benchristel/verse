@@ -374,7 +374,7 @@ describe('Process', () => {
         return ['input outside']
       })
       yield function*() {
-        yield waitForever()
+        yield wait(Infinity)
       }
     })
     expect(view.displayLines).toEqual(['outside'])

@@ -54,8 +54,6 @@ def(action,      'action')
 def(v.waitForEvent,
                  'waitForEvent')
 def(v.wait,      'wait')
-def(v.waitForever,
-                 'waitForever')
 def(v.waitForChar,
                  'waitForChar')
 def(v.waitForInput,

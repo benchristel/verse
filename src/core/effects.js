@@ -37,12 +37,6 @@ export function putBackEvent(event) {
   }
 }
 
-export function waitForever() {
-  return {
-    effectType: 'waitForever'
-  }
-}
-
 export function *waitForChar() {
   let event = yield waitForEvent()
   if (isKeyDown(event)) {

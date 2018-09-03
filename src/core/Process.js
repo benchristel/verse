@@ -113,11 +113,6 @@ export function Process(store) {
       receive(effect.event)
       return
 
-      case 'waitForever':
-      gotosThisTurn = 0
-      updateScreen()
-      return
-
       case 'jump':
       gotosThisTurn++
       while (stack.length) pop()
