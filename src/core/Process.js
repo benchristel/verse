@@ -77,14 +77,7 @@ export function Process(store) {
       return
     }
 
-    if (isGeneratorFunction(effect)) {
-      gotosThisTurn++
-      push(effect)
-      run()
-      return
-    }
-
-    if (isIterator(effect)) {
+    if (isGeneratorFunction(effect) || isIterator(effect)) {
       gotosThisTurn++
       push(effect)
       run()
