@@ -149,7 +149,6 @@ export function Process(store) {
       isIterator(generator) ?
       generator : generator()
     saga.render = null
-    saga.inputRender = null
     stack.push(saga)
   }
 
@@ -159,7 +158,7 @@ export function Process(store) {
   }
 
   function updateScreen() {
-    let render, inputRender, i
+    let render, i
     for (i = stack.length - 1; i >= 0; i--) {
       if (!render && stack[i].render) {
         render = stack[i].render
