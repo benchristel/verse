@@ -64,9 +64,7 @@ export function Process(store) {
   function runOrThrow(returnFromYield) {
     let saga
 
-    // TODO: a limit of 100 is really small. Optimize
-    // UI rendering so it can be set higher
-    if (gotosThisTurn > 100) throw new Error('Infinite retry loop detected')
+    if (gotosThisTurn > 1000) throw new Error('Infinite retry loop detected')
 
     if (!stack.length) return
     let {value: effect, done} = lastOf(stack).next(returnFromYield)
