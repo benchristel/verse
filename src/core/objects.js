@@ -1,4 +1,4 @@
-import { partialApply } from './functionalUtils'
+import { partialApply } from './higherOrderFunctions'
 
 export function objectsHaveSameKeys(a, b) {
   let aKeys = Object.keys(a)

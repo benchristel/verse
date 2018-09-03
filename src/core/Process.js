@@ -1,4 +1,5 @@
-import { isIterator, isGeneratorFunction, lastOf } from '.'
+import { isIterator, isGeneratorFunction } from './nativeTypes'
+import { lastOf } from './sequences'
 
 export function Process(store) {
   let stack = []

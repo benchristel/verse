@@ -1,4 +1,6 @@
-import { not, or, isEmpty, isObject, getDefaultValue } from './types'
+import { isObject} from './nativeTypes'
+import { not, or } from './predicates'
+import { isEmpty, getDefaultValue } from './types'
 import { has } from './objects'
 import { isTruthy, doWith } from './index'
 

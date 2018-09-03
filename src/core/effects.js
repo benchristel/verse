@@ -1,4 +1,4 @@
-import { isNumber } from './types'
+import { isNumber } from './nativeTypes'
 import { animationFrame, isAnimationFrame, isKeyDown } from './events'
 
 export function waitForEvent() {

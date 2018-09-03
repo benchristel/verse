@@ -1,5 +1,5 @@
 import { Simulator } from './simulate'
-import { isNumber } from '../types'
+import { isNumber } from '../nativeTypes'
 import * as utils from '../functionalUtils'
 import { startDisplay, wait, waitForChar, perform, retry } from '../effects'
 import { keyDown, animationFrame } from '../events'

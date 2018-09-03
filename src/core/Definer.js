@@ -1,6 +1,6 @@
 import { has } from './objects'
-import { isGeneratorFunction } from './types'
-import { renameFunction } from './functionalUtils'
+import { isGeneratorFunction } from './nativeTypes'
+import { renameFunction } from './higherOrderFunctions'
 
 export default function Definer(global) {
   let definitions = {}

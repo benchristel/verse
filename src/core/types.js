@@ -1,6 +1,8 @@
-import { partialApply, renameFunction } from './functionalUtils'
+import { partialApply } from './higherOrderFunctions'
+import { not } from './predicates'
 import { has, mapObject, objectsHaveSameKeys } from './objects'
-import { assert } from '.'
+import { assert } from './assert'
+import { isObject } from './nativeTypes'
 
 export function satisfies(type, value) {
   if (arguments.length < 2) return partialApply(satisfies, arguments)
@@ -41,47 +43,9 @@ export function oneOf(...values) {
   return theType
 }
 
-export function not(predicate) {
-  let negated = (...args) => !predicate(...args)
-  return renameFunction(negated, () => 'not(' + predicate.name + ')')
-}
-
 export function isEmpty(a) {
   for (let item of a) return false && item // make linter happy
   return true
-}
-
-export function isString(a) {
-  return typeof a === 'string'
-}
-
-export function isNumber(a) {
-  return a === +a
-}
-
-export function isObject(a) {
-  return Object.prototype.toString.call(a) === '[object Object]'
-}
-
-export function isGeneratorFunction(a) {
-  return Object.prototype.toString.call(a) === '[object GeneratorFunction]'
-}
-
-export function isIterator(a) {
-  return Object.prototype.toString.call(a) === '[object Generator]'
-}
-
-export function isFunction(a) {
-  return typeof a === 'function'
-}
-
-export function or(p, q) {
-  if (arguments.length < 2) {
-    return partialApply(or, arguments)
-  }
-  return renameFunction((...args) =>
-    p(...args) || q(...args)
-  , () => 'or(' + p.name + ', ' + q.name + ')')
 }
 
 export function defaultingTo(defaultValue, predicate) {

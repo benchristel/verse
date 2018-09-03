@@ -1,5 +1,5 @@
 import { Store } from './Store'
-import { isNumber, isString } from './types'
+import { isNumber, isString } from './nativeTypes'
 
 describe('Store', () => {
   it('generates an initial state from the given type', () => {

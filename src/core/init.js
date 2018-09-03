@@ -3,7 +3,7 @@ import {
   startDisplay,
   waitForChar,
   waitForever
-} from './index'
+} from './effects'
 
 /*
  * These routines run when a Verse app starts.
