@@ -15,7 +15,7 @@ export function mapObject(fn, obj) {
 }
 
 export function has(prop, obj) {
-  if (arguments.length < 2) return partialApply(has, arguments, 'has(' + prop + ')')
+  if (arguments.length < 2) return partialApply(has, arguments)
   return Object.prototype.hasOwnProperty.call(obj, prop)
 }
 

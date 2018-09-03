@@ -76,13 +76,13 @@ export function isFunction(a) {
 }
 
 export function or(p, q) {
-  let name = 'or(' + p.name + ', ' + q.name + ')'
-  return {[name]: (...args) =>
+  if (arguments.length < 2) {
+    return partialApply(or, arguments)
+  }
+  return renameFunction((...args) =>
     p(...args) || q(...args)
-  }[name]
+  , () => 'or(' + p.name + ', ' + q.name + ')')
 }
-
-
 
 export function defaultingTo(defaultValue, predicate) {
   if (defaultValue === undefined) throw new Error('Type must have a default value')

@@ -1,3 +1,5 @@
+import { isString, isObject, isFunction } from '../types'
+
 export function equals(a, b) {
   if (a instanceof Array) {
     if (!(b instanceof Array)) {
@@ -57,19 +59,64 @@ export function restOf(a) {
 }
 
 export function curryable(nArgs, fn) {
-  let curryableFn = {[fn.name]: function() {
-    if (arguments.length < nArgs) {
-      return partialApply(curryableFn, arguments, fn.name)
-    }
-    return fn(...arguments)
-  }}[fn.name]
-  return curryableFn
+  return renameFunction(function curryableFn() {
+    return arguments.length < nArgs ?
+      partialApply(curryableFn, arguments)
+      : fn(...arguments)
+  }, () => fn.name)
 }
 
-export function partialApply(fn, firstArgs, name) {
-  return {[name]: (...remainingArgs) =>
+export function partialApply(fn, firstArgs) {
+  let restOfFn = (...remainingArgs) =>
     fn(...firstArgs, ...remainingArgs)
-  }[name]
+
+  let lazyName = () => nameWithArgs(fn.name, firstArgs)
+  return renameFunction(restOfFn, lazyName)
+}
+
+export function nameWithArgs(baseName, args) {
+  let baseNameStr = baseName && isString(baseName) ?
+    baseName
+    : '<function>'
+
+  if (args.length) {
+    let prettyArgs = [...args].map(abbreviate).join(', ')
+    return baseNameStr + '(' + prettyArgs + ')'
+  } else {
+    return baseNameStr
+  }
+}
+
+export function abbreviate(a) {
+  if (isString(a)) {
+    return quote(
+      a.length > 10 ?
+        a.slice(0, 10) + '...'
+        : a
+    )
+  } else if (isObject(a)) {
+    for (let k in a) return '{...}'
+    return '{}'
+  } else if (Array.isArray(a)) {
+    if (a.length) return '[...]'
+    return '[]'
+  } else if (typeof a === 'symbol') {
+    return 'Symbol()'
+  } else if (isFunction(a)) {
+    return a.name
+  }
+  return '' + a
+}
+
+function quote(s) {
+  return '"' + escape(s) + '"'
+}
+
+function escape(s) {
+  return s
+    .split('\\').join('\\\\')
+    .split('\n').join('\\n')
+    .split('"').join('\\"')
 }
 
 export function renameFunction(fn, nameCreator) {
@@ -87,7 +134,7 @@ export function renameFunction(fn, nameCreator) {
 
 export function get(key, collection) {
   if (arguments.length < 2) {
-    return partialApply(get, arguments, 'get')
+    return partialApply(get, arguments)
   }
   return collection[key]
 }
@@ -126,7 +173,7 @@ export function startsWith(prefix, s) {
 
 export function tuple(transformers, value) {
   if (arguments.length < 2) {
-    return partialApply(tuple, arguments, 'tuple')
+    return partialApply(tuple, arguments)
   }
   return transformers.map(t => t(value))
 }
@@ -137,7 +184,7 @@ export function identity(a) {
 
 export function contains(needle, haystack) {
   if (arguments.length < 2) {
-    return partialApply(contains, arguments, 'contains')
+    return partialApply(contains, arguments)
   }
   return haystack.indexOf(needle) > -1
 }
