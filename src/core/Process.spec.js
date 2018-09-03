@@ -9,7 +9,6 @@ describe('Process', () => {
     error: null,
     logLines: [],
     displayLines: [],
-    inputLines: [],
     form: null,
   }
 
@@ -298,14 +297,10 @@ describe('Process', () => {
       yield startDisplay(() => {
         return ['whoa']
       })
-      yield startInputDisplay(() => {
-        return ['1234']
-      })
     })
     expect(view).toEqual({
       ...blankView,
-      displayLines: ['whoa'],
-      inputLines: ['1234']
+      displayLines: ['whoa']
     })
   })
 
@@ -327,19 +322,14 @@ describe('Process', () => {
       yield startDisplay(state => {
         return [state]
       })
-      yield startInputDisplay(state => {
-        return [state + '1234']
-      })
       yield wait(1)
       yield perform({})
       yield wait(1)
     })
 
     expect(view.displayLines).toEqual([''])
-    expect(view.inputLines).toEqual(['1234'])
     view = p.receive(animationFrame(60))
     expect(view.displayLines).toEqual(['x'])
-    expect(view.inputLines).toEqual(['x1234'])
   })
 
   it('reverts the display when the stack frame that rendered it pops', () => {
@@ -370,15 +360,11 @@ describe('Process', () => {
       yield startDisplay(() => {
         return ['outside']
       })
-      yield startInputDisplay(() => {
-        return ['input outside']
-      })
       yield function*() {
         yield wait(Infinity)
       }
     })
     expect(view.displayLines).toEqual(['outside'])
-    expect(view.inputLines).toEqual(['input outside'])
   })
 
   it('errors if you yield something weird', () => {

@@ -31,7 +31,6 @@ describe('Core', () => {
     expect(view).toEqual({
       logLines: [],
       displayLines: ['hello world'],
-      inputLines: [],
       error: null,
       syntaxErrors: {},
       testResults: {},

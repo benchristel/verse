@@ -26,7 +26,6 @@ describe('display', () => {
       error: 'bloop',
       logLines: [],
       displayLines: [],
-      inputLines: [],
       testResults: {},
     }))
 
@@ -40,7 +39,6 @@ describe('display', () => {
       error: null,
       logLines: [],
       displayLines: [],
-      inputLines: [],
       testResults: {},
     }))
 

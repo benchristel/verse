@@ -1,5 +1,4 @@
 import {
-  startInputDisplay,
   startDisplay,
   waitForChar,
   wait,
@@ -10,7 +9,6 @@ import {
  */
 
 export default function *init() {
-  yield startInputDisplay(() => [])
   yield startDisplay(() => {
     if (window.displayText) {
       try {
@@ -24,18 +22,11 @@ export default function *init() {
   })
   if (window.run) {
     if (window.displayText) {
-      yield waitForAnyKeyBeforeRunning
+      yield waitForChar()
     }
     yield startDisplay(() => [])
     yield window.run
   } else {
     yield wait(Infinity)
   }
-}
-
-function *waitForAnyKeyBeforeRunning() {
-  yield startInputDisplay(() => [
-    'Press any key to start the *run() function'
-  ])
-  yield waitForChar()
 }

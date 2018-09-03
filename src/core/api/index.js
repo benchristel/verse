@@ -60,8 +60,6 @@ def(v.waitForInput,
                  'waitForInput')
 def(v.startDisplay,
                  'startDisplay')
-def(v.startInputDisplay,
-                 'startInputDisplay')
 def(v.log,       'log')
 def(v.jump,      'jump')
 def(v.retry,     'retry')

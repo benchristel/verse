@@ -4,8 +4,7 @@ export default combineReducers({
   evalAllowed,
   appUi: combineReducers({
     logs,
-    screenLines,
-    inputLines
+    screenLines
   }),
   files,
   currentlyEditingFile,
@@ -40,16 +39,6 @@ function screenLines(curr=[], action) {
   switch (action.type) {
     case 'display':
     return action.displayLines
-
-    default:
-    return curr
-  }
-}
-
-function inputLines(curr=[], action) {
-  switch (action.type) {
-    case 'display':
-    return action.inputLines
 
     default:
     return curr

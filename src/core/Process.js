@@ -10,7 +10,6 @@ export function Process(store) {
   let error = null
   let logLines = []
   let displayLines = []
-  let inputLines = []
   let form = null
 
   return {
@@ -139,13 +138,6 @@ export function Process(store) {
       run()
       return
 
-      case 'startInputDisplay':
-      saga = lastOf(stack)
-      saga.inputRender = effect.render
-      updateScreen()
-      run()
-      return
-
       default:
       error = new Error('You `yield`ed something weird: ' + JSON.stringify(effect))
       return
@@ -171,22 +163,16 @@ export function Process(store) {
     for (i = stack.length - 1; i >= 0; i--) {
       if (!render && stack[i].render) {
         render = stack[i].render
+        break;
       }
-      if (!inputRender && stack[i].inputRender) {
-        inputRender = stack[i].inputRender
-      }
-      if (render && inputRender) break;
     }
 
-    displayLines = render ? render(store.getState()) : []
-    inputLines = inputRender ? inputRender(store.getState()) : []
-  }
+    displayLines = render ? render(store.getState()) : []  }
 
   function view() {
     return {
       logLines,
       displayLines,
-      inputLines,
       error,
       form,
     }

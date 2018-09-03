@@ -104,13 +104,6 @@ export function startDisplay(render) {
   }
 }
 
-export function startInputDisplay(render) {
-  return {
-    effectType: 'startInputDisplay',
-    render
-  }
-}
-
 export function perform(action) {
   return {
     effectType: 'perform',
