@@ -28,5 +28,5 @@ function LocalStorage() {
 }
 
 function standaloneAppCodeElement() {
-  return document.getElementById('app-code')
+  return document.getElementById('user-code')
 }

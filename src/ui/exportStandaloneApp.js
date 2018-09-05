@@ -27,7 +27,7 @@ window.stackStyle = (() =>
     </noscript>
     <div id="root"></div>
     <style id="main-css" type="text/css">$CODE_GOES_HERE$</style>
-    <script id="app-code" type="text/x-verse">$CODE_GOES_HERE$</script>
+    <script id="user-code" type="text/x-verse">$CODE_GOES_HERE$</script>
     <script id="main-script" type="text/javascript">$CODE_GOES_HERE$</script>
   </body>
 </html>
@@ -49,7 +49,7 @@ const interleave = xs => ys => {
 }
 
 export function exportStandaloneApp() {
-  const appCode = storage.load()['main.js']
+  const userCode   = storage.load()['main.js']
   const mainScript = el('main-script').innerText
   const mainCss    = el('main-css').innerText
 
@@ -60,7 +60,7 @@ export function exportStandaloneApp() {
      * $CODE_GOES_HERE$ (and note that the mainScript
      * *definitely* contains it) */
     split('$CODE_GOES_HERE$'),
-    interleave([mainCss, appCode, mainScript]),
+    interleave([mainCss, userCode, mainScript]),
     join(''),
     toBlob
   ), 'verse-app.html')
