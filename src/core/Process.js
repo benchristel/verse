@@ -62,7 +62,7 @@ export function Process(store) {
   }
 
   function runOrThrow(returnFromYield) {
-    let saga
+    let routine
 
     if (gotosThisTurn > 1000) throw new Error('Infinite retry loop detected')
 
@@ -123,8 +123,8 @@ export function Process(store) {
       return
 
       case 'startDisplay':
-      saga = lastOf(stack)
-      saga.render = effect.render
+      routine = lastOf(stack)
+      routine.render = effect.render
       updateScreen()
       run()
       return
@@ -136,11 +136,11 @@ export function Process(store) {
   }
 
   function push(generator) {
-    let saga =
+    let routine =
       isIterator(generator) ?
       generator : generator()
-    saga.render = null
-    stack.push(saga)
+    routine.render = null
+    stack.push(routine)
   }
 
   function pop() {
