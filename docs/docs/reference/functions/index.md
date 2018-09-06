@@ -37,6 +37,7 @@ of:
   - [`waitForChar`](#waitforchar)
 - [Data Processing](#data-processing)
   - [`assert`](#assert)
+  - [`equals`](#equals)
   - [`lowercase`](#lowercase)
   - [`reverse`](#reverse)
   - [`uppercase`](#uppercase)
@@ -254,6 +255,61 @@ define({
 ## Data Processing
 
 ------------------------------------------------------------
+
+### `equals`
+
+#### Usage
+
+```js
+let a = {something: 1}
+let b = {something: 1}
+
+if (equals(a, b)) {
+  // ...
+}
+```
+
+#### Explanation
+
+Compares the content of two objects, returning `true` if
+the objects are equal and `false` otherwise.
+
+The `equals` function differs from `is` in that it deeply
+compares objects and arrays by checking the equality of each
+of their properties. The `is` function only does a shallow
+comparison, so it will return false if passed two objects
+that look the same but are stored at different locations in
+memory.
+
+Here is an example of a case where `equals` and `is` return
+different values:
+
+```js
+let a = {hello: 'world'}
+let b = {hello: 'world'}
+
+is(a, b) // false! a and b are two separate objects.
+equals(a, b) // true. a and b have equivalent content.
+```
+
+#### See also
+
+- [`is`](#is)
+
+#### Example: Testing that two arrays are equal
+
+```js
+define({
+  words(sentence) {
+    return sentence.split(' ')
+  },
+
+  'test words() splits on spaces'() {
+    let result = words('three word phrase')
+    assert(result, equals, ['three', 'word', 'phrase'])
+  }
+})
+```
 
 ### `reverse`
 
