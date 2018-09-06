@@ -95,13 +95,3 @@ And, perhaps most importantly...
 - **Fun.** Writing code and making stuff work should be fun.
   Verse aims to maximize the joy of programming while
   minimizing its frustrations.
-
-## Legal Stuff
-
-By using Verse, you agree to our [Terms of Service](./tos).
-We know you won't read them, so here's the TL;DR:
-
-- Be kind.
-- Don't sue us.
-
-Have fun!

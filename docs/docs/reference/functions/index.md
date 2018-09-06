@@ -1,4 +1,4 @@
-# Function Reference
+# Guide to Verse Functions
 
 This page describes the built-in functions you can use in
 your Verse programs.
