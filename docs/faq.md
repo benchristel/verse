@@ -2,6 +2,30 @@
 
 Frequently-answered questions about the Verse platform:
 
+## Can I run a background routine in a separate "thread" (like in redux-saga)
+
+No, and this feature is unlikely to be added in the future.
+Here's why:
+
+The main reason why you'd want to start a background thread
+is to introduce a delay before something happens. For
+instance, your game might have an area where if the player
+steps on a trap, a timer starts, and if the player doesn't
+finish the level within 30 seconds a bomb goes off and they
+lose.
+
+Now, consider what happens if the player *saves the game*
+while the timer is ticking.
+
+If you implement the timer using a background routine,
+saving and restoring the game with the correct state becomes
+very difficult. The timer countdown is locked away in the
+JavaScript VM, where you can't get to it.
+
+If, on the other hand, you put the timer state in Verse's
+`state` object, and `perform` an action every frame to
+decrement it, saving the game "just works".
+
 ## Why can't it do X? (or, why is there no library function for X?)
 
 It's possible that I just haven't gotten to it yet. Some
