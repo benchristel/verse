@@ -46,6 +46,11 @@ of:
   - [`run`](#run)
   - [`'test ...'`](#test-)
 
+
+
+
+
+
 ## Effects
 
 ------------------------------------------------------------
@@ -252,7 +257,77 @@ define({
 
 ------------------------------------------------------------
 
+
+
+
+
+
 ## Data Processing
+
+------------------------------------------------------------
+
+### `assert`
+
+#### Usage
+
+```js
+assert(value, compareFunction, ...expected)
+```
+
+#### Explanation
+
+The `assert()` function checks whether the `value` matches
+the `expected` items using the `compareFunction`. If they
+match, `assert()` does nothing. If they
+do not match, it throws an error.
+
+The `compareFunction` may be any function that returns `true`
+or `false`. The arguments will be passed to it in this order:
+
+`compareFunction(...expected, value)`
+
+`assert()` is especially useful in tests. You can also use
+it to check that the arguments passed to a function are
+of the correct type before you try to do things with them.
+
+#### See also
+
+- [`'test ...'`](#test)
+
+Verse has many built-in functions that are appropriate to
+use as the `compareFunction`. Here are a few of them:
+
+- `isNumber`
+- `isString`
+- `is`
+- `equals`
+- `contains`
+
+#### Example: Checking the arguments to a function
+
+```javascript
+define({
+  displayText() {
+    add('this', 'fails')
+  },
+
+  add(a, b) {
+    assert(a, isNumber)
+    assert(b, isNumber)
+    return a + b
+  }
+})
+```
+
+#### Example: Testing basic arithmetic
+
+```javascript
+define({
+  'test that math works'() {
+    assert(3 * 4 - 5, is, 7)
+  }
+})
+```
 
 ------------------------------------------------------------
 
@@ -292,6 +367,16 @@ is(a, b) // false! a and b are two separate objects.
 equals(a, b) // true. a and b have equivalent content.
 ```
 
+#### Caveats
+
+For the sake of speed, `equals` does not do any special
+comparison for more esoteric JavaScript objects like
+`HtmlElement`. It also does not check the "class" of objects
+(indicated by the `constructor` property). Comparing
+DOM elements or objects that were constructed with the `new`
+operator may produce unexpected results. Verse recommends
+that you not use the `new` operator in your programs.
+
 #### See also
 
 - [`is`](#is)
@@ -310,6 +395,91 @@ define({
   }
 })
 ```
+
+------------------------------------------------------------
+
+### `is`
+
+```js
+if (is(a, b)) {
+  // ...
+}
+```
+
+#### Explanation
+
+TL;DR use `equals` instead unless you know what you're doing.
+
+Compares two values using [the `===` operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators#Identity), returning `true` if they are identical and
+`false` otherwise.
+
+Note that, unlike `equals`, `is` does not look at the
+content of objects and arrays when comparing them. It merely
+checks if they are the selfsame object. Therefore `is` may
+return `false` in cases where `equals` returns `true`.
+
+The main cases where you'd want to use `is` over `equals`
+are:
+
+- In tests, to assert that a function returns an existing
+  object instead of creating a whole new object that merely
+  `equals` the existing object. Creating lots of objects
+  unnecessarily can slow down your program, so sometimes you
+  may want to test for this.
+- When you suspect that the objects you are comparing will
+  be identical whenever they are equal, and you can tolerate
+  some false negatives.
+
+#### See also
+
+- [`equals`](#equals)
+
+#### Example: Testing that a function doesn't copy an object
+
+```js
+define({
+  identity(a) {
+    return a
+  },
+
+  'test identity returns its argument'() {
+    let object = {foo: 1}
+    assert(identity(object), is, object)
+  }
+})
+```
+
+------------------------------------------------------------
+
+### `lowercase`
+
+#### Usage
+
+```js
+let text = 'A Phrase in Title Case'
+let output = lowercase(text)
+```
+
+#### Explanation
+
+Returns a copy of the `text` with each of the characters
+converted to its lowercase equivalent.
+
+Characters in the input `text` that have no lowercase
+variant (such as numbers and punctuation) are not affected.
+Lowercase letters in the input are also left as-is.
+
+#### Example: Converting a string to lower case
+
+```js
+define({
+  displayText() {
+    return lowercase('i Am sO aNnOyInG')
+  }
+})
+```
+
+------------------------------------------------------------
 
 ### `reverse`
 
@@ -378,100 +548,10 @@ define({
 
 ------------------------------------------------------------
 
-### `lowercase`
 
-#### Usage
 
-```js
-let text = 'A Phrase in Title Case'
-let output = lowercase(text)
-```
 
-#### Explanation
 
-Returns a copy of the `text` with each of the characters
-converted to its lowercase equivalent.
-
-Characters in the input `text` that have no lowercase
-variant (such as numbers and punctuation) are not affected.
-Lowercase letters in the input are also left as-is.
-
-#### Example: Converting a string to lower case
-
-```js
-define({
-  displayText() {
-    return lowercase('i Am sO aNnOyInG')
-  }
-})
-```
-
-------------------------------------------------------------
-
-### `assert`
-
-#### Usage
-
-```js
-assert(value, compareFunction, ...expected)
-```
-
-#### Explanation
-
-The `assert()` function checks whether the `value` matches
-the `expected` items using the `compareFunction`. If they
-match, `assert()` does nothing. If they
-do not match, it throws an error.
-
-The `compareFunction` may be any function that returns `true`
-or `false`. The arguments will be passed to it in this order:
-
-`compareFunction(...expected, value)`
-
-`assert()` is especially useful in tests. You can also use
-it to check that the arguments passed to a function are
-of the correct type before you try to do things with them.
-
-#### See also
-
-- [`'test ...'`](#test)
-
-Verse has many built-in functions that are appropriate to
-use as the `compareFunction`. Here are a few of them:
-
-- `isNumber`
-- `isString`
-- `is`
-- `equals`
-- `contains`
-
-#### Example: Checking the arguments to a function
-
-```javascript
-define({
-  displayText() {
-    add('this', 'fails')
-  },
-
-  add(a, b) {
-    assert(a, isNumber)
-    assert(b, isNumber)
-    return a + b
-  }
-})
-```
-
-#### Example: Testing basic arithmetic
-
-```javascript
-define({
-  'test that math works'() {
-    assert(3 * 4 - 5, is, 7)
-  }
-})
-```
-
-------------------------------------------------------------
 
 ## Magic Definitions
 
