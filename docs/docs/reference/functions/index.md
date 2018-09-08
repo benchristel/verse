@@ -38,6 +38,7 @@ of:
 - [Data Processing](#data-processing)
   - [`assert`](#assert)
   - [`equals`](#equals)
+  - [`is`](#is)
   - [`lowercase`](#lowercase)
   - [`reverse`](#reverse)
   - [`uppercase`](#uppercase)
