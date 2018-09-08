@@ -10,6 +10,10 @@ export function isObject(a) {
   return Object.prototype.toString.call(a) === '[object Object]'
 }
 
+export function isArray(a) {
+  return Array.isArray(a)
+}
+
 export function isGeneratorFunction(a) {
   return Object.prototype.toString.call(a) === '[object GeneratorFunction]'
 }

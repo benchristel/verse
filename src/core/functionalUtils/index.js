@@ -1,7 +1,8 @@
-import { isFunction } from '../nativeTypes'
+import { isString, isFunction, isArray, isObject } from '../nativeTypes'
 import { curryable, partialApply } from '../higherOrderFunctions'
 import { isArrayOf } from '../types'
 import { assertArgs } from '../assert'
+import { quote, indent } from '../strings'
 
 export function equals(a, b) {
   if (a instanceof Array) {
@@ -121,4 +122,27 @@ export function contains(needle, haystack) {
     return partialApply(contains, arguments)
   }
   return haystack.indexOf(needle) > -1
+}
+
+export function visualize(a) {
+  if (isString(a))
+    return quote(a)
+  else if (isArray(a)) {
+    let innards = a.map(visualize).join(',\n')
+    if (a.length > 1)
+      return '[\n' + indent(innards) + '\n]'
+    else
+      return '[' + innards + ']'
+  }
+  else if (isObject(a)) {
+    let keys = Object.keys(a)
+    let innards = keys
+      .map(k => quote(k) + ': ' + visualize(a[k]))
+      .join(',\n')
+    if (keys.length > 1)
+      return '{\n' + indent(innards) + '\n}'
+    else
+      return '{' + innards + '}'
+  }
+  else return '' + a
 }

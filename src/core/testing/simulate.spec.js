@@ -37,7 +37,7 @@ describe('simulate', () => {
     expect(() => {
       simulate(run)
         .assertDisplay(is, 'hello')
-    }).toThrow(new Error('Tried to assert that\n  bork\nisExactly\n  hello'))
+    }).toThrow(new Error('Tried to assert that\n  "bork"\nisExactly\n  "hello"'))
   })
 
   it('sends an event to the process', () => {

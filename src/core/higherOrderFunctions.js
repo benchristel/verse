@@ -1,4 +1,5 @@
 import { isString, isObject, isFunction } from './nativeTypes'
+import { quote } from './strings'
 
 export function curryable(nArgs, fn) {
   return renameFunction(function curryableFn() {
@@ -61,15 +62,4 @@ export function abbreviate(a) {
     return a.name
   }
   return '' + a
-}
-
-function quote(s) {
-  return '"' + escape(s) + '"'
-}
-
-function escape(s) {
-  return s
-    .split('\\').join('\\\\')
-    .split('\n').join('\\n')
-    .split('"').join('\\"')
 }

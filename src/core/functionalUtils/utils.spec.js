@@ -13,7 +13,7 @@ import {
   identity,
   contains,
   nameWithArgs,
-  abbreviate,
+  visualize,
 } from '.'
 
 import '../api'
@@ -341,5 +341,97 @@ describe('contains', () => {
 
   it('curries', () => {
     expect(contains('needle')('hayneedlehay')).toBe(true)
+  })
+})
+
+describe('visualize', () => {
+  it('represents numbers as strings', () => {
+    expect(visualize(1)).toBe('1')
+    expect(visualize(2.5)).toBe('2.5')
+    expect(visualize(-4)).toBe('-4')
+    expect(visualize(1e21)).toBe('1e+21')
+  })
+
+  it('represents null as "null"', () => {
+    expect(visualize(null)).toBe('null')
+  })
+
+  it('represents undefined as "undefined"', () => {
+    expect(visualize()).toBe('undefined')
+  })
+
+  it('represents booleans as "true" and "false"', () => {
+    expect(visualize(true)).toBe('true')
+    expect(visualize(false)).toBe('false')
+  })
+
+  it('represents the empty string as a pair of quotes', () => {
+    expect(visualize('')).toBe('""')
+  })
+
+  it('quotes strings', () => {
+    expect(visualize('a')).toBe('"a"')
+  })
+
+  it('escapes special chars in strings', () => {
+    expect(visualize('a"b')).toBe('"a\\"b"')
+  })
+
+  it('puts slashes around regexes', () => {
+    expect(visualize(/[a-z]+/)).toBe('/[a-z]+/')
+  })
+
+  it('escapes literal slashes in regexes', () => {
+    expect(visualize(/http:\/\//)).toBe('/http:\\/\\//')
+  })
+
+  it('represents an empty array as []', () => {
+    expect(visualize([])).toBe('[]')
+  })
+
+  it('represents an array with one element inline', () => {
+    expect(visualize([1])).toBe('[1]')
+  })
+
+  it('puts elements of longer arrays on separate lines', () => {
+    expect(visualize([1, 2])).toBe('[\n  1,\n  2\n]')
+  })
+
+  it('recursively visualizes array elements', () => {
+    expect(visualize(['a'])).toBe('["a"]')
+    expect(visualize(['hi', {}])).toBe('[\n  "hi",\n  {}\n]')
+  })
+
+  it('represents an empty object as {}', () => {
+    expect(visualize({})).toBe('{}')
+  })
+
+  it('represents an object with one property inline', () => {
+    expect(visualize({foo: 1})).toBe('{"foo": 1}')
+  })
+
+  it('puts properties of larger objects on separate lines', () => {
+    expect(visualize({foo: 1, bar: 2}))
+      .toBe('{\n  "foo": 1,\n  "bar": 2\n}')
+  })
+
+  it('nests long objects and arrays', () => {
+    let expected = `{
+  "foo": [
+    1,
+    2,
+    3
+  ],
+  "bar": 0
+}`
+    expect(visualize({foo: [1, 2, 3], bar: 0})).toBe(expected)
+  })
+
+  it('nests a long array in a short object with one level of indentation', () => {
+    let expected = `{"hi": [
+  "fizz",
+  "buzz"
+]}`
+    expect(visualize({hi: ['fizz', 'buzz']})).toBe(expected)
   })
 })
