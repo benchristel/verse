@@ -1,8 +1,9 @@
 # License Clarification
 
 Verse is licensed to you under the terms of the Gnu General
-Public License (GPL), Version 3. See the LICENSE.md file in
-this repository for more information.
+Public License (GPL), Version 3. See
+[the LICENSE.md file](./LICENSE.md) in this repository for
+more information.
 
 Verse is an unusual piece of software, and even the GPL
 could not have anticipated how weird it is. Some
