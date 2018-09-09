@@ -173,4 +173,5 @@ Verse is distributed under the
 This goes without saying, but to clarify: you may distribute
 code you write *using* Verse under any license you choose.
 Verse imposes no restrictions on what you can do with code
-that you write.
+that you write. For more information, please see the
+[license clarification](./LICENSE_CLARIFICATION.md).
