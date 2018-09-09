@@ -3,6 +3,8 @@ import {
   waitForChar,
   wait,
 } from './effects'
+import { visualize } from './functionalUtils'
+import { isString } from './nativeTypes'
 
 /*
  * These routines run when a Verse app starts.
@@ -12,7 +14,9 @@ export default function *init() {
   yield startDisplay(() => {
     if (window.displayText) {
       try {
-        return ['' + window.displayText()]
+        let toDisplay = window.displayText()
+        if (isString(toDisplay)) return [toDisplay]
+        return [visualize(toDisplay)]
       } catch (e) {
         return ['ERROR: ' + e.message]
       }
