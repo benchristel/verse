@@ -434,4 +434,65 @@ describe('visualize', () => {
 ]}`
     expect(visualize({hi: ['fizz', 'buzz']})).toBe(expected)
   })
+
+  it('avoids infinite recursion of objects', () => {
+    let a = {}
+    a.a = a
+    expect(visualize(a)).toBe('{"a": <circular reference>}')
+  })
+
+  it('allows DAGs of objects', () => {
+    let a = {}
+    let b = {a1: a, a2: a}
+    expect(visualize(b)).toBe('{\n  "a1": {},\n  "a2": {}\n}')
+
+    /* check that objects with multiple keys (in this case,
+     * b) are popped off the stack correctly.
+     */
+    let c = {b1: b, b2: b}
+    expect(visualize(c)).toBe(`{
+  "b1": {
+    "a1": {},
+    "a2": {}
+  },
+  "b2": {
+    "a1": {},
+    "a2": {}
+  }
+}`)
+  })
+
+  it('avoids infinite recursion of arrays', () => {
+    let a = []
+    a.push(a)
+    expect(visualize(a)).toBe('[<circular reference>]')
+  })
+
+  it('allows DAGs of arrays', () => {
+    let a = []
+    let b = [a, a]
+    let c = [b, b]
+    expect(visualize(c)).toBe(`[
+  [
+    [],
+    []
+  ],
+  [
+    [],
+    []
+  ]
+]`)
+  })
+
+  it('displays the names of functions', () => {
+    let hasMethods = {
+      noop() {}
+    }
+
+    expect(visualize(hasMethods)).toBe('{"noop": noop}')
+  })
+
+  it('displays <function> for anonymous functions', () => {
+    expect(visualize(() => {})).toBe('<function>')
+  })
 })

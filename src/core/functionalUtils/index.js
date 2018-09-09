@@ -125,24 +125,45 @@ export function contains(needle, haystack) {
 }
 
 export function visualize(a) {
-  if (isString(a))
-    return quote(a)
-  else if (isArray(a)) {
-    let innards = a.map(visualize).join(',\n')
-    if (a.length > 1)
-      return '[\n' + indent(innards) + '\n]'
-    else
-      return '[' + innards + ']'
+  const circularRefStr = '<circular reference>'
+  let stack = []
+  return recurse(a)
+
+  function recurse(a) {
+    if (isString(a))
+      return quote(a)
+    else if (isArray(a)) {
+      if (contains(a, stack)) return circularRefStr
+      stack.push(a)
+      let innards = a.map(recurse).join(',\n')
+      if (a.length > 1) {
+        stack.pop()
+        return '[\n' + indent(innards) + '\n]'
+      }
+      else {
+        stack.pop()
+        return '[' + innards + ']'
+      }
+    }
+    else if (isObject(a)) {
+      if (contains(a, stack)) return circularRefStr
+      stack.push(a)
+      let keys = Object.keys(a)
+      let innards = keys
+        .map(k => quote(k) + ': ' + recurse(a[k]))
+        .join(',\n')
+      if (keys.length > 1) {
+        stack.pop()
+        return '{\n' + indent(innards) + '\n}'
+      }
+      else {
+        stack.pop()
+        return '{' + innards + '}'
+      }
+    }
+    else if (isFunction(a)) {
+      return a.name || '<function>'
+    }
+    else return '' + a
   }
-  else if (isObject(a)) {
-    let keys = Object.keys(a)
-    let innards = keys
-      .map(k => quote(k) + ': ' + visualize(a[k]))
-      .join(',\n')
-    if (keys.length > 1)
-      return '{\n' + indent(innards) + '\n}'
-    else
-      return '{' + innards + '}'
-  }
-  else return '' + a
 }
