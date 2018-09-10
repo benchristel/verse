@@ -46,7 +46,8 @@ the "Hello, World" program, which just makes the text
 "Hello, World" (or whatever message we want) appear on the
 screen.
 
-To start, type the code below into the editor. To type the
+To start, click the big "START" button. Then type the code
+below into the editor. To type the
 `{}` characters (programmers call them "curly braces"),
 hold `shift` and use the keys just to the
 right of `P` (assuming you have an American keyboard). Note
@@ -61,12 +62,13 @@ define({
 This line of code forms the backbone of our program. All
 our other code will go between the curly braces `{ ... }`.
 
-Once you've typed that out, the word "OK" should be shown
-in a green bubble at the top right of the editor. This
-indicates that the computer understands what you typed. If
-it says "Can't run" instead, check your work and make sure
-it matches the example. Computers are very picky about the
-code they'll accept.
+Once you've typed that out, the `LOAD` button at the top of
+the screen should be bright blue-green. This
+indicates that the computer understood what you typed and
+was able to load your code into its machinery
+successfully. If the button is yellow instead, check your
+work and make sure it matches the example. Computers are
+very picky about the code they'll accept.
 
 Now let's define a **function** that will put our "Hello,
 World" message on the screen. A *function* is a list of
@@ -95,11 +97,12 @@ define({
 ```
 
 When your code looks like the example above, you should
-see the green "OK" bubble again. If it says "Can't run"
-instead, check your work for mistakes.
+see the green `LOAD` button again. Again, if it's yellow,
+check your work for mistakes.
 
-> If nothing you type seems to give you the "OK" at this
-> point, just copy-paste the example code into the editor.
+> If nothing you type seems to give you the green light at
+> this point, just copy-paste the example code into the
+> editor.
 >
 > If you've copy-pasted it and it *still* doesn't work,
 > please message
@@ -126,8 +129,10 @@ drawn on the screen. We surround the text in single quotes
 so the computer knows where it begins and ends.
 
 When you're done typing, you should once again see the
-green "OK" bubble. If you do, you can click the "Run"
-button just to the right of it to run your program!
+green `LOAD` light. And at this point, you should also see
+the text `Hello, World!` on the right side of the screen.
+
+It works!
 
 ![A screenshot of the running Hello World program](./hello-world2.png)
 
@@ -339,10 +344,10 @@ define({
 ```
 
 When you're done making that change, the output should still
-be `helloolleh`. Make sure you're still seeing the green "OK"
-bubble too; if it says "Can't run", the output you're seeing
-is likely from the previous version of the program, with
-the hardcoded text.
+be `helloolleh`. Make sure you're still seeing the green
+`LOAD` light too; if it's yellow, the output you're
+seeing is likely from the previous version of the program,
+with the hardcoded text.
 
 ## Using Variables
 
