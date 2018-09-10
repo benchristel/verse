@@ -30,10 +30,12 @@ export function renameFunction(fn, nameCreator) {
   return fn
 }
 
+const functionNamePlaceholder = '<function>'
+
 export function nameWithArgs(baseName, args) {
   let baseNameStr = baseName && isString(baseName) ?
     baseName
-    : '<function>'
+    : functionNamePlaceholder
 
   if (args.length) {
     let prettyArgs = [...args].map(abbreviate).join(', ')
@@ -59,7 +61,7 @@ export function abbreviate(a) {
   } else if (typeof a === 'symbol') {
     return 'Symbol()'
   } else if (isFunction(a)) {
-    return a.name
+    return a.name || functionNamePlaceholder
   }
   return '' + a
 }

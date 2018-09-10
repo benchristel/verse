@@ -171,4 +171,8 @@ describe('abbreviate', () => {
   it('represents functions by their name', () => {
     expect(abbreviate(abbreviate)).toBe('abbreviate')
   })
+
+  it('represents anonymous functions as <function>', () => {
+    expect(abbreviate(function() {})).toBe('<function>')
+  })
 })
