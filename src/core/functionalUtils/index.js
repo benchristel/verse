@@ -1,7 +1,7 @@
-import { isString, isFunction, isArray, isObject } from '../nativeTypes'
-import { curryable, partialApply } from '../higherOrderFunctions'
-import { isArrayOf } from '../types'
-import { assertArgs } from '../assert'
+import { isString, isFunction, isArray, isObject, isRegExp } from '../nativeTypes'
+import { partialApply } from '../higherOrderFunctions'
+import { isArrayOf, checkArgs } from '../types'
+import { or } from '../predicates'
 import { quote, indent } from '../strings'
 
 export function equals(a, b) {
@@ -30,9 +30,18 @@ export function equals(a, b) {
   return a === b
 }
 
+const isAnything = () => true
+const isArrayOfFunctions = isArrayOf(isFunction)
+
+const doWith_example = ['hello', uppercase, reverse]
 export function doWith(subject, ...fns) {
-  assertArgs({
-    '...fns': [fns, isArrayOf(isFunction)]
+  checkArgs(doWith, arguments, {
+    variadic: true,
+    example: doWith_example,
+    types: [
+      subject, isAnything,
+      fns,     isArrayOfFunctions
+    ],
   })
 
   return fns.reduce((value, f) => {
@@ -54,11 +63,24 @@ export function reverse(s) {
   return reverse(restOf(s)) + firstOf(s)
 }
 
-export let replace = curryable(3,
-  function replace(pattern, replacement, subject) {
-    return subject.split(pattern).join(replacement)
+const replace_example = ['i', 'ello', 'Hi there!']
+export function replace(pattern, replacement, subject) {
+  const nArgs = 3
+  checkArgs(replace, arguments, {
+    curry: nArgs,
+    example: replace_example,
+    types: [
+      pattern,     or(isString, isRegExp),
+      replacement, isString,
+      subject,     isString
+    ],
+  })
+  if (arguments.length < nArgs) {
+    return partialApply(replace, arguments)
   }
-)
+
+  return subject.split(pattern).join(replacement)
+}
 
 export function firstOf(a) {
   return a[0]

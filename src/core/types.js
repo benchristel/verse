@@ -1,8 +1,9 @@
-import { partialApply } from './higherOrderFunctions'
+import { partialApply, abbreviate } from './higherOrderFunctions'
 import { not } from './predicates'
 import { has, mapObject, objectsHaveSameKeys } from './objects'
 import { assert } from './assert'
 import { isObject } from './nativeTypes'
+import { visualize } from './functionalUtils'
 
 export function satisfies(type, value) {
   if (arguments.length < 2) return partialApply(satisfies, arguments)
@@ -56,4 +57,41 @@ export function defaultingTo(defaultValue, predicate) {
 
   theType.defaultValue = defaultValue
   return theType
+}
+
+export function checkArgs(fn, args, spec) {
+  function pointsToValidArg(i) {
+    return i < spec.types.length && i < args.length * 2
+  }
+
+  function curryingMessage() {
+    return spec.curry && args.length < spec.curry ?
+      ['', `Note that this function supports partial application, so it is OK to supply fewer than ${spec.curry} arguments.`]
+      : []
+  }
+
+  function variadicMessage() {
+    return spec.variadic ?
+      ['', `Note that this function can be called with any number of arguments >= ${spec.types.length / 2 - 1}.`]
+      : []
+  }
+
+  for (let i = 0; pointsToValidArg(i); i += 2) {
+    let arg  = spec.types[i]
+    let type = spec.types[i + 1]
+    if (!satisfies(type, arg)) {
+      let message = [
+        `The \`${fn.name}\` function was called with unexpected arguments:`,
+        '',
+        `  ${fn.name}(${[...args].map(abbreviate).join(', ')})`,
+        '',
+        'It expected something like:',
+        '',
+        `  ${fn.name}(${spec.example.map(visualize).join(', ')})`,
+        ...curryingMessage(),
+        ...variadicMessage()
+      ].join('\n')
+      throw Error(message)
+    }
+  }
 }

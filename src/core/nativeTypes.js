@@ -25,3 +25,7 @@ export function isIterator(a) {
 export function isFunction(a) {
   return typeof a === 'function'
 }
+
+export function isRegExp(a) {
+  return Object.prototype.toString.call(a) === '[object RegExp]'
+}

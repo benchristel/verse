@@ -1,6 +1,9 @@
 import { curryable, nameWithArgs, abbreviate } from './higherOrderFunctions'
 
 describe('curryable', () => {
+  // TODO: partialApply is only tested through curryable.
+  // Test partialApply directly, and remove these tests
+  // and curryable, which is not used anywhere.
   it('calls the wrapped function only when the requisite number of args have been passed', () => {
     let args
     let foo1 = curryable(2, function foo(a, b) {
