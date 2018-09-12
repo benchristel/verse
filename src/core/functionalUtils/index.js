@@ -31,18 +31,17 @@ export function equals(a, b) {
 }
 
 const isAnything = () => true
-const isArrayOfFunctions = isArrayOf(isFunction)
 
-const doWith_example = ['hello', uppercase, reverse]
+const doWith_interface = {
+  variadic: true,
+  example: ['hello', uppercase, reverse],
+  types: [
+    isAnything,
+    isArrayOf(isFunction)
+  ],
+}
 export function doWith(subject, ...fns) {
-  checkArgs(doWith, arguments, {
-    variadic: true,
-    example: doWith_example,
-    types: [
-      subject, isAnything,
-      fns,     isArrayOfFunctions
-    ],
-  })
+  checkArgs(doWith, arguments, doWith_interface)
 
   return fns.reduce((value, f) => {
     return f(value)
@@ -63,19 +62,18 @@ export function reverse(s) {
   return reverse(restOf(s)) + firstOf(s)
 }
 
-const replace_example = ['i', 'ello', 'Hi there!']
+const replace_interface = {
+  curry: 3,
+  example: ['i', 'ello', 'Hi there!'],
+  types: [
+    or(isString, isRegExp),
+    isString,
+    isString
+  ],
+}
 export function replace(pattern, replacement, subject) {
-  const nArgs = 3
-  checkArgs(replace, arguments, {
-    curry: nArgs,
-    example: replace_example,
-    types: [
-      pattern,     or(isString, isRegExp),
-      replacement, isString,
-      subject,     isString
-    ],
-  })
-  if (arguments.length < nArgs) {
+  checkArgs(replace, arguments, replace_interface)
+  if (arguments.length < replace_interface.curry) {
     return partialApply(replace, arguments)
   }
 

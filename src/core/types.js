@@ -61,7 +61,7 @@ export function defaultingTo(defaultValue, predicate) {
 
 export function checkArgs(fn, args, spec) {
   function pointsToValidArg(i) {
-    return i < spec.types.length && i < args.length * 2
+    return i < spec.types.length && i < args.length
   }
 
   function curryingMessage() {
@@ -72,26 +72,36 @@ export function checkArgs(fn, args, spec) {
 
   function variadicMessage() {
     return spec.variadic ?
-      ['', `Note that this function can be called with any number of arguments >= ${spec.types.length / 2 - 1}.`]
+      ['', `Note that this function can be called with any number of arguments >= ${spec.types.length - 1}.`]
       : []
   }
 
-  for (let i = 0; pointsToValidArg(i); i += 2) {
-    let arg  = spec.types[i]
-    let type = spec.types[i + 1]
-    if (!satisfies(type, arg)) {
-      let message = [
-        `The \`${fn.name}\` function was called with unexpected arguments:`,
-        '',
-        `  ${fn.name}(${[...args].map(abbreviate).join(', ')})`,
-        '',
-        'It expected something like:',
-        '',
-        `  ${fn.name}(${spec.example.map(visualize).join(', ')})`,
-        ...curryingMessage(),
-        ...variadicMessage()
-      ].join('\n')
-      throw Error(message)
+  function message() {
+    return [
+      `The \`${fn.name}\` function was called with unexpected arguments:`,
+      '',
+      `  ${fn.name}(${[...args].map(abbreviate).join(', ')})`,
+      '',
+      'It expected something like:',
+      '',
+      `  ${fn.name}(${spec.example.map(visualize).join(', ')})`,
+      ...curryingMessage(),
+      ...variadicMessage()
+    ].join('\n')
+  }
+
+  for (let i = 0; pointsToValidArg(i); i++) {
+    let arg  = args[i]
+    let type = spec.types[i]
+    if (spec.variadic && i === spec.types.length - 1) {
+      // the last type of a variadic type signature should
+      // be an isArrayOf() type that will match the spread
+      // args passed to the function.
+      if (!satisfies(type, [...args].slice(i))) {
+        throw Error(message())
+      }
+    } else if (!satisfies(type, arg)) {
+      throw Error(message())
     }
   }
 }

@@ -31,51 +31,43 @@ describe('isEmpty', () => {
 })
 
 describe('checkArgs', () => {
+  const greet_interface = {
+    types: [isString],
+    example: ['alice']
+  }
   function greet(name) {
-    checkArgs(greet, arguments, {
-      types: [
-        name, isString
-      ],
-      example: ['alice']
-    })
+    checkArgs(greet, arguments, greet_interface)
     return 'hi, ' + name
   }
 
+  const foo_interface = {
+    types: [isNumber, isString],
+    example: [1, 'a']
+  }
   function foo(a, b) {
-    checkArgs(foo, arguments, {
-      types: [
-        a, isNumber,
-        b, isString
-      ],
-      example: [1, 'a']
-    })
+    checkArgs(foo, arguments, foo_interface)
   }
 
+  const curried_interface = {
+    types: [isString, isString],
+    curry: 2,
+    example: ['a', 'b']
+  }
   function curried(a, b) {
-    const nArgs = 2
-    checkArgs(curried, arguments, {
-      types: [
-        a, isString,
-        b, isString
-      ],
-      curry: nArgs,
-      example: ['a', 'b']
-    })
-    if (arguments.length < nArgs) {
+    checkArgs(curried, arguments, curried_interface)
+    if (arguments.length < curried_interface.curry) {
       return partialApply(curried, arguments)
     }
     return a + b
   }
 
+  const variadic_interface = {
+    types: [isNumber, isArrayOf(isNumber)],
+    variadic: true,
+    example: [1, 2, 3]
+  }
   function variadic(first, ...rest) {
-    checkArgs(variadic, arguments, {
-      types: [
-        first, isNumber,
-        rest, isArrayOf(isNumber)
-      ],
-      variadic: true,
-      example: [1, 2, 3]
-    })
+    checkArgs(variadic, arguments, variadic_interface)
   }
 
   it('does nothing if all the arguments match the expected types', () => {
