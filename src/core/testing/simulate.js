@@ -7,7 +7,7 @@ export function Simulator(globalObject) {
   return function simulate(routine) {
     const getStateType = globalObject.getStateType || (() => ({}))
     const reducer = globalObject.reducer
-    let store = Store(getStateType, reducer)
+    let store = Store(getStateType(), reducer)
     let process = Process(store)
     process.begin(routine)
 

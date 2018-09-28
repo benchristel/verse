@@ -57,7 +57,7 @@ describe('simulate', () => {
   })
 
   it('maintains state in the Store', () => {
-    fakeWindow.getStateType = isNumber
+    fakeWindow.getStateType = () => isNumber
     fakeWindow.reducer = (state, action) => {
       if (action === '+') return state + 1
       if (action === '-') return state - 1
