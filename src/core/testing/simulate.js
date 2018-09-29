@@ -2,6 +2,7 @@ import { Process } from '../Process'
 import { Store } from '../Store'
 import { assert } from '../assert'
 import { isExactly } from '../functionalUtils'
+import { indent } from '../strings'
 
 export function Simulator(globalObject) {
   return function simulate(routine) {
@@ -20,6 +21,9 @@ export function Simulator(globalObject) {
 
     function assertDisplay(predicate, ...args) {
       let view = process.redraw()
+      if (view.error !== null) {
+        throw new Error('The simulated program crashed.\nThe error was:\n' + indent('' + view.error))
+      }
       assert(view.error, isExactly, null)
       assert(view.displayLines.join('\n'), predicate, ...args)
       return self
