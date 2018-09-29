@@ -90,7 +90,7 @@ export function Process(store) {
     switch (effect.effectType) {
       case 'perform':
       store.emit(effect.action)
-      run()
+      run(store.getState())
       return
 
       case 'waitForEvent':

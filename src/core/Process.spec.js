@@ -110,6 +110,15 @@ describe('Process', () => {
     expect(store.emit).not.toBeCalled()
   })
 
+  it('returns the current state from `yield perform`', () => {
+    store.getState.mockReturnValue('the state')
+    let state
+    p.begin(function*() {
+      state = yield perform('foo')
+    })
+    expect(state).toBe('the state')
+  })
+
   it('runs a subroutine', () => {
     function* story(subject) {
       yield perform('a story about ' + subject)
