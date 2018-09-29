@@ -29,8 +29,9 @@ export function getDefaultValue(type) {
   return value
 }
 
-export function isArrayOf(type) {
-  return a => Array.isArray(a) && a.every(satisfies(type))
+export function isArrayOf(type, value) {
+  if (arguments.length < 2) return partialApply(isArrayOf, arguments)
+  return Array.isArray(value) && value.every(satisfies(type))
 }
 
 export function isNullOr(type) {
