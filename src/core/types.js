@@ -1,8 +1,8 @@
 import { partialApply, abbreviate } from './higherOrderFunctions'
-import { not } from './predicates'
+import { not, or } from './predicates'
 import { has, mapObject, objectsHaveSameKeys } from './objects'
 import { assert } from './assert'
-import { isObject } from './nativeTypes'
+import { isObject, isString, isArray } from './nativeTypes'
 import { visualize } from './functionalUtils'
 
 export function satisfies(type, value) {
@@ -45,7 +45,17 @@ export function oneOf(...values) {
   return theType
 }
 
+const isEmpty_interface = {
+  example: [[]],
+  types: [or(or(isString, isArray), isObject)]
+}
+
 export function isEmpty(a) {
+  checkArgs(isEmpty, arguments, isEmpty_interface)
+  if (isObject(a)) {
+    for (let key in a) return false && key
+    return true
+  }
   for (let item of a) return false && item // make linter happy
   return true
 }

@@ -1,4 +1,4 @@
-import { isString, isFunction, isArray, isObject, isRegExp } from '../nativeTypes'
+import { isString, isFunction, isArray, isObject, isRegExp, isNumber } from '../nativeTypes'
 import { partialApply } from '../higherOrderFunctions'
 import { isArrayOf, checkArgs } from '../types'
 import { or } from '../predicates'
@@ -80,22 +80,47 @@ export function replace(pattern, replacement, subject) {
   return subject.split(pattern).join(replacement)
 }
 
+const firstOf_restOf_interface = {
+  example: ['abc'],
+  types: [
+    or(isString, isArray)
+  ]
+}
+
 export function firstOf(a) {
+  checkArgs(firstOf, arguments, firstOf_restOf_interface)
   return a[0]
 }
 
 export function restOf(a) {
+  checkArgs(firstOf, arguments, firstOf_restOf_interface)
   return a.slice(1)
 }
 
+const get_interface = {
+  curry: 2,
+  example: ['key', {key: 'value'}],
+  types: [
+    or(isString, isNumber),
+    or(or(isObject, isArray), isFunction)
+  ]
+}
+
 export function get(key, collection) {
-  if (arguments.length < 2) {
+  checkArgs(get, arguments, get_interface)
+  if (arguments.length < get_interface.curry) {
     return partialApply(get, arguments)
   }
   return collection[key]
 }
 
+const range_interface = {
+  example: [1, 10],
+  types: [isNumber, isNumber]
+}
+
 export function range(start, end) {
+  checkArgs(range, arguments, range_interface)
   if (end === undefined) return [start]
 
   if (end > start) {
@@ -110,7 +135,13 @@ export function range(start, end) {
   }
 }
 
+const count_interface = {
+  example: [[1, 2, 3]],
+  types: [or(isArray, isString)]
+}
+
 export function count(collection) {
+  checkArgs(count, arguments, count_interface)
   return collection.length
 }
 
@@ -122,7 +153,13 @@ export function isExactly(a, b) {
   return a === b
 }
 
+const startsWith_interface = {
+  example: ['y', 'yes'],
+  types: [isString, isString]
+}
+
 export function startsWith(prefix, s) {
+  checkArgs(startsWith, arguments, startsWith_interface)
   return s.indexOf(prefix) === 0
 }
 

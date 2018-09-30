@@ -156,7 +156,6 @@ function runTests(tests) {
 
 function getTestFunctions(global) {
   return Object.values(global)
-    .filter(isTruthy)
-    .filter(has('name'))
+    .filter(isFunction)
     .filter(({name}) => startsWith('test ', name))
 }

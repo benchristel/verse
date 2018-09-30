@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux'
+import { isEmpty } from '../../core/types'
 
 export default combineReducers({
   evalAllowed,
@@ -150,9 +151,4 @@ function map(fn, object) {
     }
   }
   return result
-}
-
-function isEmpty(object) {
-  for (let prop in object) return false
-  return true
 }

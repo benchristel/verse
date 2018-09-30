@@ -17,16 +17,24 @@ describe('isEmpty', () => {
     expect(isEmpty([])).toBe(true)
   })
 
-  it('returns true for an empty Set', () => {
-    expect(isEmpty(new Set())).toBe(true)
+  it('returns true for an empty string', () => {
+    expect(isEmpty('')).toBe(true)
+  })
+
+  it('returns true for an empty object', () => {
+    expect(isEmpty({})).toBe(true)
   })
 
   it('returns false for an array with one item', () => {
     expect(isEmpty([1])).toBe(false)
   })
 
-  it('returns false for a Set with one item', () => {
-    expect(isEmpty(new Set([1]))).toBe(false)
+  it('returns false for a string with one char', () => {
+    expect(isEmpty('a')).toBe(false)
+  })
+
+  it('returns false for an object with one key', () => {
+    expect(isEmpty({a: 1})).toBe(false)
   })
 })
 
