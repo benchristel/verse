@@ -1,7 +1,8 @@
-import { isString, isObject, isFunction } from './nativeTypes'
+import { isString, isObject, isFunction, isAnything } from './nativeTypes'
 import { partialApply } from './higherOrderFunctions'
 import { checkArgs } from './types'
 import { or } from './predicates'
+import { uppercase } from './functionalUtils'
 
 export function objectsHaveSameKeys(a, b) {
   let aKeys = Object.keys(a)
@@ -9,7 +10,13 @@ export function objectsHaveSameKeys(a, b) {
   return aKeys.length === bKeys.length && bKeys.every(isIn(a))
 }
 
+const mapObject_interface = {
+  example: [uppercase, {name: 'elias'}],
+  types: [isFunction, isObject]
+}
+
 export function mapObject(fn, obj) {
+  checkArgs(mapObject, arguments, mapObject_interface)
   let result = {}
   for (let key of Object.keys(obj)) {
     result[key] = fn(obj[key])
@@ -20,7 +27,7 @@ export function mapObject(fn, obj) {
 const has_interface = {
   curry: 2,
   example: ['name', {name: 'elias'}],
-  types: [isString, or(isObject, isFunction)]
+  types: [isString, isAnything]
 }
 
 export function has(prop, obj) {

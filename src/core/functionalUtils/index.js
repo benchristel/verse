@@ -1,4 +1,4 @@
-import { isString, isFunction, isArray, isObject, isRegExp, isNumber } from '../nativeTypes'
+import { isString, isFunction, isArray, isObject, isRegExp, isNumber, isAnything } from '../nativeTypes'
 import { partialApply } from '../higherOrderFunctions'
 import { isArrayOf, checkArgs } from '../types'
 import { or } from '../predicates'
@@ -29,8 +29,6 @@ export function equals(a, b) {
 
   return a === b
 }
-
-const isAnything = () => true
 
 const doWith_interface = {
   variadic: true,

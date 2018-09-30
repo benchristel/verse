@@ -29,3 +29,7 @@ export function isFunction(a) {
 export function isRegExp(a) {
   return Object.prototype.toString.call(a) === '[object RegExp]'
 }
+
+export function isAnything(a) {
+  return true
+}

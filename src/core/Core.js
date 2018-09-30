@@ -2,10 +2,11 @@ import Definer from './Definer'
 import { has } from './objects'
 import { Store } from './Store'
 import { Process } from './Process'
-import { get, tuple, isTruthy, startsWith } from './functionalUtils'
+import { get, tuple, startsWith } from './functionalUtils'
 import { blankView } from './view'
 import { animationFrame, keyDown } from './events'
 import init from './init'
+import { isFunction } from './nativeTypes'
 
 export function Core() {
   const definer = Definer(window)
