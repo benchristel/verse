@@ -2,11 +2,26 @@ import { partialApply, abbreviate } from './higherOrderFunctions'
 import { not, or } from './predicates'
 import { has, mapObject, objectsHaveSameKeys } from './objects'
 import { assert } from './assert'
-import { isObject, isString, isArray } from './nativeTypes'
+import { isObject, isString, isArray, isFunction, isAnything } from './nativeTypes'
 import { visualize } from './functionalUtils'
 
+const satisfies_interface = {
+  curry: 2,
+  example: [{name: isString}, {name: 'Elias'}],
+  types: [or(isObject, isFunction), isAnything]
+}
+
 export function satisfies(type, value) {
-  if (arguments.length < 2) return partialApply(satisfies, arguments)
+  checkArgs(satisfies, arguments, satisfies_interface)
+  return uncheckedSatisfies.apply(null, arguments)
+}
+
+/* checkArgs needs a version of `satisfies` it can call
+ * without causing infinitely recursive typechecking. */
+function uncheckedSatisfies(type, value) {
+  if (arguments.length < satisfies_interface.curry) {
+    return partialApply(uncheckedSatisfies, arguments)
+  }
   if (value && value._verse_type === type) return true
   if (typeof type === 'function') return type(value)
   assert(type, isObject)
@@ -71,6 +86,17 @@ export function defaultingTo(defaultValue, predicate) {
 }
 
 export function checkArgs(fn, args, spec) {
+  function minArgs() {
+    if (spec.curry) return 0
+    if (spec.variadic) return spec.types.length - 1
+    return spec.types.length
+  }
+
+  function maxArgs() {
+    if (spec.variadic) return Infinity
+    return spec.types.length
+  }
+
   function pointsToValidArg(i) {
     return i < spec.types.length && i < args.length
   }
@@ -83,7 +109,7 @@ export function checkArgs(fn, args, spec) {
 
   function variadicMessage() {
     return spec.variadic ?
-      ['', `Note that this function can be called with any number of arguments >= ${spec.types.length - 1}.`]
+      ['', `Note that this function can be called with any number of arguments >= ${minArgs()}.`]
       : []
   }
 
@@ -101,6 +127,10 @@ export function checkArgs(fn, args, spec) {
     ].join('\n')
   }
 
+  if (args.length > maxArgs() || args.length < minArgs()) {
+    throw Error(message())
+  }
+
   for (let i = 0; pointsToValidArg(i); i++) {
     let arg  = args[i]
     let type = spec.types[i]
@@ -108,10 +138,10 @@ export function checkArgs(fn, args, spec) {
       // the last type of a variadic type signature should
       // be an isArrayOf() type that will match the spread
       // args passed to the function.
-      if (!satisfies(type, [...args].slice(i))) {
+      if (!uncheckedSatisfies(type, [...args].slice(i))) {
         throw Error(message())
       }
-    } else if (!satisfies(type, arg)) {
+    } else if (!uncheckedSatisfies(type, arg)) {
       throw Error(message())
     }
   }

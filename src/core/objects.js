@@ -7,7 +7,7 @@ import { uppercase } from './functionalUtils'
 export function objectsHaveSameKeys(a, b) {
   let aKeys = Object.keys(a)
   let bKeys = Object.keys(b)
-  return aKeys.length === bKeys.length && bKeys.every(isIn(a))
+  return aKeys.length === bKeys.length && bKeys.every(k => isIn(a, k))
 }
 
 const mapObject_interface = {

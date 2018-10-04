@@ -207,16 +207,7 @@ describe('doWith', () => {
 })
 
 describe('range', () => {
-  it('can be empty', () => {
-    expect(get(0, range())).not.toBeDefined()
-  })
-
   it('can have one element', () => {
-    let range0 = range(0)
-    expect(get(0, range0)).toBe(0)
-    expect(get(1, range0)).not.toBeDefined()
-    expect(count(range0)).toBe(1)
-
     let range00 = range(0, 0)
     expect(get(0, range00)).toBe(0)
     expect(get(1, range00)).not.toBeDefined()
@@ -224,7 +215,7 @@ describe('range', () => {
   })
 
   it('can start anywhere', () => {
-    expect(get(0, range(99))).toBe(99)
+    expect(get(0, range(99, 100))).toBe(99)
   })
 
   it('can have multiple elements', () => {
@@ -236,20 +227,16 @@ describe('range', () => {
     expect(count(r)).toBe(3)
   })
 
-  it('can be in descending order', () => {
-    let r = range(3, 1)
-    expect(get(0, r)).toBe(3)
-    expect(get(1, r)).toBe(2)
-    expect(get(2, r)).toBe(1)
-    expect(get(3, r)).toBe(undefined)
-    expect(count(r)).toBe(3)
-  })
-
   it('can have negative elements', () => {
     let r = range(-5, 5)
     expect(get(0, r)).toBe(-5)
     expect(get(1, r)).toBe(-4)
     expect(count(r)).toBe(11)
+  })
+
+  it('throws if end < start', () => {
+    expect(() => range(1, -1))
+      .toThrow(Error('Expected arguments to range() to be in ascending order, but got: 1, -1'))
   })
 
   it('is on the window object', () => {

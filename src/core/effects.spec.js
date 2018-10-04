@@ -111,13 +111,3 @@ describe('waitForInput', () => {
     expect(view.displayLines).toEqual([])
   })
 })
-
-describe('wait', () => {
-  it('throws an error if you pass undefined', () => {
-    expect(() => wait().next()).toThrow(new Error('wait(...) must be passed the number of seconds to wait, but you passed undefined'))
-  })
-
-  it('throws an error if you pass a string', () => {
-    expect(() => wait('hi').next()).toThrow(new Error('wait(...) must be passed the number of seconds to wait, but you passed hi'))
-  })
-})

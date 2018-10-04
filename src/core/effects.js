@@ -1,5 +1,6 @@
 import { isNumber } from './nativeTypes'
 import { animationFrame, isAnimationFrame, isKeyDown } from './events'
+import { checkArgs } from './types'
 
 export function waitForEvent() {
   return {
@@ -9,10 +10,13 @@ export function waitForEvent() {
 
 const epsilon = 1e-6
 
+const wait_interface = {
+  example: [0.1],
+  types: [isNumber]
+}
+
 export function *wait(seconds) {
-  if (!isNumber(seconds)) {
-    throw new Error('wait(...) must be passed the number of seconds to wait, but you passed ' + seconds)
-  }
+  checkArgs(wait, arguments, wait_interface)
   if (seconds <= 0) return
 
   let secsLeftToWait = seconds

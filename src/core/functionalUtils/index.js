@@ -119,18 +119,11 @@ const range_interface = {
 
 export function range(start, end) {
   checkArgs(range, arguments, range_interface)
-  if (end === undefined) return [start]
+  if (end < start) throw Error('Expected arguments to range() to be in ascending order, but got: ' + start + ', ' + end)
 
-  if (end > start) {
-    let items = []
-    for (let i = start; i <= end; i++) items.push(i)
-    return items
-  } else {
-    // descending order
-    let items = []
-    for (let i = start; i >= end; i--) items.push(i)
-    return items
-  }
+  let items = []
+  for (let i = start; i <= end; i++) items.push(i)
+  return items
 }
 
 const count_interface = {
@@ -172,8 +165,15 @@ export function identity(a) {
   return a
 }
 
+const contains_interface = {
+  curry: 2,
+  example: ['ee', 'green cheese'],
+  types: [isAnything, or(isString, isArray)]
+}
+
 export function contains(needle, haystack) {
-  if (arguments.length < 2) {
+  checkArgs(contains, arguments, contains_interface)
+  if (arguments.length < contains_interface.curry) {
     return partialApply(contains, arguments)
   }
   return haystack.indexOf(needle) > -1

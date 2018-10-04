@@ -142,6 +142,27 @@ Note that this function supports partial application, so it is OK to supply fewe
       toContain('Note that this function can be called with any number of arguments >= 1.')
   })
 
+  it('throws if not enough arguments are passed', () => {
+    expect(exceptionMessageFrom(() => greet()))
+      .toContain('greet()')
+  })
+
+  it('allows the variadic argument list to be empty', () => {
+    expect(() => {
+      variadic(1)
+    }).not.toThrow()
+  })
+
+  it('throws if required args are not passed to a variadic function', () => {
+    expect(exceptionMessageFrom(() => variadic()))
+      .toContain('variadic()')
+  })
+
+  it('throws if extra args are passed', () => {
+    expect(exceptionMessageFrom(() => greet('a', 'b')))
+      .toContain('greet("a", "b")')
+  })
+
   function exceptionMessageFrom(fn) {
     try {
       fn()
