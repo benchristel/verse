@@ -111,3 +111,9 @@ describe('waitForInput', () => {
     expect(view.displayLines).toEqual([])
   })
 })
+
+describe('wait', () => {
+  it('throws if you pass a non-number argument', () => {
+    expect(() => wait('1')).toThrow()
+  })
+})

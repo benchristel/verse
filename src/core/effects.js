@@ -15,8 +15,12 @@ const wait_interface = {
   types: [isNumber]
 }
 
-export function *wait(seconds) {
+export function wait(seconds) {
   checkArgs(wait, arguments, wait_interface)
+  return waitRoutine(seconds)
+}
+
+function *waitRoutine(seconds) {
   if (seconds <= 0) return
 
   let secsLeftToWait = seconds
@@ -30,7 +34,7 @@ export function *wait(seconds) {
     let consumedFrames = seconds * 60
     yield putBackEvent(animationFrame(event.elapsedFrames - consumedFrames))
   } else {
-    yield retry(wait(secsLeftToWait))
+    yield retry(waitRoutine(secsLeftToWait))
   }
 }
 
