@@ -1,7 +1,16 @@
 import { partialApply, renameFunction } from './higherOrderFunctions'
+import { isString, isNumber, isFunction } from'./nativeTypes'
+import { checkArgs } from './types'
+
+const or_interface = {
+  curry: 2,
+  example: [isString, isNumber],
+  types: [isFunction, isFunction]
+}
 
 export function or(p, q) {
-  if (arguments.length < 2) {
+  checkArgs(or, arguments, or_interface)
+  if (arguments.length < or_interface.curry) {
     return partialApply(or, arguments)
   }
   return renameFunction((...args) =>

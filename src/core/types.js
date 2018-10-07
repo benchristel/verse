@@ -5,8 +5,9 @@ import { assert } from './assert'
 import { isObject, isString, isArray, isFunction, isAnything } from './nativeTypes'
 import { visualize } from './functionalUtils'
 
+const satisfies_curry = 2
 const satisfies_interface = {
-  curry: 2,
+  curry: satisfies_curry,
   example: [{name: isString}, {name: 'Elias'}],
   types: [or(isObject, isFunction), isAnything]
 }
@@ -19,7 +20,7 @@ export function satisfies(type, value) {
 /* checkArgs needs a version of `satisfies` it can call
  * without causing infinitely recursive typechecking. */
 function uncheckedSatisfies(type, value) {
-  if (arguments.length < satisfies_interface.curry) {
+  if (arguments.length < satisfies_curry) {
     return partialApply(uncheckedSatisfies, arguments)
   }
   if (value && value._verse_type === type) return true
