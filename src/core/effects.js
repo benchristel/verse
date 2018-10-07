@@ -1,4 +1,4 @@
-import { isNumber } from './nativeTypes'
+import { isNumber, isString } from './nativeTypes'
 import { animationFrame, isAnimationFrame, isKeyDown } from './events'
 import { checkArgs } from './types'
 
@@ -45,15 +45,27 @@ export function putBackEvent(event) {
   }
 }
 
-export function *waitForChar() {
-  let event = yield waitForEvent()
-  if (isKeyDown(event)) {
-    return event.key
+const waitForChar_interface = {example: [], types: []}
+
+export function waitForChar() {
+  checkArgs(waitForChar, arguments, waitForChar_interface)
+  return function*() {
+    let event = yield waitForEvent()
+    if (isKeyDown(event)) {
+      return event.key
+    }
+    yield retry(waitForChar())
   }
-  yield retry(waitForChar())
+}
+
+const waitForInput_interface = {
+  example: ['Enter your name'],
+  types: [isString],
+  optionalArgs: 1
 }
 
 export function waitForInput(prompt='') {
+  checkArgs(waitForInput, arguments, waitForInput_interface)
   return function*() {
     let entered = ''
     yield startDisplay(() => {

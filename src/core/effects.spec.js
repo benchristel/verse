@@ -30,7 +30,7 @@ describe('waitForInput', () => {
   })
 
   it('defaults the prompt to blank', () => {
-    let view = p.begin(function *() {
+    view = p.begin(function *() {
       yield waitForInput()
     })
 

@@ -163,6 +163,18 @@ Note that this function supports partial application, so it is OK to supply fewe
       .toContain('greet("a", "b")')
   })
 
+  it('allows optional arguments to be omitted', () => {
+    function optionalArgs() {
+      checkArgs(optionalArgs, arguments, {
+        example: ['example'],
+        types: [isString],
+        optionalArgs: 1
+      })
+    }
+
+    expect(() => optionalArgs()).not.toThrow()
+  })
+
   function exceptionMessageFrom(fn) {
     try {
       fn()

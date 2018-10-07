@@ -86,10 +86,14 @@ export function defaultingTo(defaultValue, predicate) {
 }
 
 export function checkArgs(fn, args, spec) {
+  function optionalArgs() {
+    return spec.optionalArgs || 0
+  }
+
   function minArgs() {
     if (spec.curry) return 0
     if (spec.variadic) return spec.types.length - 1
-    return spec.types.length
+    return spec.types.length - optionalArgs()
   }
 
   function maxArgs() {
