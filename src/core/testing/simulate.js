@@ -3,9 +3,19 @@ import { Store } from '../Store'
 import { assert } from '../assert'
 import { isExactly } from '../functionalUtils'
 import { indent } from '../strings'
+import { isGeneratorFunction, isIterator } from '../nativeTypes'
+import { or } from '../predicates'
+import { renameFunction } from'../higherOrderFunctions'
+import { checkArgs } from '../types'
+
+const simulate_interface = {
+  example: [renameFunction(function*() {}, () => 'run')],
+  types: [or(isGeneratorFunction, isIterator)]
+}
 
 export function Simulator(globalObject) {
   return function simulate(routine) {
+    checkArgs(simulate, arguments, simulate_interface)
     const getStateType = globalObject.getStateType || (() => ({}))
     const reducer = globalObject.reducer
     let store = Store(getStateType(), reducer)
