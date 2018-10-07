@@ -12,4 +12,8 @@ describe('lastOf', function() {
   it('returns the last element of a longer array', () => {
     expect(lastOf([5, 6, 7])).toBe(7)
   })
+
+  it('works on strings', () => {
+    expect(lastOf('abc')).toBe('c')
+  })
 })
