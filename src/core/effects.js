@@ -1,6 +1,8 @@
-import { isNumber, isString } from './nativeTypes'
+import { isNumber, isString, isFunction, isGeneratorFunction, isIterator, isAnything } from './nativeTypes'
 import { animationFrame, isAnimationFrame, isKeyDown } from './events'
+import { or } from './predicates'
 import { checkArgs } from './types'
+import { renameFunction } from './higherOrderFunctions'
 
 export function waitForEvent() {
   return {
@@ -96,7 +98,13 @@ export function waitForInput(prompt='') {
   }
 }
 
+const jump_retry_interface = {
+  example: [renameFunction(function*() {}, () => 'run')],
+  types: [or(isGeneratorFunction, isIterator)]
+}
+
 export function jump(generator) {
+  checkArgs(jump, arguments, jump_retry_interface)
   return {
     effectType: 'jump',
     generator
@@ -104,34 +112,58 @@ export function jump(generator) {
 }
 
 export function retry(generator) {
+  checkArgs(retry, arguments, jump_retry_interface)
   return {
     effectType: 'retry',
     generator
   }
 }
 
+const log_interface = {
+  example: ['message'],
+  types: [isString]
+}
+
 export function log(message) {
+  checkArgs(log, arguments, log_interface)
   return {
     effectType: 'log',
     message
   }
 }
 
+const startDisplay_interface = {
+  example: [renameFunction(() => {}, () => 'view')],
+  types: [isFunction]
+}
+
 export function startDisplay(render) {
+  checkArgs(startDisplay, arguments, startDisplay_interface)
   return {
     effectType: 'startDisplay',
     render
   }
 }
 
+const perform_interface = {
+  example: [{type: 'newGame'}],
+  types: [isAnything]
+}
+
 export function perform(action) {
+  checkArgs(perform, arguments, perform_interface)
   return {
     effectType: 'perform',
     action
   }
 }
 
+const lineInput_interface = {
+  example: [], types: []
+}
+
 export function lineInput() {
+  checkArgs(lineInput, arguments, lineInput_interface)
   return {
     effectType: 'lineInput',
     definesInputElement: true
