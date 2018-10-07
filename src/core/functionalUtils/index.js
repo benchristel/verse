@@ -100,7 +100,7 @@ const get_interface = {
   example: ['key', {key: 'value'}],
   types: [
     or(isString, isNumber),
-    or(or(isObject, isArray), isFunction)
+    isAnything
   ]
 }
 

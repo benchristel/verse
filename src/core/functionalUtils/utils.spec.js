@@ -281,6 +281,10 @@ describe('get', () => {
   it('curries', () => {
     expect(get('z')({z: 2})).toBe(2)
   })
+
+  it('works on things other than [object Object]s', () => {
+    expect(get('length', 'foo')).toBe(3)
+  })
 })
 
 describe('tuple', () => {
