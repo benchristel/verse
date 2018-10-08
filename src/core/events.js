@@ -1,5 +1,5 @@
 import { isNumber, isString } from './nativeTypes'
-import { checkArgs } from './types'
+import { checkArgs } from './checkArgs'
 
 const animationFrame_interface = {
   example: [60],

@@ -1,8 +1,8 @@
-import { isString, isFunction, isArray, isObject, isRegExp, isNumber, isAnything } from '../nativeTypes'
+import { isString, isFunction, isArray, isRegExp, isNumber, isAnything } from '../nativeTypes'
 import { partialApply } from '../higherOrderFunctions'
-import { isArrayOf, checkArgs } from '../types'
+import { isArrayOf } from '../types'
+import { checkArgs } from '../checkArgs'
 import { or } from '../predicates'
-import { quote, indent } from '../strings'
 
 export function equals(a, b) {
   if (a instanceof Array) {
@@ -177,48 +177,4 @@ export function contains(needle, haystack) {
     return partialApply(contains, arguments)
   }
   return haystack.indexOf(needle) > -1
-}
-
-export function visualize(a) {
-  const circularRefStr = '<circular reference>'
-  let stack = []
-  return recurse(a)
-
-  function recurse(a) {
-    if (isString(a))
-      return quote(a)
-    else if (isArray(a)) {
-      if (contains(a, stack)) return circularRefStr
-      stack.push(a)
-      let innards = a.map(recurse).join(',\n')
-      if (a.length > 1) {
-        stack.pop()
-        return '[\n' + indent(innards) + '\n]'
-      }
-      else {
-        stack.pop()
-        return '[' + innards + ']'
-      }
-    }
-    else if (isObject(a)) {
-      if (contains(a, stack)) return circularRefStr
-      stack.push(a)
-      let keys = Object.keys(a)
-      let innards = keys
-        .map(k => quote(k) + ': ' + recurse(a[k]))
-        .join(',\n')
-      if (keys.length > 1) {
-        stack.pop()
-        return '{\n' + indent(innards) + '\n}'
-      }
-      else {
-        stack.pop()
-        return '{' + innards + '}'
-      }
-    }
-    else if (isFunction(a)) {
-      return a.name || '<function>'
-    }
-    else return '' + a
-  }
 }

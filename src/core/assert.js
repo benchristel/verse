@@ -1,12 +1,11 @@
-import { visualize } from './functionalUtils'
+import { visualize } from './formatting'
 import { indent } from './strings'
-import { equals } from './functionalUtils'
 import { isArray, isFunction, isAnything } from './nativeTypes'
-import { checkArgs } from './types'
+import { checkArgs, exampleFunctionNamed } from './checkArgs'
 
 const assert_interface = {
   variadic: true,
-  example: ['foo', equals, 'bar'],
+  example: ['foo', exampleFunctionNamed('equals'), 'bar'],
   types: [isAnything, isFunction, isArray]
 }
 

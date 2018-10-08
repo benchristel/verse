@@ -1,4 +1,5 @@
-import { checkArgs, isArrayOf } from './types'
+import { checkArgs } from './checkArgs'
+import { isArrayOf } from './types'
 import { isString } from './nativeTypes'
 
 const action_interface = {

@@ -1,5 +1,5 @@
-import { isString, isObject, isFunction } from './nativeTypes'
-import { quote } from './strings'
+import { isString } from './nativeTypes'
+import { abbreviate, functionNamePlaceholder } from './formatting'
 
 export function curryable(nArgs, fn) {
   return renameFunction(function curryableFn() {
@@ -30,8 +30,6 @@ export function renameFunction(fn, nameCreator) {
   return fn
 }
 
-const functionNamePlaceholder = '<function>'
-
 export function nameWithArgs(baseName, args) {
   let baseNameStr = baseName && isString(baseName) ?
     baseName
@@ -43,25 +41,4 @@ export function nameWithArgs(baseName, args) {
   } else {
     return baseNameStr
   }
-}
-
-export function abbreviate(a) {
-  if (isString(a)) {
-    return quote(
-      a.length > 10 ?
-        a.slice(0, 10) + '...'
-        : a
-    )
-  } else if (isObject(a)) {
-    for (let k in a) return '{...}'
-    return '{}'
-  } else if (Array.isArray(a)) {
-    if (a.length) return '[...]'
-    return '[]'
-  } else if (typeof a === 'symbol') {
-    return 'Symbol()'
-  } else if (isFunction(a)) {
-    return a.name || functionNamePlaceholder
-  }
-  return '' + a
 }

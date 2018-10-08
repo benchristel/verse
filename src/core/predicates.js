@@ -1,6 +1,6 @@
 import { partialApply, renameFunction } from './higherOrderFunctions'
 import { isString, isNumber, isFunction } from'./nativeTypes'
-import { checkArgs } from './types'
+import { checkArgs } from './checkArgs'
 
 const or_interface = {
   curry: 2,

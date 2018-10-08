@@ -1,8 +1,7 @@
 import { isString, isObject, isFunction, isAnything } from './nativeTypes'
 import { partialApply } from './higherOrderFunctions'
-import { checkArgs } from './types'
+import { checkArgs, exampleFunctionNamed } from './checkArgs'
 import { or } from './predicates'
-import { uppercase } from './functionalUtils'
 
 export function objectsHaveSameKeys(a, b) {
   let aKeys = Object.keys(a)
@@ -11,7 +10,10 @@ export function objectsHaveSameKeys(a, b) {
 }
 
 const mapObject_interface = {
-  example: [uppercase, {name: 'elias'}],
+  example: [
+    exampleFunctionNamed('uppercase'),
+    {name: 'robin'}
+  ],
   types: [isFunction, isObject]
 }
 

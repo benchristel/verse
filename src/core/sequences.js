@@ -1,5 +1,5 @@
 import { isArray, isString } from './nativeTypes'
-import { checkArgs } from './types'
+import { checkArgs } from './checkArgs'
 import { or } from './predicates'
 
 const lastOf_interface = {

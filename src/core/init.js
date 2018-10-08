@@ -3,7 +3,7 @@ import {
   waitForChar,
   wait,
 } from './effects'
-import { visualize } from './functionalUtils'
+import { visualize } from './formatting'
 import { isString } from './nativeTypes'
 
 /*

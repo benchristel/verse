@@ -6,7 +6,7 @@ import { indent } from '../strings'
 import { isGeneratorFunction, isIterator } from '../nativeTypes'
 import { or } from '../predicates'
 import { renameFunction } from'../higherOrderFunctions'
-import { checkArgs } from '../types'
+import { checkArgs } from '../checkArgs'
 
 const simulate_interface = {
   example: [renameFunction(function*() {}, () => 'run')],

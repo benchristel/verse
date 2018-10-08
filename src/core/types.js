@@ -1,13 +1,12 @@
-import { partialApply, abbreviate } from './higherOrderFunctions'
+import { partialApply } from './higherOrderFunctions'
 import { not, or } from './predicates'
 import { has, mapObject, objectsHaveSameKeys } from './objects'
 import { assert } from './assert'
 import { isObject, isString, isArray, isFunction, isAnything } from './nativeTypes'
-import { visualize } from './functionalUtils'
+import { checkArgs } from './checkArgs'
 
-const satisfies_curry = 2
 const satisfies_interface = {
-  curry: satisfies_curry,
+  curry: 2,
   example: [{name: isString}, {name: 'Elias'}],
   types: [or(isObject, isFunction), isAnything]
 }
@@ -20,7 +19,7 @@ export function satisfies(type, value) {
 /* checkArgs needs a version of `satisfies` it can call
  * without causing infinitely recursive typechecking. */
 function uncheckedSatisfies(type, value) {
-  if (arguments.length < satisfies_curry) {
+  if (arguments.length < satisfies_interface.curry) {
     return partialApply(uncheckedSatisfies, arguments)
   }
   if (value && value._verse_type === type) return true
@@ -84,70 +83,4 @@ export function defaultingTo(defaultValue, predicate) {
 
   theType.defaultValue = defaultValue
   return theType
-}
-
-export function checkArgs(fn, args, spec) {
-  function optionalArgs() {
-    return spec.optionalArgs || 0
-  }
-
-  function minArgs() {
-    if (spec.curry) return 0
-    if (spec.variadic) return spec.types.length - 1
-    return spec.types.length - optionalArgs()
-  }
-
-  function maxArgs() {
-    if (spec.variadic) return Infinity
-    return spec.types.length
-  }
-
-  function pointsToValidArg(i) {
-    return i < spec.types.length && i < args.length
-  }
-
-  function curryingMessage() {
-    return spec.curry && args.length < spec.curry ?
-      ['', `Note that this function supports partial application, so it is OK to supply fewer than ${spec.curry} arguments.`]
-      : []
-  }
-
-  function variadicMessage() {
-    return spec.variadic ?
-      ['', `Note that this function can be called with any number of arguments >= ${minArgs()}.`]
-      : []
-  }
-
-  function message() {
-    return [
-      `The \`${fn.name}\` function was called with unexpected arguments:`,
-      '',
-      `  ${fn.name}(${[...args].map(abbreviate).join(', ')})`,
-      '',
-      'It expected something like:',
-      '',
-      `  ${fn.name}(${spec.example.map(visualize).join(', ')})`,
-      ...curryingMessage(),
-      ...variadicMessage()
-    ].join('\n')
-  }
-
-  if (args.length > maxArgs() || args.length < minArgs()) {
-    throw Error(message())
-  }
-
-  for (let i = 0; pointsToValidArg(i); i++) {
-    let arg  = args[i]
-    let type = spec.types[i]
-    if (spec.variadic && i === spec.types.length - 1) {
-      // the last type of a variadic type signature should
-      // be an isArrayOf() type that will match the spread
-      // args passed to the function.
-      if (!uncheckedSatisfies(type, [...args].slice(i))) {
-        throw Error(message())
-      }
-    } else if (!uncheckedSatisfies(type, arg)) {
-      throw Error(message())
-    }
-  }
 }

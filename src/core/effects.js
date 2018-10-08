@@ -1,7 +1,7 @@
 import { isNumber, isString, isFunction, isGeneratorFunction, isIterator, isAnything } from './nativeTypes'
 import { animationFrame, isAnimationFrame, isKeyDown } from './events'
 import { or } from './predicates'
-import { checkArgs } from './types'
+import { checkArgs } from './checkArgs'
 import { renameFunction } from './higherOrderFunctions'
 
 export function waitForEvent() {
