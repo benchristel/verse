@@ -1,4 +1,4 @@
-import { visualize, abbreviate } from './formatting'
+import { visualize, abbreviate, asText } from './formatting'
 
 describe('visualize', () => {
   it('represents numbers as strings', () => {
@@ -235,5 +235,15 @@ describe('abbreviate', () => {
 
   it('represents anonymous functions as <function>', () => {
     expect(abbreviate(function() {})).toBe('<function>')
+  })
+})
+
+describe('asText', () => {
+  it('leaves strings unchanged', () => {
+    expect(asText('foo')).toBe('foo')
+  })
+
+  it('visualizes objects', () => {
+    expect(asText({a: 1})).toBe('{"a": 1}')
   })
 })

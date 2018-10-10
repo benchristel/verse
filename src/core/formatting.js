@@ -67,3 +67,7 @@ export function abbreviate(a) {
   }
   return '' + a
 }
+
+export function asText(value) {
+  return isString(value) ? value : visualize(value)
+}

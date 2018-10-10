@@ -2,6 +2,7 @@ import React from 'react'
 import connectProps from './connectProps'
 import './Terminal.css'
 import Pane from './Pane'
+import { asText } from '../../core/formatting'
 
 export default connectProps(class extends React.Component {
   bottomOfLogs = null
@@ -35,8 +36,10 @@ export default connectProps(class extends React.Component {
           </div>
           <div className="screen">
             {
-              this.props.appUi.screenLines.map((line, i) =>
-                <div className="line" key={i}>{line}</div>)
+              this.props.appUi.screenLines
+                .map(asText)
+                .map((line, i) =>
+                  <div className="line" key={i}>{line}</div>)
             }
           </div>
         </div>
