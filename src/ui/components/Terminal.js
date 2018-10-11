@@ -2,7 +2,6 @@ import React from 'react'
 import connectProps from './connectProps'
 import './Terminal.css'
 import Pane from './Pane'
-import { asText } from '../../core/formatting'
 
 export default connectProps(class extends React.Component {
   bottomOfLogs = null
@@ -21,9 +20,13 @@ export default connectProps(class extends React.Component {
     }
   }
 
+  screenLines() {
+    return this.props.appUi.screenLines
+  }
+
   render() {
     let classNames = "Terminal"
-    if (this.props.appUi.screenLines.length) classNames += ' showScreen'
+    if (this.screenLines().length) classNames += ' showScreen'
     return (
       <Pane style={{height: '608px', width: '100%'}}>
         <div className={classNames}>
@@ -36,8 +39,7 @@ export default connectProps(class extends React.Component {
           </div>
           <div className="screen">
             {
-              this.props.appUi.screenLines
-                .map(asText)
+              this.screenLines()
                 .map((line, i) =>
                   <div className="line" key={i}>{line}</div>)
             }

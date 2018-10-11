@@ -321,7 +321,7 @@ describe('Process', () => {
       })
       x++
     })
-    expect(view.displayLines).toEqual([1])
+    expect(view.displayLines).toEqual(['1'])
   })
 
   it('passes the state to the render function', () => {
@@ -424,8 +424,8 @@ describe('Process', () => {
       yield startDisplay(() => [redraws++])
       yield wait(1)
     })
-    expect(view.displayLines).toEqual([0])
+    expect(view.displayLines).toEqual(['0'])
     view = p.redraw()
-    expect(view.displayLines).toEqual([1])
+    expect(view.displayLines).toEqual(['1'])
   })
 })

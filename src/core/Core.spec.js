@@ -146,9 +146,9 @@ describe('Core', () => {
       })
     `)
     view = core.run()
-    expect(view.displayLines).toEqual([0])
+    expect(view.displayLines).toEqual(['0'])
     view = core.tickFrames(60)
-    expect(view.displayLines).toEqual([3])
+    expect(view.displayLines).toEqual(['3'])
   })
 
   it('outputs the stack trace on a crash', () => {

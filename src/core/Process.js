@@ -1,5 +1,7 @@
-import { isIterator, isGeneratorFunction } from './nativeTypes'
-import { lastOf } from './sequences'
+import { isIterator, isGeneratorFunction, isArray } from './nativeTypes'
+import { doWith } from './functionalUtils'
+import { lastOf, map } from './sequences'
+import { asText } from './formatting'
 
 export function Process(store) {
   let stack = []
@@ -157,7 +159,10 @@ export function Process(store) {
       }
     }
 
-    displayLines = render ? render(store.getState()) : []
+    displayLines = doWith(
+      render ? render(store.getState()) : [],
+      asArray,
+      map(asText))
   }
 
   function view() {
@@ -168,4 +173,8 @@ export function Process(store) {
       form,
     }
   }
+}
+
+function asArray(value) {
+  return isArray(value) ? value : [value]
 }
