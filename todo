@@ -23,6 +23,11 @@
   it's hard to tell whether the program is still running.
 - add restart button
 
+# TO RESEARCH
+
+- algebraic types
+- figure out how to bundle docs in editor
+
 # LOW-RISK FEATURES
 
 - button and API to clear log
@@ -35,6 +40,24 @@
 # BREAKING CHANGES
 
 - rename reducer to updater
+- make retry() always retry the current routine
+- replace firstOf, lastOf with firstOr, lastOr (you must
+  provide a default in case the array is empty)
+- same for get() -- make it require a default
+- canonical action key should be verb, not type, because
+  type has other meanings
+
+
+[ Load ][ Test ][ Run ][ Inspect ] : [ Docs ]
+
+Tests--especially auto-running tests--impel one to "hurry up and get something working". This destroys serenity. How
+to restore it?
+
+Have tests optionally return a value, which is printed in
+the test report? Then you can see the value before crafting
+an assertion. The test never "fails".
+
+This also probably obsoletes displayText
 
 # REFACTORING
 
