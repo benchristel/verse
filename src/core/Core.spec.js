@@ -265,6 +265,29 @@ describe('Core', () => {
     expect(view.error).toEqual(Error('bork'))
   })
 
+  it('does not allow user-defined functions to be called while a module is being loaded', () => {
+    core.deploy('main.js', `
+      define({
+        flipArgs(fn) {
+          return (a, b) => fn(b, a)
+        }
+      })
+    `)
+    view = core.run()
+    expect(view.error).toBeNull()
+    view = core.deploy('main.js', `
+      define({
+        flipArgs(fn) {
+          return (a, b) => fn(b, a)
+        },
+
+        funkyDiv: flipArgs((a, b) => a / b)
+      })
+    `)
+    expect(view.syntaxErrors['main.js'].message)
+      .toContain('flipArgs')
+  })
+
   function typeKeys(text) {
     let v = view
     for (let ch of text) v = core.receiveKeydown({key: ch})

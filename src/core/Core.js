@@ -97,8 +97,33 @@ export function Core() {
   function evalModule(filename, code) {
     try {
       const define = definer.defineModule(filename)
-      // eslint-disable-next-line
-      new Function('define', code)(define)
+
+      definer.withUserFunctionsDisallowed(() => {
+      /**
+       * Do not allow user-defined functions to be called
+       * while code is being loaded.
+       *
+       * Someone might try to do this if they want to make
+       * their own higher-order functions, and use them
+       * to build `define`d functions, e.g.
+       *
+       * define({
+       *   coolStuff: hyperCurry((a, b) => { ... })
+       * })
+       *
+       * As cool as that looks, it can lead to weird issues.
+       * When first written, it will probably work, as long
+       * as hyperCurry is already defined. But when you
+       * refresh the page, if the above module loads before
+       * hyperCurry is created, it will fail. Yikes!
+       *
+       * To head off this issue, I just ban all user-defined
+       * functions from being called while a module is
+       * loading.
+       */
+        // eslint-disable-next-line
+        new Function('define', code)(define)
+      })
       view = clearSyntaxErrorFrom(view, filename)
     } catch (error) {
       view = recordSyntaxErrorOn(view, filename, error)
