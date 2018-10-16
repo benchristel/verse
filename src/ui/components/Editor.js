@@ -50,8 +50,12 @@ function configure(editor) {
   session.setTabSize(2)
   session.setUseSoftTabs(true)
   session.setUseWrapMode(true)
-  editor.setBehavioursEnabled(true) // enable auto-insertion of matching parens
-  editor.renderer.setShowGutter(false) // hide line numbers
+  // enable auto-insertion of matching parens
+  editor.setBehavioursEnabled(true)
+  // hide line numbers
+  editor.renderer.setShowGutter(false)
+  // allow Cmd+L to focus the URL bar
+  editor.commands.removeCommand('gotoline')
 }
 
 function toMarker(code) {
