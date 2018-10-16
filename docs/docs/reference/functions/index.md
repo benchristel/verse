@@ -140,8 +140,8 @@ define({
 
   *waitForNumber() {
     let input = yield waitForChar()
-    if (isNumber(+input)) {
-      return +input
+    if (isNumber(parseInt(input))) {
+      return parseInt(input)
     } else {
       yield log(input + ' is not a number!')
       yield log('Please press 0-9')
