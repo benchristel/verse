@@ -95,6 +95,64 @@ define({
 
 ------------------------------------------------------------
 
+### `retry`
+
+#### Usage
+
+```js
+yield retry(routine())
+```
+
+#### Explanation
+
+Aborts the current routine and starts the given
+`routine` in its place. You can pass parameters to the
+`routine` as you would when calling it directly.
+
+As the name implies, `retry` is intended to be used to
+restart the current routine from the beginning. The examples
+below should clarify what I'm talking about.
+
+#### Caveats
+
+When the `routine` passed to `retry` returns, control goes
+back to the caller of the routine that called `retry`. When
+`retry` is used as its name implies, this behavior is
+intuitive. However, it's also possible to use `retry` as
+a `goto`-like contruct, which gets much more confusing.
+
+It is recommended to always pass the currently-executing
+routine to `retry` to avoid headaches.
+
+#### Example: Validate user input
+
+The code below gets a numeric digit (0-9) from the user and
+prints it out. It is very persistent: if you give it a
+keypress that's not a number it retries until it gets one.
+
+```js
+define({
+  *run() {
+    yield log('Enter a number.')
+    let number = yield waitForNumber()
+    yield log('Your number is: ' + number)
+  },
+
+  *waitForNumber() {
+    let input = yield waitForChar()
+    if (isNumber(+input)) {
+      return +input
+    } else {
+      yield log(input + ' is not a number!')
+      yield log('Please press 0-9')
+      yield retry(waitForNumber)
+    }
+  }
+})
+```
+
+------------------------------------------------------------
+
 ### `startDisplay`
 
 #### Usage
