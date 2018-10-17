@@ -1,14 +1,12 @@
 .Button {
-  background-color: rgba(255, 255, 255, 0.1);
   font-size: 12px;
   padding: 2px 6px;
-  height: 24px;
+  height: 22px;
   box-sizing: border-box;
   color: #000;
-  border: 2px solid #000;
+  border: 0px solid #000;
   cursor: pointer;
   display: inline-block;
-  text-transform: uppercase;
   user-select: none;
   min-width: 54px;
   margin-right: 3px;
@@ -21,5 +19,5 @@
 
 .Button.selected,
 .Button.selected:hover {
-  background-color: rgba(255, 255, 255, 0.3);
+  border-bottom-width: 2px;
 }

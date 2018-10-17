@@ -20,7 +20,7 @@ export default () =>
       <CenteredContainer height="654px" width="1038px">
         <Links/>
         <Frame>
-          <div style={{position: 'absolute', height: '640px', border: '1px solid #a42', width: '1024px'}}>
+          <div style={{position: 'absolute', height: '640px', width: '1024px'}}>
             <LeftPane/>
             <RightPane/>
           </div>
@@ -57,7 +57,7 @@ let LeftPane = connectProps(props => {
 const RightPane = connectProps(props => {
   return (
     <Pane style={{width: '512px', left: '512px', backgroundColor: '#020', height: '100%'}}>
-      <Pane style={{height: '32px', top: 0, backgroundColor: '#444', zIndex: 10, padding: '4px 0 4px 13px'}}>
+      <Pane style={{height: '32px', top: 0, backgroundColor: '#d8d2d0', zIndex: 10, padding: '4px 0 4px 13px'}}>
         <Button
           color={loadButtonColor(props)}
           onClick={() => props.inspectStage('load')}
@@ -105,15 +105,15 @@ const RightPane = connectProps(props => {
 })
 
 function loadButtonColor(state) {
-  return anySyntaxErrors(state) ? '#db6' : '#0c9'
+  return anySyntaxErrors(state) ? '#b90' : '#099'
 }
 
 function testButtonColor(state) {
-  return anyTestFailures(state) ? '#f30' : '#0c9'
+  return anyTestFailures(state) ? '#920' : '#099'
 }
 
 function runButtonColor(state) {
-  return state.crash ? '#000' : '#0c9'
+  return state.crash ? '#000' : '#099'
 }
 
 const ErrorPanel = connectProps(props => {

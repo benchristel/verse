@@ -4,22 +4,22 @@
   overflow: hidden;
   white-space: pre-wrap;
 
-  color: #fd4;
-  background: black;
-  border: 1px solid #55a;
+  color: #000;
+  background: #d8d2d0;
+  border: 2px outset #d8d2d0;
 
   padding: 12px;
 
   font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
-  font-size: 16px;
-  line-height: 20px;
+  font-size: 14px;
+  line-height: 18px;
   -webkit-font-smoothing: antialiased;
 }
 
 .Terminal > div {
   box-sizing: border-box;
-  border: 1px solid #db8;
-  background: #004;
+  border: 2px inset #d8d2d0;
+  background: #d8d2d0;
   margin-bottom: 12px;
   padding: 12px;
   overflow-y: auto;
