@@ -10,7 +10,6 @@ import Hide from './Hide'
 import Pane from './Pane'
 import Terminal from './Terminal'
 import DustCover from './DustCover'
-import stackParser from '../stackParser'
 import { anySyntaxErrors, getSyntaxErrors, anyTestFailures } from '../selectors'
 import { get, isTruthy } from '../../core'
 
@@ -177,19 +176,11 @@ function renderStackInfo(error) {
       error.verseStack.join('()\n  called from ')
       + '()'
   }
-  return renderLineNumber(error.stack)
+  return ''
 }
 
 function isInspectingStage(stage, state) {
   return state.currentlyInspectingStage === stage
-}
-
-function renderLineNumber(stack) {
-  let line = stackParser(stack).line
-  if (line !== null) {
-    return 'at line ' + line
-  }
-  return ''
 }
 
 function _(...fns) {

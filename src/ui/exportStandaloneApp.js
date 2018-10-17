@@ -15,11 +15,6 @@ const template = `<!DOCTYPE html>
     <title>Verse</title>
     <link rel="manifest" href="/manifest.json">
     <link rel="shortcut icon" href="/favicon.ico">
-    <script>
-window.stackStyle = (() =>
-  new Error().stack.split('\\n')[0].includes('@') ? 'moz' : 'webkit'
-)()
-    </script>
   </head>
   <body>
     <noscript>
