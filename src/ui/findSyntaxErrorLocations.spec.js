@@ -11,4 +11,8 @@ describe("findSyntaxErrorLocations", () => {
     expect(findSyntaxErrorLocations(' }')).toEqual([{line: 0, column: 1, pos: 1}])
     expect(findSyntaxErrorLocations('\n}')).toEqual([{line: 1, column: 0, pos: 1}])
   })
+
+  it('tolerates trailing commas', () => {
+    expect(findSyntaxErrorLocations('foo(1,)')).toEqual([])
+  })
 })

@@ -1,8 +1,8 @@
-import { parse } from 'acorn'
+import { Parser } from 'acorn'
 
 export function findSyntaxErrorLocations(code) {
   try {
-    parse(code)
+    new Parser({ecmaVersion: 8}, code, 0).parse()
     return []
   } catch (e) {
     return [{

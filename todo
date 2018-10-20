@@ -5,6 +5,9 @@
 
 # BUGS
 
+- If a load error happens that is not a SyntaxError,
+  nonfatal syntax issues (e.g. trailing commas) may be
+  highlighted, which is confusing.
 - deleting all the code does not make the output of displayText()
   go away—the function doesn't get undefined if there's no
   define() call.
