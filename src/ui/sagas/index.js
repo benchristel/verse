@@ -54,9 +54,7 @@ function *runApp() {
 function *processFileChange({text, file}) {
   // TODO: yield put(markFile('dirty', file))
 
-  /* Delay to allow the editor UI to update synchronously,
-   * without being blocked by code eval'ing. */
-  yield delay(1)
+  yield delay(300)
 
   let view = core.deploy(file, text)
   /* Deploying code may output errors or changes to the
