@@ -26,20 +26,29 @@
 
 # TO RESEARCH
 
-- algebraic types
+- algebraic types: replace `isNumber` etc. with `isA(ctor)`?
+  See: https://www.npmjs.com/package/algebraic-type
 - figure out how to bundle docs in editor
+
+# FEATURES
+
+- at('foo.bar.baz', append('hi'), object)
+- linked list type
+- (to support below) nail down storage format
+- (to support below) use localForage
+- multiple files
+- button to export a project to disk as standalone HTML
+- button to import a project from another version of Verse
 
 # LOW-RISK FEATURES
 
-- button and API to clear log
-- save/load
 - create a `debug()` function that prints to the log and
   doesn't have to be yielded
-- Add a big fat "play" icon in the center when nothing is running.
+
+# BREAKING CHANGES FOR 2.0
+
+- rename waitForChar to waitForKey
 - Run app code in strict mode
-
-# BREAKING CHANGES
-
 - rename reducer to updater
 - make retry() always retry the current routine
 - replace firstOf, lastOf with firstOr, lastOr (you must
