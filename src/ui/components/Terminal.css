@@ -4,7 +4,8 @@
   overflow: hidden;
   white-space: pre-wrap;
 
-  color: #000;
+  color: #0c8;
+  text-shadow: #0fac;
   background: #d8d2d0;
   border: 2px outset #d8d2d0;
 
@@ -19,7 +20,7 @@
 .Terminal > div {
   box-sizing: border-box;
   border: 2px inset #d8d2d0;
-  background: #d8d2d0;
+  background: #012;
   margin-bottom: 12px;
   padding: 12px;
   overflow-y: auto;

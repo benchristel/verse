@@ -5,12 +5,10 @@
   height: 584px;
 }
 
-.TestResultsPanel.passed {
-  color: #0a0;
-}
-
-.TestResultsPanel.failed {
-  color: #fc4;
+.TestResultsPanel {
+  color: #0c8;
+  text-shadow: #0fac;
+  background: #012;
 }
 
 .links {

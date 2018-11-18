@@ -140,23 +140,41 @@ const TestResultsPanel = connectProps(props => {
   let testResults = Object.keys(props.testResults)
     .map(k => [k, props.testResults[k]])
 
-  let totalTests = testResults.length
   let failures = testResults.filter(_(get(1), isTruthy))
 
   if (failures.length) {
-    return (<div className="TestResultsPanel failed">
-      {failures.length} TESTS FAILED
-      {failures.map(([name, error]) => `
+    return (<div className="TestResultsPanel">
+      {testCountString(failures)} found {bugCountString(failures)}!
+      {failures.map(renderTestResult).join('\n')}
+    </div>)
+  } else {
+    return (<div className="TestResultsPanel">{passedTestsString(testResults)}</div>)
+  }
+})
+
+function renderTestResult([name, error]) {
+  return `
 -------------------------------------------------
 ${name}
 
 ${error}
-`).join('\n')}
-    </div>)
-  } else {
-    return (<div className="TestResultsPanel passed">All {totalTests} tests passed</div>)
-  }
-})
+`
+}
+
+function testCountString(failures) {
+  return failures.length === 1 ? 'One test'
+    : '' + failures.length + ' tests'
+}
+
+function bugCountString(failures) {
+  return failures.length === 1 ? 'a bug' : 'bugs'
+}
+
+function passedTestsString(results) {
+  if (results.length === 0) return 'No tests to run.'
+  if (results.length === 1) return 'One test ran, and found no issues.'
+  return results.length + ' tests ran, and found no issues.'
+}
 
 const CrashPanel = connectProps(props => (
   <div className="ErrorPanel">{
