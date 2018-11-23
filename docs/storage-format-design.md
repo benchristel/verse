@@ -23,7 +23,7 @@ Export files are UTF-8 encoded, allowing expression of the full range of Unicode
 The first line of the file consists of the file format version. The initial version will be:
 
 ```
-Verse Export Format v1.0
+// Verse Export Format v1.0
 ```
 
 The major version will be incremented for breaking changes; the minor version for backward-compatible changes.
@@ -35,16 +35,21 @@ The file starts with a header that indicates a DIVIDER for the file's sections. 
 The default divider is:
 
 ```
-_SECTION_
+// _SECTION_
 ```
 
-But if the text `\n_SECTION_\n` appears somewhere in the data, a number is appended, e.g.
+But if the text `\n// _SECTION_\n` appears somewhere in the data, a number is appended, e.g.
 
 ```
-_SECTION_0
+// _SECTION_0
 ```
 
 The number chosen will be the lowest natural number such that the divider text does not occur in the data.
+
+The section divider is formatted as a JavaScript comment so
+the entire file is valid JavaScript. This allows external
+tooling (e.g. linters, formatters, uglifiers) to work
+seamlessly.
 
 ### Future: Metadata
 
@@ -67,22 +72,22 @@ The `sha256` is a hash of the contents of this export. The `parent` field is the
 
 ### Files
 
-Each file in the export is listed following the metadata section, preceded by a JSON object of file-level metadata. Files are separated from each other and from their metadata by `_SECTION_` dividers.
+Each file in the export is listed following the metadata section, preceded by a JSON object of file-level metadata. Files are separated from each other and from their metadata by `// _SECTION_` dividers.
 
 The files within an export are ordered by their (immutable, random) id. Because of this, renaming files or reordering them in the editor results in only a one-line diff.
 
 ### Example
 
 ```
-Verse Export Format v1.0
-_SECTION_
+// Verse Export Format v1.0
+// _SECTION_
 {
   "id": "bf07a7fb825f",
   "name": "hello.js",
   "type": "program",
   "index": 0
 }
-_SECTION_
+// _SECTION_
 define({
   displayText() {
     return 'Hello, world!'
