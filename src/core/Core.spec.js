@@ -101,7 +101,7 @@ describe('Core', () => {
     ])
     view = core.receiveKeydown({key: 'Enter'})
     expect(view.logLines).toEqual(['abc'])
-    expect(view.displayLines).toEqual([])
+    expect(view.displayLines).toEqual(['Finished.'])
   })
 
   it('hot-swaps interactive code', () => {

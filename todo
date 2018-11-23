@@ -14,8 +14,6 @@
 # UX CONCERNS
 
 - add restart button, and do not restart when user clicks the RUN tab
-- clear the display and log when a program exits. Currently,
-  it's hard to tell whether the program is still running.
 - yield getLine(); yield getText() (show a real input element, for mobile support)
 
 # FEATURES

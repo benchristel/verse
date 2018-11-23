@@ -27,7 +27,9 @@ export default function *init() {
     }
     yield startDisplay(() => [])
     yield window.run
-  } else {
-    yield wait(Infinity)
+    yield startDisplay(() => [
+      'Finished.'
+    ])
   }
+  yield wait(Infinity)
 }
