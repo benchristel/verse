@@ -1,9 +1,21 @@
 #!/bin/bash
 
 readonly DEPLOY_LOCATION="$1"
+readonly VERSION_TAG="$2"
 
 if [ -z "$DEPLOY_LOCATION" ]; then
-  echo "You must provide the path to the directory you deploy to"
+  echo "Usage: ./deploy <target directory> <version>"
+  exit 1
+fi
+
+if [ -z "$VERSION_TAG" ]; then
+  echo "Usage: ./deploy <target directory> <version>"
+  exit 1
+fi
+
+if ! echo "$VERSION_TAG" | grep '^v[0-9]\+\.[0-9]\+\.[0-9]\+\(-alpha\.[0-9]\+\)\?$'; then
+  echo "Invalid version: $VERSION_TAG"
+  echo "Use a format like v1.2.3"
   exit 1
 fi
 
@@ -12,8 +24,10 @@ if ! git diff-index --quiet HEAD --; then
   exit 1
 fi
 
+git tag "$VERSION_TAG" &&
 (cd "$DEPLOY_LOCATION" && git pull -r) &&
 ./build-standalone-html &&
 # put everything in the deploy directory
 cp build/index.html build/service-worker.js "$DEPLOY_LOCATION/" &&
-echo deployed $(git rev-parse HEAD)
+git push --tags &&
+echo deployed $VERSION_TAG from $(git rev-parse HEAD).

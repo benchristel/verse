@@ -31,15 +31,9 @@ export default () =>
 let Links = () => {
   return (
     <div className="links">
+      Verse DEVELOPMENT VERSION |&nbsp;
       <a href="https://benchristel.github.io/verse/docs">
-        Read the Docs
-      </a> |&nbsp;
-      <a href="https://facebook.com/VerseCode">
-        Get help on Facebook
-      </a> |
-      By using Verse you agree to the&nbsp;
-      <a href="https://benchristel.github.io/verse/tos">
-        Terms of Service
+        Documentation
       </a>
     </div>
   )
