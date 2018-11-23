@@ -1,8 +1,3 @@
-# User feedback
-
-- s/new tab/new window — instruct the user to right click
-- explain nonsignificance of whitespace earlier
-
 # BUGS
 
 - If a load error happens that is not a SyntaxError,
@@ -18,32 +13,29 @@
 
 # UX CONCERNS
 
-- provide a better means of hiding the display pane. startDisplay(() => [])
-  should show the display but print nothing.
+- add version number to UI
+- add restart button
 - clear the display and log when a program exits. Currently,
   it's hard to tell whether the program is still running.
-- add restart button
-
-# TO RESEARCH
-
-- algebraic types: replace `isNumber` etc. with `isA(ctor)`?
-  See: https://www.npmjs.com/package/algebraic-type
-- figure out how to bundle docs in editor
+- yield getLine(); yield getText() (show a real input element, for mobile support)
 
 # FEATURES
 
+- in-editor docs
 - at('foo.bar.baz', append('hi'), object)
-- linked list type
+- linked list type (how to `visualize`?)
 - (to support below) nail down storage format
 - (to support below) use localForage
 - multiple files
 - button to export a project to disk as standalone HTML
 - button to import a project from another version of Verse
-
-# LOW-RISK FEATURES
-
-- create a `debug()` function that prints to the log and
-  doesn't have to be yielded
+- Have tests optionally return a value, which is printed in
+  the test report? Then you can see the value before crafting
+  an assertion. The test never "fails".
+  This also probably obsoletes displayText
+- a debug() function that prints to the output of currently-running test
+- test failures are collapsed by default and can be expanded
+  to view the error message.
 
 # BREAKING CHANGES FOR 2.0
 
@@ -56,18 +48,9 @@
 - same for get() -- make it require a default
 - canonical action key should be verb, not type, because
   type has other meanings
-
+- remove log() action
 
 [ Load ][ Test ][ Run ][ Inspect ] : [ Docs ]
-
-Tests--especially auto-running tests--impel one to "hurry up and get something working". This destroys serenity. How
-to restore it?
-
-Have tests optionally return a value, which is printed in
-the test report? Then you can see the value before crafting
-an assertion. The test never "fails".
-
-This also probably obsoletes displayText
 
 # REFACTORING
 
