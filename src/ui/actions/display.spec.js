@@ -24,7 +24,6 @@ describe('display', () => {
     dispatch(display({
       syntaxErrors: {},
       error: 'bloop',
-      logLines: [],
       displayLines: [],
       testResults: {},
     }))
@@ -37,7 +36,6 @@ describe('display', () => {
     dispatch(display({
       syntaxErrors: {foo: 'bar'},
       error: null,
-      logLines: [],
       displayLines: [],
       testResults: {},
     }))

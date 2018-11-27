@@ -10,7 +10,6 @@ export function Process(store) {
 
   /* view caches */
   let error = null
-  let logLines = []
   let displayLines = []
   let form = null
 
@@ -119,11 +118,6 @@ export function Process(store) {
       run()
       return
 
-      case 'log':
-      logLines.push(effect.message)
-      run()
-      return
-
       case 'startDisplay':
       routine = lastOf(stack)
       routine.render = effect.render
@@ -167,7 +161,6 @@ export function Process(store) {
 
   function view() {
     return {
-      logLines,
       displayLines,
       error,
       form,

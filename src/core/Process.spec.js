@@ -7,7 +7,6 @@ import './api'
 describe('Process', () => {
   const blankView = {
     error: null,
-    logLines: [],
     displayLines: [],
     form: null,
   }
@@ -280,24 +279,12 @@ describe('Process', () => {
 
   it('logs a message', () => {
     let view = p.begin(function*() {
-      yield log('hello, world!')
+      yield output('hello, world!')
     })
 
     expect(view).toEqual({
       ...blankView,
-      logLines: ['hello, world!']
-    })
-  })
-
-  it('logs multiple messages', () => {
-    let view = p.begin(function*() {
-      yield log('hello!')
-      yield log('goodbye!')
-    })
-
-    expect(view).toEqual({
-      ...blankView,
-      logLines: ['hello!', 'goodbye!']
+      displayLines: ['hello, world!']
     })
   })
 
@@ -388,10 +375,10 @@ describe('Process', () => {
       yield function*() {
         yield 'bork'
       }
-      yield log('never called')
+      yield output('never called')
     })
     expect(view.error.message).toBe('You `yield`ed something weird: "bork"')
-    expect(view.logLines).toEqual([])
+    expect(view.displayLines).toEqual([])
     view = p.redraw() // should do nothing
     expect(view.error.message).toBe('You `yield`ed something weird: "bork"')
   })

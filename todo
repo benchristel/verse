@@ -40,14 +40,6 @@
 
 # BREAKING CHANGES FOR 2.0
 
-- replace log() with output(), which starts a display with
-  the given text and waits for a spacebar press before
-  continuing
-  - solves use case of "I want to imperatively print some
-    time-invariant data".
-  - fixes `wait(Infinity)` issue where you can output
-    something but it immediately disappears because the program
-    terminated.
 - rename startDisplay to show and allow it to take either a
   string or a function
 - rename waitForChar to waitForKey

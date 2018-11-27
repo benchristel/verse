@@ -4,7 +4,6 @@ import { isEmpty } from '../../core/types'
 export default combineReducers({
   evalAllowed,
   appUi: combineReducers({
-    logs,
     screenLines
   }),
   files,
@@ -20,16 +19,6 @@ function evalAllowed(curr=false, action) {
   switch (action.type) {
     case 'allowJsToRun':
     return true
-
-    default:
-    return curr
-  }
-}
-
-function logs(curr=[], action) {
-  switch (action.type) {
-    case 'display':
-    return action.logLines
 
     default:
     return curr

@@ -26,19 +26,6 @@
   overflow-y: auto;
 }
 
-.Terminal .logs {
-  height: 582px;
-}
-
 .Terminal .screen {
-  display: none;
-}
-
-.Terminal.showScreen .logs {
-  height: 72px;
-}
-
-.Terminal.showScreen .screen {
-  display: block;
-  height: 498px;
+  height: 582px;
 }

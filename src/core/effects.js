@@ -119,16 +119,17 @@ export function retry(generator) {
   }
 }
 
-const log_interface = {
+const output_interface = {
   example: ['message'],
   types: [isString]
 }
 
-export function log(message) {
-  checkArgs(log, arguments, log_interface)
-  return {
-    effectType: 'log',
-    message
+export function output(message) {
+  checkArgs(output, arguments, output_interface)
+  return function*() {
+    yield startDisplay(() => [message])
+    let key
+    while (key !== ' ') key = yield waitForChar()
   }
 }
 

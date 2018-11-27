@@ -29,7 +29,6 @@ describe('Core', () => {
     core.run()
     let view = core.deploy('main.js', helloWorld)
     expect(view).toEqual({
-      logLines: [],
       displayLines: ['hello world'],
       error: null,
       syntaxErrors: {},
@@ -82,7 +81,7 @@ describe('Core', () => {
     define({
       *run() {
         let input = yield waitForInput()
-        yield log(input)
+        yield output(input)
       }
     })
   `
@@ -100,8 +99,10 @@ describe('Core', () => {
       '> abc_'
     ])
     view = core.receiveKeydown({key: 'Enter'})
-    expect(view.logLines).toEqual(['abc'])
-    expect(view.displayLines).toEqual(['Finished.'])
+    expect(view.displayLines).toEqual(['abc'])
+    // pressing space continues past the output
+    view = core.receiveKeydown({key: ' '})
+    expect(view.displayLines).toEqual(['[Program finished]'])
   })
 
   it('hot-swaps interactive code', () => {
@@ -111,7 +112,7 @@ describe('Core', () => {
 
         *run() {
           let input = yield waitForInput()
-          yield log(munge(input))
+          yield output(munge(input))
         }
       })
     `
@@ -121,7 +122,7 @@ describe('Core', () => {
     core.deploy('main.js', munge.replace('return input', 'return reverse(input)'))
     typeKeys('abc')
     view = core.receiveKeydown({key: 'Enter'})
-    expect(view.logLines).toEqual(['cba'])
+    expect(view.displayLines).toEqual(['cba'])
   })
 
   it('runs an app that uses the store', () => {
