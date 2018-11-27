@@ -95,6 +95,7 @@ export function Core() {
   /* PRIVATE METHODS */
 
   function evalModule(filename, code) {
+    code = '"use strict";\n' + code
     try {
       const define = definer.defineModule(filename)
 

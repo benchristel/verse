@@ -43,7 +43,6 @@
 - rename startDisplay to show and allow it to take either a
   string or a function
 - rename waitForChar to waitForKey
-- Run app code in strict mode
 - rename reducer to updater
 - make retry() always retry the current routine
 - replace firstOf, lastOf with firstOr, lastOr (you must

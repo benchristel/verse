@@ -289,6 +289,13 @@ describe('Core', () => {
       .toContain('flipArgs')
   })
 
+  it('does not allow references to undeclared variables', () => {
+    core.deploy('main.js', 'undeclared = 1')
+    view = core.run()
+    expect(view.syntaxErrors['main.js'].message)
+      .toContain('not defined')
+  })
+
   function typeKeys(text) {
     let v = view
     for (let ch of text) v = core.receiveKeydown({key: ch})
