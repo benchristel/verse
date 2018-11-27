@@ -1,5 +1,5 @@
 .Terminal {
-  height: 582px;
+  height: 592px;
 
   overflow: hidden;
   white-space: pre-wrap;
@@ -9,7 +9,7 @@
   background: #d8d2d0;
   border: 2px outset #d8d2d0;
 
-  padding: 12px;
+  padding: 7px;
 
   font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
   font-size: 14px;
@@ -21,11 +21,10 @@
   box-sizing: border-box;
   border: 2px inset #d8d2d0;
   background: #023;
-  margin-bottom: 12px;
   padding: 12px;
   overflow-y: auto;
 }
 
 .Terminal .screen {
-  height: 582px;
+  height: 592px;
 }

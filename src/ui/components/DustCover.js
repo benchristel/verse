@@ -7,7 +7,7 @@ import './DustCover.css'
 
 export default connectProps(props => (
   <Hide If={props.evalAllowed}>
-    <Pane style={{height: '100%'}} className="DustCover" onClick={props.allowJsToRun}>
+    <Pane className="DustCover" onClick={props.allowJsToRun}>
       <div>
         START
       </div>
