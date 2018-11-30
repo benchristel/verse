@@ -49,3 +49,9 @@ export function isIn(obj, prop) {
   if (arguments.length < 2) return partialApply(isIn, arguments)
   return Object.prototype.hasOwnProperty.call(obj, prop)
 }
+
+export function entries(obj) {
+  // Object.entries doesn't guarantee iteration order, so
+  // we use Object.keys instead here.
+  return Object.keys(obj).map(k => [k, obj[k]])
+}

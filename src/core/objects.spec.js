@@ -1,4 +1,4 @@
-import { has } from './objects'
+import { has, entries } from './objects'
 
 describe('has', () => {
   it('returns true if the object has the property', () => {
@@ -21,5 +21,20 @@ describe('has', () => {
 
   it('autocurries', () => {
     expect(has('a')({a: 1})).toBe(true)
+  })
+})
+
+describe('entries', () => {
+  it('returns an empty array for an empty object', () => {
+    expect(entries({})).toEqual([])
+  })
+
+  it('gets key/value pairs, in the order in which they are defined', () => {
+    let obj = {a: 1, b: 2, c: 3}
+    expect(entries(obj)).toEqual([
+      ['a', 1],
+      ['b', 2],
+      ['c', 3]
+    ])
   })
 })
