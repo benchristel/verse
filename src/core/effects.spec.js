@@ -1,10 +1,11 @@
-import { wait, waitForInput } from './effects'
-import { keyDown } from './events'
+import { wait, waitForInput, perform } from './effects'
+import { keyDown, animationFrame } from './events'
 import { Process } from './Process'
 
-describe('waitForInput', () => {
+describe('effects', () => {
   let store, view, p
   beforeEach(() => {
+    view = null
     store = {
       emit: jest.fn(),
       getState: jest.fn()
@@ -16,104 +17,181 @@ describe('waitForInput', () => {
     expect(view.error).toBeNull()
   })
 
-  it('prints the prompt', () => {
-    view = p.begin(function *() {
-      yield waitForInput('Your message here')
+  // =======================================================
+  // waitForInput tests
+  // =======================================================
+
+  describe('waitForInput', () => {
+    it('prints the prompt', () => {
+      view = p.begin(function *() {
+        yield waitForInput('Your message here')
+      })
+
+      expect(view).toEqual(expect.objectContaining({
+        displayLines: [
+          'Your message here',
+          '> _'
+        ]
+      }))
     })
 
-    expect(view).toEqual(expect.objectContaining({
-      displayLines: [
-        'Your message here',
+    it('defaults the prompt to blank', () => {
+      view = p.begin(function *() {
+        yield waitForInput()
+      })
+
+      expect(view.displayLines).toEqual([
+        '',
         '> _'
-      ]
-    }))
-  })
-
-  it('defaults the prompt to blank', () => {
-    view = p.begin(function *() {
-      yield waitForInput()
+      ])
     })
 
-    expect(view.displayLines).toEqual([
-      '',
-      '> _'
-    ])
-  })
-
-  it('lets you enter a blank line', () => {
-    let line
-    p.begin(function *() {
-      line = yield waitForInput()
+    it('lets you enter a blank line', () => {
+      let line
+      p.begin(function *() {
+        line = yield waitForInput()
+      })
+      view = p.receive(keyDown('Enter'))
+      expect(line).toBe('')
     })
-    p.receive(keyDown('Enter'))
-    expect(line).toBe('')
-  })
 
-  it('returns entered text', () => {
-    let line
-    p.begin(function *() {
-      line = yield waitForInput()
+    it('returns entered text', () => {
+      let line
+      p.begin(function *() {
+        line = yield waitForInput()
+      })
+      p.receive(keyDown('h'))
+      p.receive(keyDown('i'))
+      view = p.receive(keyDown('Enter'))
+      expect(line).toBe('hi')
     })
-    p.receive(keyDown('h'))
-    p.receive(keyDown('i'))
-    p.receive(keyDown('Enter'))
-    expect(line).toBe('hi')
-  })
 
-  it('echoes text as you type', () => {
-    p.begin(function *() {
-      yield waitForInput()
+    it('echoes text as you type', () => {
+      p.begin(function *() {
+        yield waitForInput()
+      })
+      view = p.receive(keyDown('h'))
+      expect(view.displayLines).toEqual([
+        '',
+        '> h_'
+      ])
+      view = p.receive(keyDown('i'))
+      expect(view.displayLines).toEqual([
+        '',
+        '> hi_'
+      ])
     })
-    view = p.receive(keyDown('h'))
-    expect(view.displayLines).toEqual([
-      '',
-      '> h_'
-    ])
-    view = p.receive(keyDown('i'))
-    expect(view.displayLines).toEqual([
-      '',
-      '> hi_'
-    ])
-  })
 
-  it('backspaces', () => {
-    p.begin(function *() {
-      yield waitForInput()
+    it('backspaces', () => {
+      p.begin(function *() {
+        yield waitForInput()
+      })
+      view = p.receive(keyDown('h'))
+      expect(view.displayLines).toEqual([
+        '',
+        '> h_'
+      ])
+      view = p.receive(keyDown('Backspace'))
+      expect(view.displayLines).toEqual([
+        '',
+        '> _'
+      ])
     })
-    view = p.receive(keyDown('h'))
-    expect(view.displayLines).toEqual([
-      '',
-      '> h_'
-    ])
-    view = p.receive(keyDown('Backspace'))
-    expect(view.displayLines).toEqual([
-      '',
-      '> _'
-    ])
-  })
 
-  it('does nothing if you backspace when there is no input', () => {
-    p.begin(function *() {
-      yield waitForInput()
+    it('does nothing if you backspace when there is no input', () => {
+      p.begin(function *() {
+        yield waitForInput()
+      })
+      view = p.receive(keyDown('Backspace'))
+      expect(view.displayLines).toEqual([
+        '',
+        '> _'
+      ])
     })
-    view = p.receive(keyDown('Backspace'))
-    expect(view.displayLines).toEqual([
-      '',
-      '> _'
-    ])
-  })
 
-  it('clears the input display when it\'s done', () => {
-    p.begin(function *() {
-      yield waitForInput()
+    it('clears the input display when it\'s done', () => {
+      p.begin(function *() {
+        yield waitForInput()
+      })
+      view = p.receive(keyDown('Enter'))
+      expect(view.displayLines).toEqual([])
     })
-    view = p.receive(keyDown('Enter'))
-    expect(view.displayLines).toEqual([])
   })
-})
 
-describe('wait', () => {
-  it('throws if you pass a non-number argument', () => {
-    expect(() => wait('1')).toThrow()
+  // =======================================================
+  // wait tests
+  // =======================================================
+
+  describe('wait', () => {
+    it('pauses for a specified time', () => {
+      let finishedWait = false
+      p.begin(function*() {
+        yield wait(1)
+        finishedWait = true
+      })
+      p.receive(animationFrame(59))
+      expect(finishedWait).toBe(false)
+      view = p.receive(animationFrame(1))
+      expect(finishedWait).toBe(true)
+    })
+
+    it('executes multiple waits in a single turn if many frames have passed', () => {
+      p.begin(function*() {
+        yield wait(0.1)
+        yield wait(0.1)
+        yield wait(0.1)
+        yield perform('once upon a time')
+        yield wait(1)
+        yield perform('not called')
+      })
+      view = p.receive(animationFrame(60))
+      expect(store.emit).toBeCalledWith('once upon a time')
+      expect(store.emit).not.toBeCalledWith('not called')
+    })
+
+    it('does nothing given a zero or negative amount of time', () => {
+      view = p.begin(function*() {
+        yield wait(0)
+        yield wait(-1)
+        yield perform('once upon a time')
+      })
+      expect(store.emit).toBeCalledWith('once upon a time')
+    })
+
+    it('pauses repeatedly', () => {
+      p.begin(function*() {
+        yield wait(1)
+        yield perform('once upon a time')
+        yield wait(1)
+        yield perform('there was a dog')
+      })
+      expect(store.emit).not.toBeCalled()
+      p.receive(animationFrame(60))
+      expect(store.emit).toBeCalledWith('once upon a time')
+      expect(store.emit).not.toBeCalledWith('there was a dog')
+      view = p.receive(animationFrame(60))
+      expect(store.emit).toBeCalledWith('there was a dog')
+    })
+
+    it('waits forever', () => {
+      view = p.begin(function*() {
+        yield wait(Infinity)
+        yield perform('should never happen')
+      })
+
+      expect(view.error).toBeNull()
+      view = p.receive(animationFrame(0xffffffff))
+      expect(store.emit).not.toBeCalled()
+    })
+
+    it('ignores keypresses while pausing', () => {
+      p.begin(function*() {
+        yield wait(1)
+        yield perform('done')
+      })
+
+      view = p.receive(keyDown('a'))
+      expect(store.emit).not.toBeCalled()
+    })
   })
 })
