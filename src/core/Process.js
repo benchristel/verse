@@ -3,6 +3,10 @@ import { doWith } from './functionalUtils'
 import { lastOf, map } from './sequences'
 import { asText } from './formatting'
 
+// a globally (i.e. within one browser tab) unique
+// identifier for form submissions.
+let formId = 0
+
 export function Process(store) {
   let stack = []
   let waitingForEvent = false
@@ -11,7 +15,7 @@ export function Process(store) {
   /* view caches */
   let error = null
   let displayLines = []
-  let form = null
+  let form = {}
 
   return {
     begin,
@@ -37,9 +41,9 @@ export function Process(store) {
     return view()
   }
 
-  function submitForm(data) {
-    form = null
-    run(data)
+  function submitForm() {
+    form = {}
+    run()
     return view()
   }
 
@@ -83,8 +87,10 @@ export function Process(store) {
       return
     }
 
+    // TODO: remove
     if (Object.values(effect).every(v => /*v &&*/ v.definesInputElement)) {
       form = effect
+      formId++
       return
     }
 
@@ -122,6 +128,12 @@ export function Process(store) {
       routine = lastOf(stack)
       routine.render = effect.render
       updateScreen()
+      run()
+      return
+
+      case 'showFormFields':
+      form = effect.fields
+      formId++
       run()
       return
 
@@ -164,6 +176,7 @@ export function Process(store) {
       displayLines,
       error,
       form,
+      formId,
     }
   }
 }

@@ -1,4 +1,5 @@
 import { isNumber, isString, isFunction, isGeneratorFunction, isIterator, isAnything } from './nativeTypes'
+import { isArrayOf, oneOf } from './types'
 import { animationFrame, isAnimationFrame, isKeyDown } from './events'
 import { or } from './predicates'
 import { checkArgs } from './checkArgs'
@@ -127,7 +128,11 @@ const output_interface = {
 export function output(message) {
   checkArgs(output, arguments, output_interface)
   return function*() {
-    yield startDisplay(() => [message])
+    yield startDisplay(() => [
+      message,
+      ' ',
+      'Press SPACEBAR to continue.'
+    ])
     let key
     while (key !== ' ') key = yield waitForChar()
   }
@@ -159,14 +164,23 @@ export function perform(action) {
   }
 }
 
-const lineInput_interface = {
-  example: [], types: []
+const showFormFields_interface = {
+  example: [[{
+    label: 'Search',
+    type:  'text',
+    value: '',
+  }]],
+  types: [isArrayOf({
+    label: isString,
+    type: oneOf('line', 'text'),
+    value: isString
+  })]
 }
 
-export function lineInput() {
-  checkArgs(lineInput, arguments, lineInput_interface)
+export function showFormFields(fields) {
+  checkArgs(showFormFields, arguments, showFormFields_interface)
   return {
-    effectType: 'lineInput',
-    definesInputElement: true
+    effectType: 'showFormFields',
+    fields
   }
 }

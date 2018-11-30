@@ -34,3 +34,36 @@ export function keyDown(key) {
 export function isKeyDown(event) {
   return event.eventType === 'keyDown'
 }
+
+const formSubmission_interface = {
+  example: [], types: []
+}
+
+export function formSubmission() {
+  checkArgs(formSubmission, arguments, formSubmission_interface)
+  return {
+    eventType: 'formSubmission'
+  }
+}
+
+export function isFormSubmission(event) {
+  return event.eventType === 'formSubmission'
+}
+
+const formFieldChange_interface = {
+  example: ['Search', 'wolf riders'],
+  types: [isString, isString]
+}
+
+export function formFieldChange(label, value) {
+  checkArgs(formFieldChange, arguments, formFieldChange_interface)
+  return {
+    eventType: 'formFieldChange',
+    label,
+    value
+  }
+}
+
+export function isFormFieldChange(event) {
+  return event.eventType === 'formFieldChange'
+}

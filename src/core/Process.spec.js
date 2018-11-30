@@ -1,14 +1,15 @@
 import { Store, perform } from './index'
 import { Process } from './Process'
 import { animationFrame, keyDown } from './events'
-import { wait } from './effects'
+import { wait, showFormFields } from './effects'
 import './api'
 
 describe('Process', () => {
   const blankView = {
     error: null,
     displayLines: [],
-    form: null,
+    form: {},
+    formId: expect.any(Number),
   }
 
   let store, p
@@ -174,36 +175,26 @@ describe('Process', () => {
     expect(store.emit).toBeCalledWith('123')
   })
 
-  it('waits for a form submission', () => {
+  it('shows a form on the screen', () => {
     let view = p.begin(function*() {
-      let dog = yield {
-        name: lineInput()
-      }
-      yield perform('Once there was a dog named ' + dog.name)
+      yield showFormFields([
+        {
+          label: 'Name',
+          type:  'line',
+          value: ''
+        }
+      ])
+      yield waitForEvent()
     })
 
-    expect(view.form).toEqual({
-      name: {
-        effectType: 'lineInput',
-        definesInputElement: true
-      }
-    })
-    view = p.submitForm({name: 'Jim'})
-    expect(view.form).toBeNull()
     expect(view.error).toBeNull()
-    expect(store.emit).toBeCalledWith('Once there was a dog named Jim')
-  })
-
-  it('ignores keypresses while waiting for a form submission', () => {
-    let view = p.begin(function*() {
-      yield {
-        name: lineInput()
+    expect(view.form).toEqual([
+      {
+        label: 'Name',
+        type:  'line',
+        value: ''
       }
-      yield perform('never called')
-    })
-    p.receive(keyDown('a'))
-    expect(view.error).toBeNull()
-    expect(store.emit).not.toBeCalled()
+    ])
   })
 
   it('jumps to another routine', () => {
@@ -277,14 +268,14 @@ describe('Process', () => {
     })
   })
 
-  it('logs a message', () => {
+  it('outputs a message', () => {
     let view = p.begin(function*() {
       yield output('hello, world!')
     })
 
     expect(view).toEqual({
       ...blankView,
-      displayLines: ['hello, world!']
+      displayLines: ['hello, world!', ' ', 'Press SPACEBAR to continue.']
     })
   })
 
