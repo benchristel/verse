@@ -33,7 +33,8 @@ describe('Core', () => {
       error: null,
       syntaxErrors: {},
       testResults: {},
-      form: null,
+      form: [],
+      formId: 0,
     })
   })
 
@@ -99,10 +100,30 @@ describe('Core', () => {
       '> abc_'
     ])
     view = core.receiveKeydown({key: 'Enter'})
-    expect(view.displayLines).toEqual(['abc'])
+    expect(view.displayLines).toEqual(['abc', ' ', 'Press SPACEBAR to continue.'])
     // pressing space continues past the output
     view = core.receiveKeydown({key: ' '})
     expect(view.displayLines).toEqual(['[Program finished]'])
+  })
+
+  it('runs an app that uses a form', () => {
+    core.deploy('main.js', `
+      define({
+        *run() {
+          let title, author
+          yield form({
+            Title:  lineInput('', _=> title=_),
+            Author: lineInput('', _=> author=_)
+          })
+          yield output(title + ' by ' + author)
+        }
+      })
+    `)
+    core.run()
+    core.changeFormField('Title',  'White Teeth')
+    core.changeFormField('Author', 'Zadie Smith')
+    view = core.submitForm()
+    expect(view.displayLines).toContain('White Teeth by Zadie Smith')
   })
 
   it('hot-swaps interactive code', () => {
@@ -122,7 +143,7 @@ describe('Core', () => {
     core.deploy('main.js', munge.replace('return input', 'return reverse(input)'))
     typeKeys('abc')
     view = core.receiveKeydown({key: 'Enter'})
-    expect(view.displayLines).toEqual(['cba'])
+    expect(view.displayLines).toEqual(['cba', ' ', 'Press SPACEBAR to continue.'])
   })
 
   it('runs an app that uses the store', () => {

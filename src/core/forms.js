@@ -4,7 +4,7 @@ import { map } from './sequences'
 import { oneOf, satisfies } from './types'
 import { isString, isFunction } from './nativeTypes'
 import { checkArgs } from './checkArgs'
-import { showFormFields, waitForEvent } from './effects'
+import { showFormFields, waitForEvent, redraw } from './effects'
 import { isFormSubmission, isFormFieldChange } from './events'
 
 const form_interface = {
@@ -34,6 +34,7 @@ export function *form(fields) {
   for (let field of showableFields) {
     fields[field.label].receiveValue(field.value)
   }
+  yield redraw()
 
   yield showFormFields(showableFields)
 
@@ -44,6 +45,7 @@ export function *form(fields) {
       break;
     } else if (isFormFieldChange(event)) {
       fields[event.label].receiveValue(event.value)
+      yield redraw()
       continue;
     } else {
       // some event we don't care about
@@ -52,7 +54,7 @@ export function *form(fields) {
   }
 }
 
-const lineInput_interface ={
+const lineInput_interface = {
   example: ['', () => {}],
   types: [isString, isFunction]
 }
@@ -61,6 +63,15 @@ export function lineInput(value, receiveValue) {
   checkArgs(lineInput, arguments, lineInput_interface)
   return {
     type: 'line',
+    value,
+    receiveValue
+  }
+}
+
+export function textInput(value, receiveValue) {
+  checkArgs(textInput, arguments, lineInput_interface)
+  return {
+    type: 'text',
     value,
     receiveValue
   }

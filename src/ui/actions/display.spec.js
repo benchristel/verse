@@ -26,6 +26,8 @@ describe('display', () => {
       error: 'bloop',
       displayLines: [],
       testResults: {},
+      form: [],
+      formId: 0,
     }))
 
     expect(state.isErrorPanelShown).toBe(true)
@@ -38,6 +40,8 @@ describe('display', () => {
       error: null,
       displayLines: [],
       testResults: {},
+      form: [],
+      formId: 0,
     }))
 
     expect(state.isErrorPanelShown).toBe(true)

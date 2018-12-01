@@ -21,10 +21,50 @@
   box-sizing: border-box;
   border: 2px inset #d8d2d0;
   background: #023;
-  padding: 12px;
+  /* padding: 18px; */
   overflow-y: auto;
 }
 
 .Terminal .screen {
   height: 592px;
+  padding: 12px;
+}
+
+.Terminal .Input {
+  padding-top: 1ch;
+}
+
+.Terminal .Input input,
+.Terminal .Input textarea,
+.Terminal .InputForm button {
+  box-sizing: border-box;
+  background: #000;
+  border: none;
+  color: inherit;
+  font-size: inherit;
+  font-family: inherit;
+  padding: 0.5ch 1ch;
+  border-radius: 3px;
+}
+
+.Terminal .Input input,
+.Terminal .Input textarea {
+  width: 100%;
+}
+
+.Terminal .Input textarea {
+  resize: vertical;
+}
+
+.Terminal .InputForm button {
+  display: inline-block;
+  cursor: pointer;
+  margin-top: 1ch;
+}
+
+.Terminal .InputForm button:hover,
+.Terminal .InputForm button:focus,
+.Terminal .Input input:focus,
+.Terminal .Input textarea:focus {
+  background: #444;
 }

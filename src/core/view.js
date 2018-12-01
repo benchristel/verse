@@ -4,7 +4,7 @@ export function blankView() {
     error: null,
     syntaxErrors: {}, // maps filenames to Errors
     testResults: {}, // maps test names to Errors
-    form: {},
+    form: [],
     formId: 0,
   }
 }

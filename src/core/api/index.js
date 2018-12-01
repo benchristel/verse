@@ -64,7 +64,9 @@ def(v.output,    'output')
 def(v.jump,      'jump')
 def(v.retry,     'retry')
 def(v.perform,   'perform')
+def(v.form,      'form')
 def(v.lineInput, 'lineInput')
+def(v.textInput, 'textInput')
 
 /*
  * Test Framework

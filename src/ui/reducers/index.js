@@ -4,7 +4,9 @@ import { isEmpty } from '../../core/types'
 export default combineReducers({
   evalAllowed,
   appUi: combineReducers({
-    screenLines
+    screenLines,
+    form,
+    formId
   }),
   files,
   currentlyEditingFile,
@@ -29,6 +31,26 @@ function screenLines(curr=[], action) {
   switch (action.type) {
     case 'display':
     return action.displayLines
+
+    default:
+    return curr
+  }
+}
+
+function form(curr={}, action) {
+  switch (action.type) {
+    case 'display':
+    return action.form
+
+    default:
+    return curr
+  }
+}
+
+function formId(curr=-1, action) {
+  switch (action.type) {
+    case 'display':
+    return action.formId
 
     default:
     return curr
@@ -69,6 +91,7 @@ function currentlyEditingFile(curr='main.js', action) {
   return curr
 }
 
+// TODO: remove?
 function isErrorPanelShown(curr=false, action) {
   switch (action.type) {
     case 'showErrorPanel':
@@ -132,6 +155,7 @@ function currentlyInspectingStage(curr='run', action) {
   }
 }
 
+// TODO: replace with mapObject
 function map(fn, object) {
   let result = {}
   for (let prop in object) {

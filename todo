@@ -10,6 +10,8 @@
   if some files have syntax errors when Verse first starts?
   How will those errors be reported to the user? One way of
   avoiding this is to only save files that eval successfully.
+- render objects using visualize() in "you yielded something
+  weird" error message
 
 # UX CONCERNS
 

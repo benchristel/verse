@@ -9,18 +9,16 @@ let formId = 0
 
 export function Process(store) {
   let stack = []
-  let waitingForEvent = false
   let gotosThisTurn = 0
 
   /* view caches */
   let error = null
   let displayLines = []
-  let form = {}
+  let form = []
 
   return {
     begin,
     receive,
-    submitForm,
     redraw,
   }
 
@@ -31,19 +29,7 @@ export function Process(store) {
   }
 
   function receive(event) {
-    // TODO: this check will ultimately become unnecessary.
-    // Remove it when done refactoring to use events
-    // consistently
-    if (waitingForEvent) {
-      waitingForEvent = false
-      run(event)
-    }
-    return view()
-  }
-
-  function submitForm() {
-    form = {}
-    run()
+    run(event)
     return view()
   }
 
@@ -67,8 +53,6 @@ export function Process(store) {
   }
 
   function runOrThrow(returnFromYield) {
-    let routine
-
     if (gotosThisTurn > 1000) throw new Error('Infinite retry loop detected')
 
     if (!stack.length) return
@@ -87,13 +71,6 @@ export function Process(store) {
       return
     }
 
-    // TODO: remove
-    if (Object.values(effect).every(v => /*v &&*/ v.definesInputElement)) {
-      form = effect
-      formId++
-      return
-    }
-
     switch (effect.effectType) {
       case 'perform':
       store.emit(effect.action)
@@ -102,7 +79,6 @@ export function Process(store) {
 
       case 'waitForEvent':
       gotosThisTurn = 0
-      waitingForEvent = true
       return
 
       case 'putBackEvent':
@@ -125,15 +101,21 @@ export function Process(store) {
       return
 
       case 'startDisplay':
-      routine = lastOf(stack)
-      routine.render = effect.render
-      updateScreen()
-      run()
-      return
+      {
+        let routine = lastOf(stack)
+        routine.render = effect.render
+        run()
+        return
+      }
 
       case 'showFormFields':
       form = effect.fields
       formId++
+      run()
+      return
+
+      case 'redraw':
+      updateScreen()
       run()
       return
 

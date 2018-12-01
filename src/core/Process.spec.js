@@ -1,14 +1,14 @@
 import { Store, perform } from './index'
 import { Process } from './Process'
 import { animationFrame, keyDown } from './events'
-import { wait, showFormFields } from './effects'
+import { wait, showFormFields, redraw } from './effects'
 import './api'
 
 describe('Process', () => {
   const blankView = {
     error: null,
     displayLines: [],
-    form: {},
+    form: [],
     formId: expect.any(Number),
   }
 
@@ -221,17 +221,6 @@ describe('Process', () => {
     })
   })
 
-  it('re-renders when a stack frame pops', () => {
-    let view = p.begin(function*() {
-      let x = 0
-      yield startDisplay(() => {
-        return [x]
-      })
-      x++
-    })
-    expect(view.displayLines).toEqual(['1'])
-  })
-
   it('passes the state to the render function', () => {
     store = Store(isString, state => state + 'x')
     p = Process(store)
@@ -247,6 +236,20 @@ describe('Process', () => {
     expect(view.displayLines).toEqual([''])
     view = p.receive(animationFrame(60))
     expect(view.displayLines).toEqual(['x'])
+  })
+
+  it('redraws the display when the program tells it to', () => {
+    let view = p.begin(function*() {
+      yield startDisplay(() => [
+        'displayed'
+      ])
+      yield waitForEvent()
+      yield redraw()
+      yield waitForEvent()
+    })
+    expect(view.displayLines).toEqual([])
+    view = p.receive(animationFrame(1))
+    expect(view.displayLines).toEqual(['displayed'])
   })
 
   it('reverts the display when the stack frame that rendered it pops', () => {
@@ -313,6 +316,17 @@ describe('Process', () => {
     expect(view.error.message).toBe('yikes')
   })
 
+  it('can be forced to redraw by the environment', () => {
+    let view = p.begin(function*() {
+      let redraws = 0
+      yield startDisplay(() => [redraws++])
+      yield wait(1)
+    })
+    expect(view.displayLines).toEqual(['0'])
+    view = p.redraw()
+    expect(view.displayLines).toEqual(['1'])
+  })
+
   it('renders an error thrown during a redraw', () => {
     let fail = false
     let view = p.begin(function*() {
@@ -324,16 +338,5 @@ describe('Process', () => {
     fail = true
     view = p.redraw() // should not throw
     expect(view.error.message).toBe('yikes')
-  })
-
-  it('forces a redraw', () => {
-    let view = p.begin(function*() {
-      let redraws = 0
-      yield startDisplay(() => [redraws++])
-      yield wait(1)
-    })
-    expect(view.displayLines).toEqual(['0'])
-    view = p.redraw()
-    expect(view.displayLines).toEqual(['1'])
   })
 })

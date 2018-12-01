@@ -24,7 +24,8 @@ export function wait(seconds) {
 }
 
 function *waitRoutine(seconds) {
-  if (seconds <= 0) return
+  if (seconds <= 0) return;
+  yield redraw()
 
   let secsLeftToWait = seconds
 
@@ -53,6 +54,7 @@ const waitForChar_interface = {example: [], types: []}
 export function waitForChar() {
   checkArgs(waitForChar, arguments, waitForChar_interface)
   return function*() {
+    yield redraw()
     let event = yield waitForEvent()
     if (isKeyDown(event)) {
       return event.key
@@ -61,12 +63,14 @@ export function waitForChar() {
   }
 }
 
+// TODO: remove
 const waitForInput_interface = {
   example: ['Enter your name'],
   types: [isString],
   optionalArgs: 1
 }
 
+// TODO: remove
 export function waitForInput(prompt='') {
   checkArgs(waitForInput, arguments, waitForInput_interface)
   return function*() {
@@ -182,5 +186,16 @@ export function showFormFields(fields) {
   return {
     effectType: 'showFormFields',
     fields
+  }
+}
+
+const redraw_interface = {
+  example: [], types: []
+}
+
+export function redraw() {
+  checkArgs(redraw, arguments, redraw_interface)
+  return {
+    effectType: 'redraw'
   }
 }

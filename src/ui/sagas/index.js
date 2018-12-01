@@ -1,5 +1,5 @@
 import { delay } from 'redux-saga'
-import { fork, put, take, takeLatest, select } from 'redux-saga/effects'
+import { fork, put, take, takeLatest, takeEvery, select } from 'redux-saga/effects'
 import { AnimationFrameTicker } from './AnimationFrameTicker'
 import { KeyEventStream } from './KeyEventStream'
 import { display, markSyntaxErrors, loadFiles } from '../actions'
@@ -23,6 +23,8 @@ export function* main() {
   yield takeLatest('runApp', runApp)
   yield takeLatest('changeEditorText', processFileChange)
   yield takeLatest('loadFiles', deployAllFiles)
+  yield takeEvery('changeFormField', changeFormField)
+  yield takeEvery('submitForm', submitForm)
   yield fork(animationFrameThread)
   yield fork(keyEventThread)
 
@@ -85,6 +87,16 @@ function *deployAllFiles({files}) {
     let view = core.deploy('main.js', files['main.js'])
     yield put(display(view))
   }
+}
+
+function *changeFormField({label, value}) {
+  let view = core.changeFormField(label, value)
+  yield put(display(view))
+}
+
+function *submitForm({data}) {
+  let view = core.submitForm(data)
+  yield put(display(view))
 }
 
 function *animationFrameThread() {

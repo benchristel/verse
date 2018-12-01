@@ -4,7 +4,7 @@ import { Store } from './Store'
 import { Process } from './Process'
 import { get, tuple, startsWith } from './functionalUtils'
 import { blankView } from './view'
-import { animationFrame, keyDown } from './events'
+import { animationFrame, keyDown, formFieldChange, formSubmission } from './events'
 import init from './init'
 import { isFunction } from './nativeTypes'
 
@@ -19,6 +19,8 @@ export function Core() {
     run,
     clean,
     receiveKeydown,
+    changeFormField,
+    submitForm,
     tickFrames,
   }
 
@@ -77,7 +79,30 @@ export function Core() {
 
   function receiveKeydown(event) {
     if (runningApp) {
-      view = {...view, ...runningApp.receive(keyDown(event.key))}
+      view = {
+        ...view,
+        ...runningApp.receive(keyDown(event.key))
+      }
+    }
+    return view
+  }
+
+  function changeFormField(label, value) {
+    if (runningApp) {
+      view = {
+        ...view,
+        ...runningApp.receive(formFieldChange(label, value))
+      }
+    }
+    return view
+  }
+
+  function submitForm() {
+    if (runningApp) {
+      view = {
+        ...view,
+        ...runningApp.receive(formSubmission())
+      }
     }
     return view
   }
