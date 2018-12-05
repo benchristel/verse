@@ -1,5 +1,4 @@
 import { combineReducers } from 'redux'
-import { isEmpty } from '../../core/types'
 
 export default combineReducers({
   evalAllowed,
@@ -10,7 +9,6 @@ export default combineReducers({
   }),
   files,
   currentlyEditingFile,
-  isErrorPanelShown,
   syntaxErrorLocations,
   testResults,
   crash,
@@ -60,7 +58,7 @@ function formId(curr=-1, action) {
 function files(curr={}, action) {
   switch (action.type) {
     case 'loadFiles':
-    return map(text => ({text, syntaxError: null}), action.files)
+    return mapObj(text => ({text, syntaxError: null}), action.files)
 
     case 'changeEditorText': {
       const {file, text} = action
@@ -74,7 +72,7 @@ function files(curr={}, action) {
     }
 
     case 'display':
-    return map((file, name) => {
+    return mapObj((file, name) => {
       let error = action.syntaxErrors[name] || null
       return {
         ...file,
@@ -89,27 +87,6 @@ function files(curr={}, action) {
 
 function currentlyEditingFile(curr='main.js', action) {
   return curr
-}
-
-// TODO: remove?
-function isErrorPanelShown(curr=false, action) {
-  switch (action.type) {
-    case 'showErrorPanel':
-    return true
-
-    case 'hideErrorPanel':
-    return false
-
-    case 'display':
-    if (!action.error && isEmpty(action.syntaxErrors)) {
-      return false
-    } else {
-      return curr
-    }
-
-    default:
-    return curr
-  }
 }
 
 function syntaxErrorLocations(curr=[], action) {
@@ -155,8 +132,7 @@ function currentlyInspectingStage(curr='run', action) {
   }
 }
 
-// TODO: replace with mapObject
-function map(fn, object) {
+function mapObj(fn, object) {
   let result = {}
   for (let prop in object) {
     if (object.hasOwnProperty(prop)) {
