@@ -35,7 +35,7 @@ function screenLines(curr=[], action) {
   }
 }
 
-function form(curr={}, action) {
+function form(curr=[], action) {
   switch (action.type) {
     case 'display':
     return action.form
