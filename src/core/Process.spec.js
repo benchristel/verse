@@ -18,7 +18,7 @@ describe('Process', () => {
       emit: jest.fn(),
       getState: jest.fn()
     }
-    p = Process(store, v => v) // TODO delete callback
+    p = Process(store)
   })
 
   it('runs a simple routine', () => {
