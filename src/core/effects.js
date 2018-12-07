@@ -63,46 +63,6 @@ export function waitForChar() {
   }
 }
 
-// TODO: remove
-const waitForInput_interface = {
-  example: ['Enter your name'],
-  types: [isString],
-  optionalArgs: 1
-}
-
-// TODO: remove
-export function waitForInput(prompt='') {
-  checkArgs(waitForInput, arguments, waitForInput_interface)
-  return function*() {
-    let entered = ''
-    yield startDisplay(() => {
-      return [
-        prompt,
-        '> ' + entered + '_'
-      ]
-    })
-    yield function* getOneChar() {
-      let c = yield waitForChar()
-      switch (c) {
-        case 'Enter':
-        return;
-
-        case 'Backspace':
-        entered = entered.slice(0, entered.length - 1)
-        break;
-
-        default:
-        entered += c
-      }
-      yield retry(getOneChar)
-    }
-    // TODO: empty string here is a hack to work around
-    // the UI's awkward display implementation.
-    yield startDisplay(() => [''])
-    return entered
-  }
-}
-
 const jump_retry_interface = {
   example: [renameFunction(function*() {}, () => 'run')],
   types: [or(isGeneratorFunction, isIterator)]

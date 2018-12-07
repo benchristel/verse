@@ -56,8 +56,6 @@ def(v.waitForEvent,
 def(v.wait,      'wait')
 def(v.waitForChar,
                  'waitForChar')
-def(v.waitForInput,
-                 'waitForInput')
 def(v.startDisplay,
                  'startDisplay')
 def(v.output,    'output')

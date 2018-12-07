@@ -78,35 +78,7 @@ describe('Core', () => {
     expect(view.displayLines).toEqual(['changed'])
   })
 
-  const echo = `
-    define({
-      *run() {
-        let input = yield waitForInput()
-        yield output(input)
-      }
-    })
-  `
-
   it('runs an interactive app', () => {
-    core.deploy('main.js', echo)
-    view = core.run()
-    expect(view.displayLines).toEqual([
-      '',
-      '> _'
-    ])
-    view = typeKeys('abc')
-    expect(view.displayLines).toEqual([
-      '',
-      '> abc_'
-    ])
-    view = core.receiveKeydown({key: 'Enter'})
-    expect(view.displayLines).toEqual(['abc', ' ', 'Press SPACEBAR to continue.'])
-    // pressing space continues past the output
-    view = core.receiveKeydown({key: ' '})
-    expect(view.displayLines).toEqual(['[Program finished]'])
-  })
-
-  it('runs an app that uses a form', () => {
     core.deploy('main.js', `
       define({
         *run() {
@@ -132,7 +104,10 @@ describe('Core', () => {
         munge(input) { return input },
 
         *run() {
-          let input = yield waitForInput()
+          let input
+          yield form({
+            Input: lineInput('', _=> input=_)
+          })
           yield output(munge(input))
         }
       })
@@ -141,8 +116,8 @@ describe('Core', () => {
     core.deploy('main.js', munge)
     core.run()
     core.deploy('main.js', munge.replace('return input', 'return reverse(input)'))
-    typeKeys('abc')
-    view = core.receiveKeydown({key: 'Enter'})
+    core.changeFormField('Input',  'abc')
+    view = core.submitForm()
     expect(view.displayLines).toEqual(['cba', ' ', 'Press SPACEBAR to continue.'])
   })
 
