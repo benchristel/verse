@@ -20,6 +20,8 @@ def(v.range,     'range')
 def(v.startsWith,
                  'startsWith')
 def(v.hasKey,    'hasKey')
+def(v.hasEntry,  'hasEntry')
+def(v.has,       'has')
 def(v.isIn,      'isIn')
 def(v.equals,    'equals')
 def(v.isExactly, 'is')
