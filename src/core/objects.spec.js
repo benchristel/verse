@@ -1,26 +1,26 @@
-import { has, entries } from './objects'
+import { hasKey, hasEntry, entries } from './objects'
 
-describe('has', () => {
+describe('hasKey', () => {
   it('returns true if the object has the property', () => {
-    expect(has('a', {a: 1})).toBe(true)
+    expect(hasKey('a', {a: 1})).toBe(true)
   })
 
   it('returns false if not', () => {
-    expect(has('a', {})).toBe(false)
+    expect(hasKey('a', {})).toBe(false)
   })
 
   it('sees properties that have no value', () => {
-    expect(has('a', {a: undefined})).toBe(true)
+    expect(hasKey('a', {a: undefined})).toBe(true)
   })
 
   it('ignores inherited properties', () => {
     let parent = {a: 1}
     let child = Object.create(parent)
-    expect(has('a', child)).toBe(false)
+    expect(hasKey('a', child)).toBe(false)
   })
 
   it('autocurries', () => {
-    expect(has('a')({a: 1})).toBe(true)
+    expect(hasKey('a')({a: 1})).toBe(true)
   })
 })
 

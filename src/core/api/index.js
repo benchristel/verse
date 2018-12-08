@@ -19,7 +19,7 @@ def(v.count,     'count')
 def(v.range,     'range')
 def(v.startsWith,
                  'startsWith')
-def(v.has,       'has')
+def(v.hasKey,    'hasKey')
 def(v.isIn,      'isIn')
 def(v.equals,    'equals')
 def(v.isExactly, 'is')

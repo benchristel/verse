@@ -1,6 +1,6 @@
 import { not, or } from './predicates'
 import { isTruthy, doWith } from './index'
-import { has } from './objects'
+import { hasKey } from './objects'
 
 describe('not', () => {
   it('inverts a predicate', () => {
@@ -13,7 +13,7 @@ describe('not', () => {
 })
 
 describe('or', () => {
-  let aOrB = or(has('a'), has('b'))
+  let aOrB = or(hasKey('a'), hasKey('b'))
 
   it('returns true when the first predicate applies', () => {
     expect(aOrB({a: 1})).toBe(true)
@@ -32,25 +32,25 @@ describe('or', () => {
   })
 
   it('takes its name from the predicates', () => {
-    expect(aOrB.name).toBe('or(has("a"), has("b"))')
+    expect(aOrB.name).toBe('or(hasKey("a"), hasKey("b"))')
   })
 
   it('can be used as an infix', () => {
     let _ = doWith
-    aOrB = _(has('a'), or(has('b')))
+    aOrB = _(hasKey('a'), or(hasKey('b')))
     expect(aOrB({a: 1})).toBe(true)
     expect(aOrB({b: 1})).toBe(true)
     expect(aOrB({})).toBe(false)
     expect(aOrB.name)
-      .toBe('or(has("b"), has("a"))')
+      .toBe('or(hasKey("b"), hasKey("a"))')
   })
 
   it('nests', () => {
     let _ = doWith
     let abc = _(
-      has('a'),
-      or(has('b')),
-      or(has('c'))
+      hasKey('a'),
+      or(hasKey('b')),
+      or(hasKey('c'))
     )
     expect(abc({a: 1})).toBe(true)
     expect(abc({b: 1})).toBe(true)

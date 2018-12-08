@@ -1,6 +1,6 @@
 import { partialApply } from './higherOrderFunctions'
 import { not, or } from './predicates'
-import { has, mapObject, objectsHaveSameKeys } from './objects'
+import { hasKey, mapObject, objectsHaveSameKeys } from './objects'
 import { assert } from './assert'
 import { isObject, isString, isArray, isFunction, isAnything } from './nativeTypes'
 import { checkArgs } from './checkArgs'
@@ -36,7 +36,7 @@ function uncheckedSatisfies(type, value) {
 
 export function getDefaultValue(type) {
   if (isObject(type)) return mapObject(getDefaultValue, type)
-  if (has('defaultValue', type)) return type.defaultValue
+  if (hasKey('defaultValue', type)) return type.defaultValue
 
   let likelyDefaults = [null, [], 0, '']
   let value = likelyDefaults.find(type)

@@ -1,5 +1,5 @@
 import Definer from './Definer'
-import { has } from './objects'
+import { hasKey } from './objects'
 import { Store } from './Store'
 import { Process } from './Process'
 import { get, tuple, startsWith } from './functionalUtils'
@@ -42,7 +42,7 @@ export function Core() {
   function run() {
     view = clearAppView(view)
     for (let name in stagedModules) {
-      if (has(name, stagedModules)) {
+      if (hasKey(name, stagedModules)) {
         evalModule(name, stagedModules[name])
       }
     }

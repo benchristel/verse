@@ -26,15 +26,15 @@ export function mapObject(fn, obj) {
   return result
 }
 
-const has_interface = {
+const hasKey_interface = {
   curry: 2,
   example: ['name', {name: 'elias'}],
   types: [isString, isAnything]
 }
 
-export function has(prop, obj) {
-  checkArgs(has, arguments, has_interface)
-  if (arguments.length < 2) return partialApply(has, arguments)
+export function hasKey(prop, obj) {
+  checkArgs(hasKey, arguments, hasKey_interface)
+  if (arguments.length < 2) return partialApply(hasKey, arguments)
   return Object.prototype.hasOwnProperty.call(obj, prop)
 }
 

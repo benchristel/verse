@@ -1,4 +1,4 @@
-import { has } from './objects'
+import { hasKey } from './objects'
 import { isGeneratorFunction } from './nativeTypes'
 import { renameFunction } from './higherOrderFunctions'
 import { mapObject } from './objects'
@@ -18,7 +18,7 @@ export default function Definer(global) {
   function defineModule(moduleName) {
     return function(defns) {
       Object.keys(defns).forEach(name => {
-        if (has(name, global) && !definitionsForModule(moduleName).includes(name)) {
+        if (hasKey(name, global) && !definitionsForModule(moduleName).includes(name)) {
           throw Error('The definition of ' + name +
             ' in ' + moduleName +
             ' overwrites another definition. Please rename '
@@ -32,7 +32,7 @@ export default function Definer(global) {
   }
 
   function renameModule(oldName, newName) {
-    if (!has(oldName, definitions)) {
+    if (!hasKey(oldName, definitions)) {
       throw Error('No module named ' + oldName + ' exists')
     }
     definitions[newName] = definitions[oldName]
@@ -48,7 +48,7 @@ export default function Definer(global) {
 
   function deleteAllModules() {
     for (let moduleName in definitions) {
-      if (has(moduleName, definitions)) {
+      if (hasKey(moduleName, definitions)) {
         deleteModule(moduleName)
       }
     }
