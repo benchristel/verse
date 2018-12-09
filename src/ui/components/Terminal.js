@@ -42,7 +42,7 @@ const InputForm = connectProps(class extends React.Component {
         return <InputElement
           type={field.type}
           label={field.label}
-          autofocus={index === 0}
+          autoFocus={index === 0}
           onChange={this.onChange(field.label).bind(this)}
           key={index}/>
       })
@@ -59,12 +59,6 @@ const InputForm = connectProps(class extends React.Component {
 })
 
 const InputElement = connectProps(class extends React.Component {
-  componentDidMount() {
-    if (this.props.autofocus && this.element) {
-      this.element.focus()
-    }
-  }
-
   setElement(el) {
     this.element = el
   }
@@ -76,6 +70,7 @@ const InputElement = connectProps(class extends React.Component {
         <label htmlFor={this.props.label}>{this.props.label}</label>
         <input type="text" name={this.props.label}
           ref={this.setElement.bind(this)}
+          autoFocus={this.props.autoFocus}
           onChange={this.props.onChange}/>
       </div>
 
@@ -83,6 +78,7 @@ const InputElement = connectProps(class extends React.Component {
       return <div className="Input">
         <textarea
           ref={this.setElement.bind(this)}
+          autoFocus={this.props.autoFocus}
           onChange={this.props.onChange}/>
       </div>
 

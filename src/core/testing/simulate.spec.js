@@ -2,7 +2,9 @@ import { Simulator } from './simulate'
 import { isNumber } from '../nativeTypes'
 import * as utils from '../functionalUtils'
 import { startDisplay, wait, waitForChar, perform, retry } from '../effects'
-import { keyDown, animationFrame } from '../events'
+import { form, lineInput } from '../forms'
+import { keyDown, animationFrame, formFieldChange, formSubmission } from '../events'
+import { assert } from '../assert'
 
 const {isExactly: is, contains} = utils
 
@@ -12,6 +14,13 @@ describe('simulate', () => {
   beforeEach(() => {
     fakeWindow = {}
     simulate = Simulator(fakeWindow)
+  })
+
+  it('fails immediately when the simulated program throws', () => {
+    function *run() {
+      throw Error('bork')
+    }
+    expect(() => simulate(run)).toThrowError('bork')
   })
 
   it('asserts that text is displayed', () => {
@@ -38,6 +47,23 @@ describe('simulate', () => {
       simulate(run)
         .assertDisplay(is, 'hello')
     }).toThrow(new Error('Tried to assert that\n  "bork"\nisExactly\n  "hello"'))
+  })
+
+  it('lets you get form fields displayed by the simulated program', () => {
+    function *run() {
+      yield form({
+        field1: lineInput('', () => {})
+      })
+    }
+
+    const {equals} = utils
+
+    simulate(run)
+      .do(sim => assert(sim.form(), equals, [{
+        label: 'field1',
+        type:  'line',
+        value: ''
+      }]))
   })
 
   it('sends an event to the process', () => {

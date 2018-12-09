@@ -76,6 +76,10 @@ def(v.Simulator(window),
 def(v.keyDown,   'keyDown')
 def(v.animationFrame,
                  'animationFrame')
+def(v.formFieldChange,
+                 'formFieldChange')
+def(v.formSubmission,
+                 'formSubmission')
 
 function def(x, name) {
   // guard against non-existent functions being added to

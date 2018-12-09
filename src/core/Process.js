@@ -3,13 +3,13 @@ import { doWith } from './functionalUtils'
 import { lastOf, map } from './sequences'
 import { asText } from './formatting'
 
-// a globally (i.e. within one browser tab) unique
-// identifier for form submissions.
-let formId = 0
 
 export function Process(store) {
   let stack = []
   let gotosThisTurn = 0
+
+  // a unique, random identifier for form submissions.
+  let formId = 0
 
   /* view caches */
   let error = null
@@ -110,7 +110,7 @@ export function Process(store) {
 
       case 'showFormFields':
       form = effect.fields
-      formId++
+      formId = bigRandom()
       run()
       return
 
@@ -165,4 +165,11 @@ export function Process(store) {
 
 function asArray(value) {
   return isArray(value) ? value : [value]
+}
+
+// The largest integer JavaScript numbers can precisely
+// represent. big + 1 === big; big - 1 < big.
+const big = Math.pow(2, 53)
+function bigRandom() {
+  return Math.floor(Math.random() * big)
 }
