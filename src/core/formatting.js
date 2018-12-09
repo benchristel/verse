@@ -71,3 +71,13 @@ export function abbreviate(a) {
 export function asText(value) {
   return isString(value) ? value : visualize(value)
 }
+
+export function conjoin(things) {
+  if (things.length < 3) {
+    return things.join(' and ')
+  } else {
+    return things.slice(0, things.length - 1).join(', ')
+      + ', and '
+      + things[things.length - 1]
+  }
+}

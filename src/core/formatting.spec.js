@@ -1,4 +1,4 @@
-import { visualize, abbreviate, asText } from './formatting'
+import { visualize, abbreviate, asText, conjoin } from './formatting'
 
 describe('visualize', () => {
   it('represents numbers as strings', () => {
@@ -245,5 +245,24 @@ describe('asText', () => {
 
   it('visualizes objects', () => {
     expect(asText({a: 1})).toBe('{"a": 1}')
+  })
+})
+
+describe('conjoin', () => {
+  it('returns empty string for an empty list', () => {
+    expect(conjoin([])).toBe('')
+  })
+
+  it('returns a single item', () => {
+    expect(conjoin(['cupcakes'])).toBe('cupcakes')
+  })
+
+  it('uses "and" for two items', () => {
+    expect(conjoin(['dogs', 'cats'])).toBe('dogs and cats')
+  })
+
+  it('uses commas for three items', () => {
+    expect(conjoin(['eats', 'shoots', 'leaves']))
+      .toBe('eats, shoots, and leaves')
   })
 })
