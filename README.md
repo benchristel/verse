@@ -107,19 +107,18 @@ work on the code for Verse itself.
 
 ### What to work on
 
-Here are some areas where Verse could be improved:
+Thanks for your interest in contributing to Verse! At this point,
+what Verse really needs is not more code but more users.
 
-- Refactoring, especially in the UI code
-- Handling/reporting of errors, including
-- Documentation
+I would greatly value your feedback on what works or doesn't
+work for you as you use Verse. Send me code, bug reports,
+and general frustrations. If you'd like to collaborate with
+me on some code over Skype or whatever, let me know via a
+Github issue.
 
-Changes to the API aren't likely to be accepted, even if
-they're backwards-compatible. This is because I'm trying to
-keep the API minimal.
-
-Please add tests for your code if your change is not purely
-UI-centric. This makes it much more likely that your pull
-request will be accepted.
+If you really really want to work on something in this repo,
+the [documentation](https://benchristel.github.io/verse) is
+a good place to get started.
 
 ### How
 
