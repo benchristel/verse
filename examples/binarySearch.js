@@ -88,6 +88,8 @@ define({
       let array = []
       let members = new Set()
       if (length > 0) for (let i of range(1, length)) {
+        /* Multiplying the randomInt by 2 ensures that
+         * value is even. */
         let value = randomInt(1, 25) * 2
         array.push(value)
         members.add(value)
@@ -95,6 +97,8 @@ define({
       array = array.sort((a, b) => a - b)
       for (let n of members) {
         assert(array, binarySearch, n)
+        /* since we only added even numbers to the array,
+         * no odd numbers should be present. */
         assert(array, not(binarySearch), n + 1)
       }
     }
