@@ -6,6 +6,7 @@ import { isString, isFunction } from './nativeTypes'
 import { checkArgs } from './checkArgs'
 import { showFormFields, waitForEvent, redraw } from './effects'
 import { isFormSubmission, isFormFieldChange } from './events'
+import { visualize, conjoin } from './formatting'
 
 const form_interface = {
   example: [{
@@ -44,8 +45,32 @@ export function *form(fields) {
       yield showFormFields([])
       break;
     } else if (isFormFieldChange(event)) {
-      fields[event.label].receiveValue(event.value)
-      yield redraw()
+      if (fields[event.label]) {
+        fields[event.label].receiveValue(event.value)
+        yield redraw()
+      } else {
+        let extantFieldLabels = Object.keys(fields)
+        let hint
+        switch (extantFieldLabels.length) {
+          case 0:
+          hint = 'There are no fields in the current form.'
+          break;
+
+          case 1:
+          hint = 'The only field that exists is '
+            + visualize(extantFieldLabels[0])
+            + '.'
+          break;
+
+          default:
+          hint = 'The fields that exist are '
+            + conjoin(extantFieldLabels.map(visualize))
+            + '.'
+          break;
+        }
+        throw Error('Received a formFieldChange event for unrecognized field '
+          + visualize(event.label) + '. ' + hint)
+      }
       continue;
     } else {
       // some event we don't care about
