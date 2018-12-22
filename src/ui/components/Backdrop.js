@@ -1,9 +1,8 @@
 import React from 'react'
-import connectProps from './connectProps'
 import './Backdrop.css'
 
-export default connectProps(props => (
+export default props => (
   <div className="Backdrop">
     {props.children}
   </div>
-))
+)
