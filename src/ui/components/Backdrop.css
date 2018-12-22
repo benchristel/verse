@@ -9,6 +9,7 @@
    * into view correctly when the keyboard pops up on iPads.
    */
   min-height: 640px;
+  min-width: 1024px;
   position: absolute;
   background: linear-gradient(to bottom, #e8fdbd 10%, #d0e8c0 50%);
 }
