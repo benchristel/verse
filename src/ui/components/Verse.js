@@ -44,7 +44,7 @@ let LeftPane = connectProps(props => {
 
 const RightPane = connectProps(props => {
   return (
-    <Pane style={{width: '514px', left: '512px', backgroundColor: '#020', height: '100%'}}>
+    <Pane style={{width: '512px', left: '512px', backgroundColor: '#020', height: '640px'}}>
       <Pane style={{height: '32px', top: 0, backgroundColor: '#d8d2d0', zIndex: 10, padding: '4px 0 4px 13px'}}>
         <Tab
           color={loadButtonColor(props)}
@@ -70,19 +70,19 @@ const RightPane = connectProps(props => {
         <Terminal/>
 
         <Hide If={!isInspectingStage('load', props)}>
-          <Pane className="scroll" style={{backgroundColor: '#db6', zIndex: 20, padding: '12px'}}>
+          <Pane className="scroll" style={{backgroundColor: '#db6', zIndex: 20}}>
             <ErrorPanel />
           </Pane>
         </Hide>
 
         <Hide If={!isInspectingStage('test', props)}>
-          <Pane className="scroll" style={{backgroundColor: '#022', zIndex: 20, padding: '12px'}}>
+          <Pane className="scroll" style={{backgroundColor: '#022', zIndex: 20}}>
             <TestResultsPanel />
           </Pane>
         </Hide>
 
         <Hide If={!isInspectingStage('run', props) || !props.crash}>
-          <Pane style={{backgroundColor: '#000', color: '#fff', zIndex: 20, padding: '12px'}}>
+          <Pane className="scroll" style={{backgroundColor: '#000', color: '#fff', zIndex: 20}}>
             <CrashPanel />
           </Pane>
         </Hide>

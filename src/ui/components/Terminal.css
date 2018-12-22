@@ -1,6 +1,6 @@
 .Terminal {
-  height: 592px;
-
+  box-sizing: border-box;
+  height: calc(640px - 32px);
   overflow: hidden;
   white-space: pre-wrap;
 
@@ -17,17 +17,13 @@
   -webkit-font-smoothing: antialiased;
 }
 
-.Terminal > div {
+.Terminal > .screen {
   box-sizing: border-box;
+  height: 100%;
+  padding: 12px;
   border: 2px inset #d8d2d0;
   background: #023;
-  /* padding: 18px; */
   overflow-y: auto;
-}
-
-.Terminal .screen {
-  height: 592px;
-  padding: 12px;
 }
 
 .Terminal .Input {
