@@ -1,10 +1,8 @@
 import React from 'react'
 
 export default props => {
-  if (!props.If) {
-    return (<div>
-      {props.children}
-    </div>)
-  }
-  return null
+  let style = props.If ? {display: 'none'} : {}
+  return (<div style={style}>
+    {props.children}
+  </div>)
 }
