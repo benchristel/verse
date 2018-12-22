@@ -1,4 +1,4 @@
-.Button {
+.Tab {
   font-size: 12px;
   padding: 2px 6px;
   height: 22px;
@@ -13,11 +13,10 @@
   text-align: center;
 }
 
-.Button:hover {
+.Tab:hover {
   background-color: rgba(255, 255, 255, 0.2);
 }
 
-.Button.selected,
-.Button.selected:hover {
+.Tab.selected {
   border-bottom-width: 2px;
 }

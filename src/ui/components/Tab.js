@@ -1,8 +1,8 @@
 import React from 'react'
-import './Button.css'
+import './Tab.css'
 
 export default props => (
-  <div className={'Button ' + props.className}
+  <div className={'Tab ' + props.className}
     style={{
       borderColor: props.color,
       color: props.color

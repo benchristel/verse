@@ -4,7 +4,7 @@ import connectProps from './connectProps'
 import Backdrop from './Backdrop'
 import CenteredContainer from './CenteredContainer'
 import Frame from './Frame'
-import Button from './Button'
+import Tab from './Tab'
 import Editor from './Editor'
 import Hide from './Hide'
 import Pane from './Pane'
@@ -51,24 +51,24 @@ const RightPane = connectProps(props => {
   return (
     <Pane style={{width: '514px', left: '512px', backgroundColor: '#020', height: '100%'}}>
       <Pane style={{height: '32px', top: 0, backgroundColor: '#d8d2d0', zIndex: 10, padding: '4px 0 4px 13px'}}>
-        <Button
+        <Tab
           color={loadButtonColor(props)}
           onClick={() => props.inspectStage('load')}
           className={isInspectingStage('load', props) ? 'selected' : ''}>
           Load
-        </Button>
-        <Button
+        </Tab>
+        <Tab
           color={testButtonColor(props)}
           onClick={() => props.inspectStage('test')}
           className={isInspectingStage('test', props) ? 'selected' : ''}>
           Test
-        </Button>
-        <Button
+        </Tab>
+        <Tab
           color={runButtonColor(props)}
           onClick={() => { props.runApp(); props.inspectStage('run') }}
           className={isInspectingStage('run', props) ? 'selected' : ''}>
           Run
-        </Button>
+        </Tab>
       </Pane>
 
       <Pane style={{top: '32px'}}>
