@@ -3,7 +3,6 @@ import './Verse.css'
 import connectProps from './connectProps'
 import Backdrop from './Backdrop'
 import CenteredContainer from './CenteredContainer'
-import Frame from './Frame'
 import Tab from './Tab'
 import Editor from './Editor'
 import Hide from './Hide'
@@ -16,14 +15,10 @@ import { get, isTruthy } from '../../core'
 export default () =>
   (<div className="Verse">
     <Backdrop>
-      <CenteredContainer height="654px" width="1038px">
+      <CenteredContainer height="640px" width="1024px" style={{boxShadow: '-6px -6px 0 #fff, -6px 6px 0 #fff, 6px -6px 0 #fff, 6px 6px 0 #fff'}}>
         <Links/>
-        <Frame>
-          <div style={{position: 'absolute', height: '640px', width: '1024px'}}>
-            <LeftPane/>
-            <RightPane/>
-          </div>
-        </Frame>
+        <LeftPane/>
+        <RightPane/>
       </CenteredContainer>
     </Backdrop>
   </div>)
