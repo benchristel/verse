@@ -12,8 +12,8 @@ import DustCover from './DustCover'
 import { anySyntaxErrors, getSyntaxErrors, anyTestFailures } from '../selectors'
 import { get, isTruthy } from '../../core'
 
-export default () =>
-  (<div className="Verse">
+export default () => (
+  <div className="Verse">
     <Backdrop>
       <CenteredContainer height="640px" width="1024px" style={{boxShadow: '-6px -6px 0 #fff, -6px 6px 0 #fff, 6px -6px 0 #fff, 6px 6px 0 #fff'}}>
         <Links/>
@@ -21,76 +21,71 @@ export default () =>
         <RightPane/>
       </CenteredContainer>
     </Backdrop>
-  </div>)
+  </div>
+)
 
-let Links = () => {
-  return (
-    <div className="links">
-      Verse DEVELOPMENT VERSION |&nbsp;
-      <a href="https://benchristel.github.io/verse/docs">
-        Documentation
-      </a>
-    </div>
-  )
-}
+let Links = () => (
+  <div className="links">
+    Verse DEVELOPMENT VERSION |&nbsp;
+    <a href="https://benchristel.github.io/verse/docs">
+      Documentation
+    </a>
+  </div>
+)
 
-let LeftPane = connectProps(props => {
-  return (
-    <Pane style={{width: '512px'}}>
-      <Editor/>
+let LeftPane = () => (
+  <Pane style={{width: '50%'}}>
+    <Editor/>
+  </Pane>
+)
+
+const RightPane = connectProps(props => (
+  <Pane style={{width: '50%', left: '50%', height: '640px'}}>
+    <Pane style={{height: '32px', top: 0, backgroundColor: '#d8d2d0', zIndex: 10, padding: '4px 0 4px 13px'}}>
+      <Tab
+        color={loadButtonColor(props)}
+        onClick={() => props.inspectStage('load')}
+        className={isInspectingStage('load', props) ? 'selected' : ''}>
+        Load
+      </Tab>
+      <Tab
+        color={testButtonColor(props)}
+        onClick={() => props.inspectStage('test')}
+        className={isInspectingStage('test', props) ? 'selected' : ''}>
+        Test
+      </Tab>
+      <Tab
+        color={runButtonColor(props)}
+        onClick={() => { props.runApp(); props.inspectStage('run') }}
+        className={isInspectingStage('run', props) ? 'selected' : ''}>
+        Run
+      </Tab>
     </Pane>
-  )
-})
 
-const RightPane = connectProps(props => {
-  return (
-    <Pane style={{width: '512px', left: '512px', backgroundColor: '#020', height: '640px'}}>
-      <Pane style={{height: '32px', top: 0, backgroundColor: '#d8d2d0', zIndex: 10, padding: '4px 0 4px 13px'}}>
-        <Tab
-          color={loadButtonColor(props)}
-          onClick={() => props.inspectStage('load')}
-          className={isInspectingStage('load', props) ? 'selected' : ''}>
-          Load
-        </Tab>
-        <Tab
-          color={testButtonColor(props)}
-          onClick={() => props.inspectStage('test')}
-          className={isInspectingStage('test', props) ? 'selected' : ''}>
-          Test
-        </Tab>
-        <Tab
-          color={runButtonColor(props)}
-          onClick={() => { props.runApp(); props.inspectStage('run') }}
-          className={isInspectingStage('run', props) ? 'selected' : ''}>
-          Run
-        </Tab>
-      </Pane>
+    <Pane style={{top: '32px'}}>
+      <Terminal/>
 
-      <Pane style={{top: '32px'}}>
-        <Terminal/>
+      <Hide If={!isInspectingStage('load', props)}>
+        <Pane className="scroll" style={{backgroundColor: '#db6', zIndex: 20}}>
+          <ErrorPanel />
+        </Pane>
+      </Hide>
 
-        <Hide If={!isInspectingStage('load', props)}>
-          <Pane className="scroll" style={{backgroundColor: '#db6', zIndex: 20}}>
-            <ErrorPanel />
-          </Pane>
-        </Hide>
+      <Hide If={!isInspectingStage('test', props)}>
+        <Pane className="scroll" style={{backgroundColor: '#022', zIndex: 20}}>
+          <TestResultsPanel />
+        </Pane>
+      </Hide>
 
-        <Hide If={!isInspectingStage('test', props)}>
-          <Pane className="scroll" style={{backgroundColor: '#022', zIndex: 20}}>
-            <TestResultsPanel />
-          </Pane>
-        </Hide>
-
-        <Hide If={!isInspectingStage('run', props) || !props.crash}>
-          <Pane className="scroll" style={{backgroundColor: '#000', color: '#fff', zIndex: 20}}>
-            <CrashPanel />
-          </Pane>
-        </Hide>
-      </Pane>
-      <DustCover/>
+      <Hide If={!isInspectingStage('run', props) || !props.crash}>
+        <Pane className="scroll" style={{backgroundColor: '#000', color: '#fff', zIndex: 20}}>
+          <CrashPanel />
+        </Pane>
+      </Hide>
     </Pane>
-  )
-})
+    <DustCover/>
+  </Pane>
+))
 
 function loadButtonColor(state) {
   return anySyntaxErrors(state) ? '#b90' : '#099'
@@ -129,15 +124,17 @@ const TestResultsPanel = connectProps(props => {
   let testResults = Object.keys(props.testResults)
     .map(k => [k, props.testResults[k]])
 
-  let failures = testResults.filter(_(get(1), isTruthy))
+  let failures = testResults.filter(thru(get(1), isTruthy))
 
   if (failures.length) {
     return (<div className="TestResultsPanel">
-      {testCountString(failures)} found {bugCountString(failures)}!
+      {testCountString(failures.length)} found {bugCountString(failures.length)}!
       {failures.map(renderTestResult).join('\n')}
     </div>)
   } else {
-    return (<div className="TestResultsPanel">{passedTestsString(testResults)}</div>)
+    return (<div className="TestResultsPanel">
+      {passedTestsString(testResults.length)}
+    </div>)
   }
 })
 
@@ -150,19 +147,37 @@ ${error}
 `
 }
 
-function testCountString(failures) {
-  return failures.length === 1 ? 'One test'
-    : '' + failures.length + ' tests'
+function testCountString(count) {
+  switch (count) {
+    case 1:
+    return 'One test'
+
+    default:
+    return '' + count + ' tests'
+  }
 }
 
-function bugCountString(failures) {
-  return failures.length === 1 ? 'a bug' : 'bugs'
+function bugCountString(count) {
+  switch (count) {
+    case 1:
+    return 'a bug'
+
+    default:
+    return 'bugs'
+  }
 }
 
-function passedTestsString(results) {
-  if (results.length === 0) return 'No tests to run.'
-  if (results.length === 1) return 'One test ran, and found no issues.'
-  return results.length + ' tests ran, and found no issues.'
+function passedTestsString(count) {
+  switch (count) {
+    case 0:
+    return 'No tests to run.'
+
+    case 1:
+    return 'One test ran, and found no issues.'
+
+    default:
+    return '' + count + ' tests ran, and found no issues.'
+  }
 }
 
 const CrashPanel = connectProps(props => (
@@ -190,7 +205,7 @@ function isInspectingStage(stage, state) {
   return state.currentlyInspectingStage === stage
 }
 
-function _(...fns) {
+function thru(...fns) {
   return function(input) {
     return fns.reduce((v, f) => f(v), input)
   }
