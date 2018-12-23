@@ -4,7 +4,7 @@ import { AnimationFrameTicker } from './AnimationFrameTicker'
 import { KeyEventStream } from './KeyEventStream'
 import { display, markSyntaxErrors, loadFiles } from '../actions'
 import { editorText } from '../selectors'
-import { findSyntaxErrorLocations } from '../findSyntaxErrorLocations'
+import { findSyntaxErrorLocations } from './findSyntaxErrorLocations'
 import { Core } from '../../core'
 import storage from '../storage'
 

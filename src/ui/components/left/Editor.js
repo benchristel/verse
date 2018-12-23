@@ -2,11 +2,11 @@ import React from 'react'
 import AceEditor from 'react-ace'
 import { getLineInfo } from 'acorn'
 
-import connectProps from './connectProps'
-import { editorText } from '../selectors'
-import { findEndOfToken } from '../findEndOfToken'
+import connectProps from '../connectProps'
+import { editorText } from '../../selectors'
+import { findEndOfToken } from './findEndOfToken'
 
-import '../javascriptEditorMode'
+import './javascriptEditorMode'
 import 'brace/theme/xcode'
 
 import './Editor.css'

@@ -1,7 +1,7 @@
 import React from 'react'
-import connectProps from './connectProps'
+import connectProps from '../connectProps'
 import './Terminal.css'
-import Pane from './Pane'
+import Pane from '../Pane'
 
 export default connectProps(class extends React.Component {
   screenLines() {

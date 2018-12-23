@@ -1,7 +1,7 @@
 import React from 'react'
-import connectProps from './connectProps'
-import Pane from './Pane'
-import Hide from './Hide'
+import connectProps from '../connectProps'
+import Pane from '../Pane'
+import Hide from '../Hide'
 
 import './DustCover.css'
 
