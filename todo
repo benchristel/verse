@@ -20,9 +20,11 @@
 
 # FEATURES
 
+- version number should link to source code
 - cancel button on app UI that kills the current routine
   stack up to and including the frame that is currently
-  rendering the view.
+  rendering the view. (but what is returned from the killed
+  routine?)
 - in-editor docs
 - at('foo.bar.baz', append('hi'), object)
 - linked list type (how to `visualize`?)
