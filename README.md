@@ -96,6 +96,10 @@ And, perhaps most importantly...
   Verse aims to maximize the joy of programming while
   minimizing its frustrations.
 
+## Credits
+
+Thanks to [JS.ORG](https://js.org) for providing the [verse.js.org](https://verse.js.org) domain!
+
 ---
 
 # Technical Stuff
