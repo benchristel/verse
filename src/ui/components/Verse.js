@@ -4,11 +4,17 @@ import Backdrop from './Backdrop'
 import CenteredContainer from './CenteredContainer'
 import { Left } from './left/Left'
 import { Right } from './right/Right'
+import { cssVariables } from './cssVariables'
+
+const {
+  '--content-height': contentHeight,
+  '--content-width':  contentWidth,
+} = cssVariables
 
 export default () => (
-  <div className="Verse">
+  <div className="Verse" style={cssVariables}>
     <Backdrop>
-      <CenteredContainer height="640px" width="1024px" style={{boxShadow: '-6px -6px 0 #fff, -6px 6px 0 #fff, 6px -6px 0 #fff, 6px 6px 0 #fff'}}>
+      <CenteredContainer height={contentHeight} width={contentWidth} style={{boxShadow: '-6px -6px 0 #fff, -6px 6px 0 #fff, 6px -6px 0 #fff, 6px 6px 0 #fff'}}>
         <Links/>
         <Left/>
         <Right/>

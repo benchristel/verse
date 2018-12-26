@@ -10,7 +10,7 @@ export default connectProps(class extends React.Component {
 
   render() {
     return (
-      <Pane style={{height: '608px', width: '100%'}}>
+      <Pane style={{width: '100%'}}>
         <div className="Terminal">
           <div className="screen">
             {

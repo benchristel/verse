@@ -11,12 +11,20 @@ import {
   anyTestFailures
 } from '../../selectors'
 import { get, isTruthy } from '../../../core'
+import { cssVariables } from '../cssVariables'
 
 import connectProps from '../connectProps'
 
+const {
+  '--content-height': contentHeight,
+  '--basic-gray': basicGray,
+  '--pooh': pooh,
+  '--scrubs': scrubs,
+} = cssVariables
+
 const Right = connectProps(props => (
-  <Pane style={{width: '50%', left: '50%', height: '640px'}}>
-    <Pane style={{height: '32px', top: 0, backgroundColor: '#d8d2d0', zIndex: 10, padding: '4px 0 4px 13px'}}>
+  <Pane style={{width: '50%', left: '50%', height: contentHeight}}>
+    <Pane style={{height: '32px', top: 0, backgroundColor: basicGray, zIndex: 10, padding: '4px 0 4px 13px'}}>
       <Tab
         color={loadButtonColor(props)}
         onClick={() => props.inspectStage('load')}
@@ -41,13 +49,13 @@ const Right = connectProps(props => (
       <Terminal/>
 
       <Hide If={!isInspectingStage('load', props)}>
-        <Pane className="scroll" style={{backgroundColor: '#db6', zIndex: 20}}>
+        <Pane className="scroll" style={{backgroundColor: pooh, zIndex: 20}}>
           <ErrorPanel />
         </Pane>
       </Hide>
 
       <Hide If={!isInspectingStage('test', props)}>
-        <Pane className="scroll" style={{backgroundColor: '#022', zIndex: 20}}>
+        <Pane className="scroll" style={{zIndex: 20}}>
           <TestResultsPanel />
         </Pane>
       </Hide>
@@ -63,15 +71,15 @@ const Right = connectProps(props => (
 ))
 
 function loadButtonColor(state) {
-  return anySyntaxErrors(state) ? '#b90' : '#099'
+  return anySyntaxErrors(state) ? '#b90' : scrubs
 }
 
 function testButtonColor(state) {
-  return anyTestFailures(state) ? '#920' : '#099'
+  return anyTestFailures(state) ? '#920' : scrubs
 }
 
 function runButtonColor(state) {
-  return state.crash ? '#000' : '#099'
+  return state.crash ? '#000' : scrubs
 }
 
 const ErrorPanel = connectProps(props => {

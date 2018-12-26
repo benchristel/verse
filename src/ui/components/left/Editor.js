@@ -5,11 +5,16 @@ import { getLineInfo } from 'acorn'
 import connectProps from '../connectProps'
 import { editorText } from '../../selectors'
 import { findEndOfToken } from './findEndOfToken'
+import { cssVariables } from '../cssVariables'
 
 import './javascriptEditorMode'
 import 'brace/theme/xcode'
 
 import './Editor.css'
+
+const {
+  '--content-height': contentHeight
+} = cssVariables
 
 export default connectProps(class extends React.Component {
   shouldComponentUpdate() {
@@ -37,7 +42,7 @@ export default connectProps(class extends React.Component {
         onLoad={configure}
         name="AceEditor"
         editorProps={{$blockScrolling: Infinity}} // prevent stupid warning
-        style={{width: '100%', height: '640px', position: 'absolute'}}
+        style={{width: '100%', height: contentHeight, position: 'absolute'}}
         markers={this.props.syntaxErrorLocations.map(toMarker(text))}
       />
     )

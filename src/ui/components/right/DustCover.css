@@ -1,12 +1,12 @@
 .DustCover {
   z-index: 999;
   background-color: #222c;
-  padding-top: 300px;
+  padding-top: calc(var(--content-height) / 2 - 20px);
   padding-left: 12px;
   padding-right: 12px;
   cursor: pointer;
   text-align: center;
-  height: 642px;
+  height: var(--content-height);
 }
 
 .DustCover div {

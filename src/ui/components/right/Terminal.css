@@ -1,13 +1,13 @@
 .Terminal {
   box-sizing: border-box;
-  height: calc(640px - 32px);
+  height: calc(var(--content-height) - 32px);
   overflow: hidden;
   white-space: pre-wrap;
 
-  color: #0c8;
+  color: var(--phosphor-green);
   text-shadow: #0fac;
-  background: #d8d2d0;
-  border: 2px outset #d8d2d0;
+  background: var(--basic-gray);
+  border: 2px outset var(--basic-gray);
 
   padding: 7px;
 
@@ -21,8 +21,8 @@
   box-sizing: border-box;
   height: 100%;
   padding: 12px;
-  border: 2px inset #d8d2d0;
-  background: #023;
+  border: 2px inset var(--basic-gray);
+  background: var(--bobby-blue);
   overflow-y: auto;
 }
 

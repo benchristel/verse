@@ -1,6 +1,6 @@
 .ErrorPanel, .TestResultsPanel {
   box-sizing: border-box;
-  height: calc(640px - 32px);
+  height: calc(var(--content-height) - 32px);
   padding: 12px;
   font-family: Monaco, Menlo, "Ubuntu Mono", Consolas, source-code-pro, monospace;
   font-size: 16px;
@@ -8,9 +8,9 @@
 }
 
 .TestResultsPanel {
-  color: #0c8;
+  color: var(--phosphor-green);
   text-shadow: #0fac;
-  background: #023;
+  background: var(--bobby-blue);
 }
 
 .links {
