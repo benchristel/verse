@@ -2,6 +2,7 @@ import { hasKey } from './objects'
 import { isGeneratorFunction } from './nativeTypes'
 import { renameFunction } from './higherOrderFunctions'
 import { mapObject } from './objects'
+import { routine } from './routines'
 
 export default function Definer(global) {
   let definitions = {}
@@ -82,15 +83,7 @@ export default function Definer(global) {
        * reasons we don't want yet *another* function call in
        * the critical path.
        */
-      wrapped = function*() {
-        try {
-          return yield *fn.apply(null, arguments)
-        } catch (e) {
-          e.verseStack = e.verseStack || []
-          e.verseStack.push(fn.name)
-          throw e
-        }
-      }
+      wrapped = routine(fn)
     } else {
       wrapped = function() {
         if (!userFunctionCallsAllowed) {

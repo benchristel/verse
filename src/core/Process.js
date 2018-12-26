@@ -119,6 +119,10 @@ export function Process(store) {
       run()
       return
 
+      case 'getCurrentCall':
+      run(lastOf(stack).id)
+      return
+
       default:
       error = new Error('You `yield`ed something weird: ' + JSON.stringify(effect))
       return
@@ -130,6 +134,7 @@ export function Process(store) {
       isIterator(generator) ?
       generator : generator()
     routine.render = null
+    routine.id = Symbol()
     stack.push(routine)
   }
 

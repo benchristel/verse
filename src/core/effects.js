@@ -159,3 +159,14 @@ export function redraw() {
     effectType: 'redraw'
   }
 }
+
+const getCurrentCall_interface = {
+  example: [], types: []
+}
+
+export function getCurrentCall() {
+  checkArgs(getCurrentCall, arguments, getCurrentCall_interface)
+  return {
+    effectType: 'getCurrentCall'
+  }
+}

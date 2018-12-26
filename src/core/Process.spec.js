@@ -1,7 +1,8 @@
 import { Store, perform } from './index'
 import { Process } from './Process'
 import { animationFrame, keyDown } from './events'
-import { wait, showFormFields, redraw } from './effects'
+import { wait, showFormFields, redraw, getCurrentCall } from './effects'
+import { routine } from './routines'
 import './api'
 
 describe('Process', () => {
@@ -338,5 +339,41 @@ describe('Process', () => {
     fail = true
     view = p.redraw() // should not throw
     expect(view.error.message).toBe('yikes')
+  })
+
+  it('jumps back to a previous stack frame', () => {
+    let output = {}
+    let main = routine(function*(n = 1) {
+      // the user can press a to add a property to the
+      // output object, or q to quit
+      let mainCall = yield getCurrentCall()
+      yield addProperty(n, mainCall)
+      // note that only successful property additions
+      // increment n
+      yield retry(main(n + 1))
+    })
+
+    let addProperty = routine(function*(n, cancel) {
+      let name = yield waitForChar()
+      if (name === 'c') yield bailOut(cancel)
+      let value = yield waitForChar()
+      if (value === 'c') yield bailOut(cancel)
+      output[`${n}: ${name}`] = value
+    })
+
+    let view = p.begin(main)
+    let events = [
+      keyDown('k'), keyDown('c'), // cancel
+      keyDown('a'), keyDown('b'),
+      keyDown('c'),               // cancel
+      keyDown('d'), keyDown('e')
+    ]
+    events.forEach(p.receive)
+    view = p.redraw()
+    expect(view.error).toBe(null)
+    expect(output).toEqual({
+      '1: a': 'b',
+      '2: d': 'e'
+    })
   })
 })

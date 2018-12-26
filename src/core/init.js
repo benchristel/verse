@@ -26,7 +26,7 @@ export default function *init() {
       yield waitForChar()
     }
     yield startDisplay(() => [])
-    yield window.run
+    yield window.run()
     yield startDisplay(() => [
       '[Program finished]'
     ])

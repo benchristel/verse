@@ -93,4 +93,20 @@ describe('effects', () => {
       expect(store.emit).not.toBeCalled()
     })
   })
+
+  describe('getCurrentCall', () => {
+    it('returns a unique identifier for the current routine\'s stack frame', () => {
+      let a1, a2, b
+      p.begin(function*() {
+        a1 = yield getCurrentCall()
+        a2 = yield getCurrentCall()
+        sub()
+      })
+      function *sub() {
+        b = yield getCurrentCall()
+      }
+      expect(a1).toBe(a2)
+      expect(a1).not.toBe(b)
+    })
+  })
 })

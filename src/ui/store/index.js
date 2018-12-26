@@ -13,4 +13,9 @@ const store = createStore(
 
 sagaMiddleware.run(main)
 
+// TODO: this is probably a terrible idea.
+// Expose the store to the program so it can do horrible
+// hacky things like add and remove files
+window.verseStore = store
+
 export default store

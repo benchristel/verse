@@ -19,7 +19,9 @@ export function isGeneratorFunction(a) {
 }
 
 export function isIterator(a) {
-  return Object.prototype.toString.call(a) === '[object Generator]'
+  return a &&
+    typeof a !== 'string' &&
+    typeof a[Symbol.iterator] === 'function'
 }
 
 export function isFunction(a) {

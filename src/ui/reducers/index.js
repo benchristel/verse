@@ -86,7 +86,13 @@ function files(curr={}, action) {
 }
 
 function currentlyEditingFile(curr='main.js', action) {
-  return curr
+  switch (action.type) {
+    case 'switchFile':
+    return action.filename
+
+    default:
+    return curr
+  }
 }
 
 function syntaxErrorLocations(curr=[], action) {
