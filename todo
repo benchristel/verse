@@ -1,3 +1,10 @@
+# FEEDBACK
+
+- missing API docs
+- asserting about form fields is awkward
+- there should be a more convenient way to submit a form in the simulator
+  - .submitForm({'Foo', 'bar'}) ?
+
 # BUGS
 
 - If a load error happens that is not a SyntaxError,
@@ -20,6 +27,9 @@
 
 # FEATURES
 
+- oneOf should be public (change name to isOneOf?)
+- add isBoolean function to API
+- is, equals should support partial application
 - version number should link to source code
 - cancel button on app UI that kills the current routine
   stack up to and including the frame that is currently
