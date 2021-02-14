@@ -61,6 +61,33 @@ function configure(editor) {
   editor.renderer.setShowGutter(false)
   // allow Cmd+L to focus the URL bar
   editor.commands.removeCommand('gotoline')
+
+  // rebind Ctrl/Cmd-Backspace to delete line
+  editor.commands.removeCommand('removewordleft')
+  editor.commands.addCommand({
+    name: 'removeline',
+    bindKey: {mac: 'Cmd-Backspace', win: 'Ctrl-Backspace'},
+    multiSelectAction: "forEach",
+    exec(editor) {
+      editor.removeLines()
+    }
+  })
+
+  editor.commands.addCommand({
+    name: 'selectMoreAfter',
+    bindKey: {mac: 'Ctrl-G', win: 'Ctrl-G'},
+    exec(editor) {
+      editor.selectMore(1, false)
+    }
+  })
+
+  editor.commands.addCommand({
+    name: 'selectNextAfter',
+    bindKey: {mac: 'Ctrl-Shift-G', win: 'Ctrl-Shift-G'},
+    exec(editor) {
+      editor.selectMore(-1, true)
+    }
+  })
 }
 
 function toMarker(code) {
