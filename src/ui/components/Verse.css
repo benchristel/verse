@@ -13,6 +13,11 @@
   background: var(--bobby-blue);
 }
 
+.TestResultsPanel.syntax-error {
+  color: #ccc;
+  background: #222;
+}
+
 .links {
   position: absolute;
   color: #555;

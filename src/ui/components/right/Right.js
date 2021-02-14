@@ -107,18 +107,28 @@ const TestResultsPanel = connectProps(props => {
   let testResults = Object.keys(props.testResults)
     .map(k => [k, props.testResults[k]])
 
-  let failures = testResults.filter(thru(get(1), isTruthy))
+  let [className, errorMessage] =
+    anySyntaxErrors(props) ?
+      ["syntax-error", "Failed to load the latest code, probably due to a syntax error. The last test result was:\n\n"]
+    : ["", ""]
+  className += " TestResultsPanel"
 
-  if (failures.length) {
-    return (<div className="TestResultsPanel">
-      {testCountString(failures.length)} found {bugCountString(failures.length)}!
-      {failures.map(renderTestResult).join('\n')}
-    </div>)
-  } else {
-    return (<div className="TestResultsPanel">
-      {passedTestsString(testResults.length)}
-    </div>)
-  }
+  const failures = testResults.filter(thru(get(1), isTruthy))
+  const results =
+    failures.length ?
+      <React.Fragment>
+        {testCountString(failures.length)} found {bugCountString(failures.length)}!
+        {failures.map(renderTestResult).join('\n')}
+      </React.Fragment>
+
+    : <React.Fragment>
+        {passedTestsString(testResults.length)}
+      </React.Fragment>
+
+  return (<div className={className}>
+    {errorMessage}
+    {results}
+  </div>)
 })
 
 function renderTestResult([name, error]) {
